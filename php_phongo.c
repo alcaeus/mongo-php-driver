@@ -2089,14 +2089,14 @@ static void php_phongo_mongoc_ssl_opts_from_uri(mongoc_ssl_opt_t* ssl_opt, mongo
 	}
 }
 
-static inline char* php_phongo_fetch_ssl_opt_string(zval* zoptions, const char* key, int key_len)
+static inline char* php_phongo_fetch_ssl_opt_string(zval* zoptions, const char* key)
 {
 	int       plen;
 	zend_bool pfree;
 	char*     pval;
 	char*     value;
 
-	pval  = php_array_fetchl_string(zoptions, key, key_len, &plen, &pfree);
+	pval  = php_array_fetch_string(zoptions, key, &plen, &pfree);
 	value = pfree ? pval : estrndup(pval, plen);
 
 	return value;
@@ -2143,7 +2143,7 @@ static mongoc_ssl_opt_t* php_phongo_make_ssl_opt(mongoc_uri_t* uri, zval* zoptio
 	if ((o)) {                              \
 		efree((char*) (o));                 \
 	}                                       \
-	(o) = php_phongo_fetch_ssl_opt_string(zoptions, ZEND_STRL((n)));
+	(o) = php_phongo_fetch_ssl_opt_string(zoptions, n);
 
 	/* Apply driver options that don't have a corresponding URI option. These
 	 * are set directly on the SSL options struct. */
@@ -2200,7 +2200,7 @@ static inline bool php_phongo_apply_driver_option_to_uri(mongoc_uri_t* uri, zval
 	bool  ret;
 	char* value;
 
-	value = php_phongo_fetch_ssl_opt_string(zoptions, ZEND_STRL(driverOptionKey));
+	value = php_phongo_fetch_ssl_opt_string(zoptions, driverOptionKey);
 	ret = mongoc_uri_set_option_as_utf8(uri, optionKey, value);
 	efree(value);
 
