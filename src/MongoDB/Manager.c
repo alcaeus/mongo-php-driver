@@ -753,6 +753,54 @@ cleanup:
 	}
 } /* }}} */
 
+static PHP_METHOD(Manager, testSession)
+{
+	php_phongo_manager_t*    intern;
+	mongoc_database_t*       database;
+	mongoc_collection_t*     collection;
+	mongoc_client_session_t* cs;
+	bson_error_t             error = { 0 };
+	mongoc_cursor_t*         cursor;
+	bson_t                   opts   = BSON_INITIALIZER;
+	bson_t                   filter = BSON_INITIALIZER;
+	bson_t                   doc    = BSON_INITIALIZER;
+
+	intern = Z_MANAGER_OBJ_P(getThis());
+
+	database = mongoc_client_get_database (intern->client, "test");
+	collection = mongoc_database_get_collection (database, "test");
+
+	if (!collection) {
+		phongo_throw_exception_from_bson_error_t(&error TSRMLS_CC);
+		return;
+	}
+
+	cs = mongoc_client_start_session(intern->client, NULL, &error);
+	mongoc_client_session_append (cs, &opts, &error);
+
+	bson_append_int64(&opts,
+		"batchSize",
+		9,
+		1
+	);
+
+	bson_append_int64(&doc, "x", 1, 1);
+	mongoc_collection_insert_one (collection, &doc, NULL, NULL, &error);
+	mongoc_collection_insert_one (collection, &doc, NULL, NULL, &error);
+	mongoc_collection_insert_one (collection, &doc, NULL, NULL, &error);
+
+	cursor = mongoc_collection_find_with_opts (collection,
+		&filter,
+		&opts,
+		NULL
+	);
+
+	mongoc_client_session_destroy(cs);
+	mongoc_cursor_destroy(cursor);
+	mongoc_collection_destroy(collection);
+	mongoc_database_destroy(database);
+}
+
 /* {{{ MongoDB\Driver\Manager function entries */
 ZEND_BEGIN_ARG_INFO_EX(ai_Manager___construct, 0, 0, 0)
 	ZEND_ARG_INFO(0, uri)
@@ -810,6 +858,7 @@ static zend_function_entry php_phongo_manager_me[] = {
 	PHP_ME(Manager, getWriteConcern, ai_Manager_void, ZEND_ACC_PUBLIC | ZEND_ACC_FINAL)
 	PHP_ME(Manager, selectServer, ai_Manager_selectServer, ZEND_ACC_PUBLIC | ZEND_ACC_FINAL)
 	PHP_ME(Manager, startSession, ai_Manager_startSession, ZEND_ACC_PUBLIC | ZEND_ACC_FINAL)
+	PHP_ME(Manager, testSession, ai_Manager_void, ZEND_ACC_PUBLIC | ZEND_ACC_FINAL)
 	ZEND_NAMED_ME(__wakeup, PHP_FN(MongoDB_disabled___wakeup), ai_Manager_void, ZEND_ACC_PUBLIC | ZEND_ACC_FINAL)
 	PHP_FE_END
 	/* clang-format on */
