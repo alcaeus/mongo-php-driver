@@ -181,6 +181,12 @@ if test "$PHP_MONGODB" != "no"; then
                                [MongoDB: Use system libmongoc [default=no]])],
                [no],
                [no])
+  PHP_ARG_WITH([libmongocrypt],
+               [whether to compile with libmongocrypt],
+               [AS_HELP_STRING([--with-libmongoc=@<:@auto/yes/no@:>@],
+                               [MongoDB: Compile with libmongocrypt support [default=auto]])],
+               [auto],
+               [no])
 
   if test "$PHP_LIBBSON" != "no"; then
     if test "$PHP_LIBMONGOC" = "no"; then
@@ -230,8 +236,36 @@ if test "$PHP_MONGODB" != "no"; then
     AC_DEFINE(HAVE_SYSTEM_LIBMONGOC, 1, [Use system libmongoc])
   fi
 
+  if test "$PHP_LIBMONGOCRYPT" != "no" -a "$PHP_LIBBSON" = "yes"; then
+    AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+    AC_MSG_CHECKING(for libmongocrypt)
+
+    if test -x "$PKG_CONFIG" && $PKG_CONFIG --exists libmongocrypt-1.0; then
+      if $PKG_CONFIG libmongocrypt-1.0 --atleast-version 1.0.0; then
+        PHP_MONGODB_MONGOCRYPT_CFLAGS=`$PKG_CONFIG libmongocrypt-1.0 --cflags`
+        PHP_MONGODB_MONGOCRYPT_LIBS=`$PKG_CONFIG libmongocrypt-1.0 --libs`
+        PHP_MONGODB_MONGOCRYPT_VERSION=`$PKG_CONFIG libmongocrypt-1.0 --modversion`
+        AC_MSG_RESULT(version $PHP_MONGODB_MONGOCRYPT_VERSION found)
+
+        PHP_MONGODB_CFLAGS="$PHP_MONGODB_CFLAGS $PHP_MONGODB_MONGOCRYPT_CFLAGS"
+        PHP_EVAL_LIBLINE($PHP_MONGODB_MONGOCRYPT_LIBS, MONGODB_SHARED_LIBADD)
+        AC_DEFINE(HAVE_SYSTEM_LIBMONGOCRYPT, 1, [Use system libmongocrypt])
+        AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 1)
+      else
+        AC_MSG_ERROR(system libmongocrypt must be upgraded to version >= 1.0.0)
+      fi
+    else
+      if test "$PHP_LIBMONGOCRYPT" = "yes"; then
+        AC_MSG_ERROR(pkgconfig and libmongocrypt must be installed)
+      else
+        AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
+        AC_MSG_RESULT(not found, compiling without client-side encryption)
+      fi
+    fi
+  fi
+
   if test "$PHP_LIBBSON" = "no" -a "$PHP_LIBMONGOC" = "no"; then
-    PHP_MONGODB_BUNDLED_CFLAGS="$STD_CFLAGS -DBSON_COMPILATION -DMONGOC_COMPILATION"
+    PHP_MONGODB_BUNDLED_CFLAGS="$STD_CFLAGS -DBSON_COMPILATION -DMONGOC_COMPILATION -DMONGOCRYPT_EXPORT="
 
     dnl M4 doesn't know if we're building statically or as a shared module, so
     dnl attempt to include both paths while ignoring errors. If neither path
@@ -273,6 +307,9 @@ if test "$PHP_MONGODB" != "no"; then
     _include([scripts/autotools/libmongoc/Versions.m4])
     _include([scripts/autotools/libmongoc/WeakSymbols.m4])
 
+    _include([scripts/autotools/libmongocrypt/Config.m4])
+    _include([scripts/autotools/libmongocrypt/Version.m4])
+
     m4_popdef([_include])
 
     AC_SUBST(BSON_EXTRA_ALIGN, 0)
@@ -282,9 +319,6 @@ if test "$PHP_MONGODB" != "no"; then
     AC_SUBST(MONGOC_ENABLE_RDTSCP, 0)
     AC_SUBST(MONGOC_ENABLE_SHM_COUNTERS, 0)
     AC_SUBST(MONGOC_TRACE, 1)
-
-    dnl TODO: Replace with detection for libmongocrypt for PHPC-1293
-    AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
 
     dnl Assignments for metadata handshake. Leave CFLAGS/LDFLAGS empty as they
     dnl would likely cause platform info (PHP version) to be truncated. We can
@@ -305,6 +339,14 @@ if test "$PHP_MONGODB" != "no"; then
 
     dnl Generated with: find src/libmongoc/src/libmongoc/src/mongoc -name '*.c' -print0 | cut -sz -d / -f 7- | sort -dz | tr '\000' ' '
     PHP_MONGODB_MONGOC_SOURCES="mongoc-aggregate.c mongoc-apm.c mongoc-array.c mongoc-async.c mongoc-async-cmd.c mongoc-buffer.c mongoc-bulk-operation.c mongoc-change-stream.c mongoc-client.c mongoc-client-pool.c mongoc-client-session.c mongoc-client-side-encryption.c mongoc-cluster.c mongoc-cluster-cyrus.c mongoc-cluster-sasl.c mongoc-cluster-sspi.c mongoc-cmd.c mongoc-collection.c mongoc-compression.c mongoc-counters.c mongoc-crypto.c mongoc-crypto-cng.c mongoc-crypto-common-crypto.c mongoc-crypto-openssl.c mongoc-cursor-array.c mongoc-cursor.c mongoc-cursor-change-stream.c mongoc-cursor-cmd.c mongoc-cursor-cmd-deprecated.c mongoc-cursor-find.c mongoc-cursor-find-cmd.c mongoc-cursor-find-opquery.c mongoc-cursor-legacy.c mongoc-cyrus.c mongoc-database.c mongoc-error.c mongoc-find-and-modify.c mongoc-gridfs-bucket.c mongoc-gridfs-bucket-file.c mongoc-gridfs.c mongoc-gridfs-file.c mongoc-gridfs-file-list.c mongoc-gridfs-file-page.c mongoc-handshake.c mongoc-host-list.c mongoc-index.c mongoc-init.c mongoc-libressl.c mongoc-linux-distro-scanner.c mongoc-list.c mongoc-log.c mongoc-matcher.c mongoc-matcher-op.c mongoc-memcmp.c mongoc-openssl.c mongoc-opts.c mongoc-opts-helpers.c mongoc-queue.c mongoc-rand-cng.c mongoc-rand-common-crypto.c mongoc-rand-openssl.c mongoc-read-concern.c mongoc-read-prefs.c mongoc-rpc.c mongoc-sasl.c mongoc-scram.c mongoc-secure-channel.c mongoc-secure-transport.c mongoc-server-description.c mongoc-server-stream.c mongoc-set.c mongoc-socket.c mongoc-ssl.c mongoc-sspi.c mongoc-stream-buffered.c mongoc-stream.c mongoc-stream-file.c mongoc-stream-gridfs.c mongoc-stream-gridfs-download.c mongoc-stream-gridfs-upload.c mongoc-stream-socket.c mongoc-stream-tls.c mongoc-stream-tls-libressl.c mongoc-stream-tls-openssl-bio.c mongoc-stream-tls-openssl.c mongoc-stream-tls-secure-channel.c mongoc-stream-tls-secure-transport.c mongoc-topology.c mongoc-topology-description-apm.c mongoc-topology-description.c mongoc-topology-scanner.c mongoc-uri.c mongoc-util.c mongoc-version-functions.c mongoc-write-command.c mongoc-write-command-legacy.c mongoc-write-concern.c"
+
+    dnl Generated with: find src/libmongocrypt/src -name '*.c' -print0 | cut -sz -d / -f 4- | sort -dz | tr '\000' ' '
+    dnl TODO: The following line skips some files to only allow compilation on MacOS
+    PHP_MONGODB_MONGOCRYPT_SOURCES="crypto/none.c mongocrypt-binary.c mongocrypt-buffer.c mongocrypt.c mongocrypt-cache.c mongocrypt-cache-collinfo.c mongocrypt-cache-key.c mongocrypt-ciphertext.c mongocrypt-crypto.c mongocrypt-ctx.c mongocrypt-ctx-datakey.c mongocrypt-ctx-decrypt.c mongocrypt-ctx-encrypt.c mongocrypt-key-broker.c mongocrypt-key.c mongocrypt-kms-ctx.c mongocrypt-log.c mongocrypt-marking.c mongocrypt-opts.c mongocrypt-status.c mongocrypt-traverse-util.c os_posix/os_mutex.c os_posix/os_once.c"
+
+    dnl Generated with: find src/libmongocrypt/kms-message/src -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
+    dnl TODO: The following line skips some files to only allow compilation on MacOS
+    PHP_MONGODB_KMS_MESSAGE_SOURCES="hexlify.c kms_b64.c kms_caller_identity_request.c kms_crypto_none.c kms_decrypt_request.c kms_encrypt_request.c kms_kv_list.c kms_message.c kms_request.c kms_request_opt.c kms_request_str.c kms_response.c kms_response_parser.c sort.c"
 
     dnl Generated with: find src/libmongoc/src/zlib-1.2.11 -maxdepth 1 -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
     PHP_MONGODB_ZLIB_SOURCES="adler32.c compress.c crc32.c deflate.c gzclose.c gzlib.c gzread.c gzwrite.c infback.c inffast.c inflate.c inftrees.c trees.c uncompr.c zutil.c"
@@ -341,6 +383,27 @@ if test "$PHP_MONGODB" != "no"; then
       PHP_MONGODB_ADD_INCLUDE([src/libmongoc/src/zlib-1.2.11/])
       PHP_MONGODB_ADD_BUILD_DIR([src/libmongoc/src/zlib-1.2.11/])
       AC_CONFIG_FILES([${ac_config_dir}/src/libmongoc/src/zlib-1.2.11/zconf.h])
+    fi
+
+    if test "$PHP_LIBMONGOCRYPT" != "no"; then
+      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], $PHP_MONGODB_MONGOCRYPT_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
+      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], $PHP_MONGODB_KMS_MESSAGE_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
+
+      dnl The libmongocrypt-tmp folder is there to temporarily resolve build issues
+      PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt-tmp])
+      PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt])
+      PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt/src])
+      PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt/kms-message/src])
+
+      PHP_MONGODB_ADD_BUILD_DIR([src/libmongocrypt/src])
+      AC_CONFIG_FILES([
+        ${ac_config_dir}/src/libmongocrypt/src/mongocrypt-config.h
+        ${ac_config_dir}/src/libmongocrypt/src/mongocrypt.h
+      ])
+
+      AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 1)
+    else
+      AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
     fi
   fi
 
@@ -385,6 +448,7 @@ Build configuration:
   Code Coverage flags (extra slow)                 : $COVERAGE_CFLAGS
   System mongoc                                    : $PHP_LIBMONGOC
   System libbson                                   : $PHP_LIBBSON
+  System libmongocrypt                             : $PHP_LIBBSON
   LDFLAGS                                          : $LDFLAGS
   EXTRA_LDFLAGS                                    : $EXTRA_LDFLAGS
   MONGODB_SHARED_LIBADD                            : $MONGODB_SHARED_LIBADD
