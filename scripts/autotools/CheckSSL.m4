@@ -192,6 +192,9 @@ if test "$PHP_MONGODB_SSL" = "openssl" -o "$PHP_MONGODB_SSL" = "libressl" -o "$P
     AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO, 1)
     AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO_OPENSSL, 0)
     AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO_COMMON_CRYPTO, 1)
+
+    PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], "crypto/commoncrypto.c", $PHP_MONGODB_BUNDLED_CFLAGS)
+    PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], "kms_crypto_apple.c", $PHP_MONGODB_BUNDLED_CFLAGS)
   elif test "$PHP_MONGODB_SSL" = "openssl"; then
     AC_SUBST(MONGOC_ENABLE_SSL_OPENSSL, 1)
     AC_SUBST(MONGOC_ENABLE_SSL_LIBRESSL, 0)
@@ -201,6 +204,9 @@ if test "$PHP_MONGODB_SSL" = "openssl" -o "$PHP_MONGODB_SSL" = "libressl" -o "$P
     AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO, 1)
     AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO_OPENSSL, 1)
     AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO_COMMON_CRYPTO, 0)
+
+    PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], "crypto/openssl.c", $PHP_MONGODB_BUNDLED_CFLAGS)
+    PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], "kms_crypto_openssl.c", $PHP_MONGODB_BUNDLED_CFLAGS)
   elif test "$PHP_MONGODB_SSL" = "libressl"; then
     AC_SUBST(MONGOC_ENABLE_SSL_OPENSSL, 0)
     AC_SUBST(MONGOC_ENABLE_SSL_LIBRESSL, 1)

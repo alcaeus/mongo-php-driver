@@ -290,6 +290,7 @@ if test "$PHP_MONGODB" != "no"; then
 
     _include([scripts/autotools/CheckCompiler.m4])
     _include([scripts/autotools/CheckHost.m4])
+    _include([scripts/autotools/CheckSSL.m4])
 
     _include([scripts/autotools/libbson/CheckAtomics.m4])
     _include([scripts/autotools/libbson/CheckHeaders.m4])
@@ -300,7 +301,6 @@ if test "$PHP_MONGODB" != "no"; then
     _include([scripts/autotools/libmongoc/CheckCompression.m4])
     _include([scripts/autotools/libmongoc/CheckResolv.m4])
     _include([scripts/autotools/libmongoc/CheckSasl.m4])
-    _include([scripts/autotools/libmongoc/CheckSSL.m4])
     _include([scripts/autotools/libmongoc/CheckICU.m4])
     _include([scripts/autotools/libmongoc/FindDependencies.m4])
     _include([scripts/autotools/libmongoc/PlatformFlags.m4])
@@ -319,6 +319,8 @@ if test "$PHP_MONGODB" != "no"; then
     AC_SUBST(MONGOC_ENABLE_SHM_COUNTERS, 0)
     AC_SUBST(MONGOC_TRACE, 1)
     AC_SUBST(MONGOCRYPT_ENABLE_TRACE, 1)
+    AC_SUBST(MONGOCRYPT_IS_POSIX, 1)
+    AC_SUBST(MONGOCRYPT_IS_WIN, 0)
 
     dnl Assignments for metadata handshake. Leave CFLAGS/LDFLAGS empty as they
     dnl would likely cause platform info (PHP version) to be truncated. We can
@@ -340,13 +342,17 @@ if test "$PHP_MONGODB" != "no"; then
     dnl Generated with: find src/libmongoc/src/libmongoc/src/mongoc -name '*.c' -print0 | cut -sz -d / -f 7- | sort -dz | tr '\000' ' '
     PHP_MONGODB_MONGOC_SOURCES="mongoc-aggregate.c mongoc-apm.c mongoc-array.c mongoc-async.c mongoc-async-cmd.c mongoc-buffer.c mongoc-bulk-operation.c mongoc-change-stream.c mongoc-client.c mongoc-client-pool.c mongoc-client-session.c mongoc-client-side-encryption.c mongoc-cluster.c mongoc-cluster-cyrus.c mongoc-cluster-sasl.c mongoc-cluster-sspi.c mongoc-cmd.c mongoc-collection.c mongoc-compression.c mongoc-counters.c mongoc-crypto.c mongoc-crypto-cng.c mongoc-crypto-common-crypto.c mongoc-crypto-openssl.c mongoc-cursor-array.c mongoc-cursor.c mongoc-cursor-change-stream.c mongoc-cursor-cmd.c mongoc-cursor-cmd-deprecated.c mongoc-cursor-find.c mongoc-cursor-find-cmd.c mongoc-cursor-find-opquery.c mongoc-cursor-legacy.c mongoc-cyrus.c mongoc-database.c mongoc-error.c mongoc-find-and-modify.c mongoc-gridfs-bucket.c mongoc-gridfs-bucket-file.c mongoc-gridfs.c mongoc-gridfs-file.c mongoc-gridfs-file-list.c mongoc-gridfs-file-page.c mongoc-handshake.c mongoc-host-list.c mongoc-index.c mongoc-init.c mongoc-libressl.c mongoc-linux-distro-scanner.c mongoc-list.c mongoc-log.c mongoc-matcher.c mongoc-matcher-op.c mongoc-memcmp.c mongoc-openssl.c mongoc-opts.c mongoc-opts-helpers.c mongoc-queue.c mongoc-rand-cng.c mongoc-rand-common-crypto.c mongoc-rand-openssl.c mongoc-read-concern.c mongoc-read-prefs.c mongoc-rpc.c mongoc-sasl.c mongoc-scram.c mongoc-secure-channel.c mongoc-secure-transport.c mongoc-server-description.c mongoc-server-stream.c mongoc-set.c mongoc-socket.c mongoc-ssl.c mongoc-sspi.c mongoc-stream-buffered.c mongoc-stream.c mongoc-stream-file.c mongoc-stream-gridfs.c mongoc-stream-gridfs-download.c mongoc-stream-gridfs-upload.c mongoc-stream-socket.c mongoc-stream-tls.c mongoc-stream-tls-libressl.c mongoc-stream-tls-openssl-bio.c mongoc-stream-tls-openssl.c mongoc-stream-tls-secure-channel.c mongoc-stream-tls-secure-transport.c mongoc-topology.c mongoc-topology-description-apm.c mongoc-topology-description.c mongoc-topology-scanner.c mongoc-uri.c mongoc-util.c mongoc-version-functions.c mongoc-write-command.c mongoc-write-command-legacy.c mongoc-write-concern.c"
 
-    dnl Generated with: find src/libmongocrypt/src -name '*.c' -print0 | cut -sz -d / -f 4- | sort -dz | tr '\000' ' '
-    dnl TODO: The following line skips some files to allow compilation on POSIX systems
-    PHP_MONGODB_MONGOCRYPT_SOURCES="crypto/cng.c crypto/commoncrypto.c crypto/none.c crypto/openssl.c mongocrypt-binary.c mongocrypt-buffer.c mongocrypt.c mongocrypt-cache.c mongocrypt-cache-collinfo.c mongocrypt-cache-key.c mongocrypt-ciphertext.c mongocrypt-crypto.c mongocrypt-ctx.c mongocrypt-ctx-datakey.c mongocrypt-ctx-decrypt.c mongocrypt-ctx-encrypt.c mongocrypt-key-broker.c mongocrypt-key.c mongocrypt-kms-ctx.c mongocrypt-log.c mongocrypt-marking.c mongocrypt-opts.c mongocrypt-status.c mongocrypt-traverse-util.c os_posix/os_mutex.c os_posix/os_once.c"
+    dnl Generated with: find src/libmongocrypt/src -maxdepth 1 -name '*.c' -print0 | cut -sz -d / -f 4- | sort -dz | tr '\000' ' '
+    PHP_MONGODB_MONGOCRYPT_SOURCES="mongocrypt-binary.c mongocrypt-buffer.c mongocrypt.c mongocrypt-cache.c mongocrypt-cache-collinfo.c mongocrypt-cache-key.c mongocrypt-ciphertext.c mongocrypt-crypto.c mongocrypt-ctx.c mongocrypt-ctx-datakey.c mongocrypt-ctx-decrypt.c mongocrypt-ctx-encrypt.c mongocrypt-key-broker.c mongocrypt-key.c mongocrypt-kms-ctx.c mongocrypt-log.c mongocrypt-marking.c mongocrypt-opts.c mongocrypt-status.c mongocrypt-traverse-util.c"
 
-    dnl Generated with: find src/libmongocrypt/kms-message/src -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
-    dnl TODO: The following line skips some files to only allow compilation on MacOS
-    PHP_MONGODB_KMS_MESSAGE_SOURCES="hexlify.c kms_b64.c kms_caller_identity_request.c kms_crypto_none.c kms_decrypt_request.c kms_encrypt_request.c kms_kv_list.c kms_message.c kms_request.c kms_request_opt.c kms_request_str.c kms_response.c kms_response_parser.c sort.c"
+    dnl Generated with: find src/libmongocrypt/src/os_posix -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
+    PHP_MONGODB_MONGOCRYPT_POSIX_SOURCES="os_mutex.c os_once.c"
+
+    dnl Generated with: find src/libmongocrypt/src/os_win -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
+    PHP_MONGODB_MONGOCRYPT_WIN_SOURCES="os_mutex.c os_once.c"
+
+    dnl Generated with: find src/libmongocrypt/kms-message/src -name '*.c' ! -name 'kms_crypto_*' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
+    PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES="hexlify.c kms_b64.c kms_caller_identity_request.c kms_decrypt_request.c kms_encrypt_request.c kms_kv_list.c kms_message.c kms_request.c kms_request_opt.c kms_request_str.c kms_response.c kms_response_parser.c sort.c"
 
     dnl Generated with: find src/libmongoc/src/zlib-1.2.11 -maxdepth 1 -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
     PHP_MONGODB_ZLIB_SOURCES="adler32.c compress.c crc32.c deflate.c gzclose.c gzlib.c gzread.c gzwrite.c infback.c inffast.c inflate.c inftrees.c trees.c uncompr.c zutil.c"
@@ -387,7 +393,13 @@ if test "$PHP_MONGODB" != "no"; then
 
     if test "$PHP_LIBMONGOCRYPT" != "no"; then
       PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], $PHP_MONGODB_MONGOCRYPT_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
-      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], $PHP_MONGODB_KMS_MESSAGE_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
+      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], $PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
+
+      if test "$TARGET_OS" = "unix"; then
+        PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/os_posix], $PHP_MONGODB_MONGOCRYPT_POSIX_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
+      else
+        PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/os_win], $PHP_MONGODB_MONGOCRYPT_WIN_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
+      fi
 
       dnl The libmongocrypt-tmp folder is there to temporarily resolve build issues
       PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt-tmp])
