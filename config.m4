@@ -265,7 +265,7 @@ if test "$PHP_MONGODB" != "no"; then
   fi
 
   if test "$PHP_LIBBSON" = "no" -a "$PHP_LIBMONGOC" = "no"; then
-    PHP_MONGODB_BUNDLED_CFLAGS="$STD_CFLAGS -DBSON_COMPILATION -DMONGOC_COMPILATION -DMONGOCRYPT_EXPORT="
+    PHP_MONGODB_BUNDLED_CFLAGS="$STD_CFLAGS -DBSON_COMPILATION -DMONGOC_COMPILATION"
 
     dnl M4 doesn't know if we're building statically or as a shared module, so
     dnl attempt to include both paths while ignoring errors. If neither path
