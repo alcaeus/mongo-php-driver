@@ -266,6 +266,7 @@ if test "$PHP_MONGODB" != "no"; then
 
   if test "$PHP_LIBBSON" = "no" -a "$PHP_LIBMONGOC" = "no"; then
     PHP_MONGODB_BUNDLED_CFLAGS="$STD_CFLAGS -DBSON_COMPILATION -DMONGOC_COMPILATION"
+    PHP_MONGODB_LIBMONGOCRYPT_CFLAGS="$PHP_MONGODB_BUNDLED_CFLAGS -std=gnu99"
 
     dnl M4 doesn't know if we're building statically or as a shared module, so
     dnl attempt to include both paths while ignoring errors. If neither path
@@ -392,13 +393,13 @@ if test "$PHP_MONGODB" != "no"; then
     fi
 
     if test "$PHP_LIBMONGOCRYPT" != "no"; then
-      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], $PHP_MONGODB_MONGOCRYPT_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
-      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], $PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
+      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], $PHP_MONGODB_MONGOCRYPT_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
+      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], $PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
 
       if test "$TARGET_OS" = "unix"; then
-        PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/os_posix], $PHP_MONGODB_MONGOCRYPT_POSIX_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
+        PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/os_posix], $PHP_MONGODB_MONGOCRYPT_POSIX_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
       else
-        PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/os_win], $PHP_MONGODB_MONGOCRYPT_WIN_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
+        PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/os_win], $PHP_MONGODB_MONGOCRYPT_WIN_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
       fi
 
       dnl The libmongocrypt-tmp folder is there to temporarily resolve build issues
