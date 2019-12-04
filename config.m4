@@ -183,7 +183,7 @@ if test "$PHP_MONGODB" != "no"; then
                [no])
   PHP_ARG_WITH([libmongocrypt],
                [whether to compile with libmongocrypt],
-               [AS_HELP_STRING([--with-libmongoc=@<:@auto/yes/no@:>@],
+               [AS_HELP_STRING([--with-libmongocrypt=@<:@auto/yes/no@:>@],
                                [MongoDB: Compile with libmongocrypt support [default=auto]])],
                [auto],
                [no])
