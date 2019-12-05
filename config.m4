@@ -405,11 +405,9 @@ if test "$PHP_MONGODB" != "no"; then
         PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/os_win], $PHP_MONGODB_MONGOCRYPT_WIN_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
       fi
 
-      dnl The libmongocrypt-tmp folder is there to temporarily resolve build issues
-      PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt-tmp])
-      PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt])
       PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt/src])
       PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt/kms-message/src])
+      PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt-compat])
 
       PHP_MONGODB_ADD_BUILD_DIR([src/libmongocrypt/src])
       AC_CONFIG_FILES([

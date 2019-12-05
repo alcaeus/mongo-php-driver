@@ -69,10 +69,9 @@ if (PHP_MONGODB != "no") {
     /I" + configure_module_dirname + "/src/libmongoc/src/libbson/src \
     /I" + configure_module_dirname + "/src/libmongoc/src/libbson/src/jsonsl \
     /I" + configure_module_dirname + "/src/libmongoc/src/libmongoc/src \
-    /I" + configure_module_dirname + "/src/libmongocrypt-tmp \
-    /I" + configure_module_dirname + "/src/libmongocrypt \
     /I" + configure_module_dirname + "/src/libmongocrypt/src \
     /I" + configure_module_dirname + "/src/libmongocrypt/kms-message/src \
+    /I" + configure_module_dirname + "/src/libmongocrypt-compat \
   ";
 
   // Condense whitespace in CFLAGS
