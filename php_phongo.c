@@ -2651,21 +2651,19 @@ static mongoc_client_t* php_phongo_find_client(const char* hash, size_t hash_len
 
 void phongo_manager_init(php_phongo_manager_t* manager, const char* uri_string, zval* options, zval* driverOptions TSRMLS_DC) /* {{{ */
 {
-	char*         hash         = NULL;
-	size_t        hash_len     = 0;
 	bson_t        bson_options = BSON_INITIALIZER;
 	mongoc_uri_t* uri          = NULL;
 #ifdef MONGOC_ENABLE_SSL
 	mongoc_ssl_opt_t* ssl_opt = NULL;
 #endif
 
-	if (!(hash = php_phongo_manager_make_client_hash(uri_string, options, driverOptions, &hash_len TSRMLS_CC))) {
+	if (!(manager->client_hash = php_phongo_manager_make_client_hash(uri_string, options, driverOptions, &manager->client_hash_len TSRMLS_CC))) {
 		/* Exception should already have been thrown and there is nothing to free */
 		return;
 	}
 
-	if ((manager->client = php_phongo_find_client(hash, hash_len TSRMLS_CC))) {
-		MONGOC_DEBUG("Found client for hash: %s\n", hash);
+	if ((manager->client = php_phongo_find_client(manager->client_hash, manager->client_hash_len TSRMLS_CC))) {
+		MONGOC_DEBUG("Found client for hash: %s\n", manager->client_hash);
 		goto cleanup;
 	}
 
@@ -2729,14 +2727,10 @@ void phongo_manager_init(php_phongo_manager_t* manager, const char* uri_string, 
 	}
 #endif
 
-	MONGOC_DEBUG("Created client hash: %s\n", hash);
-	php_phongo_persist_client(hash, hash_len, manager->client TSRMLS_CC);
+	MONGOC_DEBUG("Created client hash: %s\n", manager->client_hash);
+	php_phongo_persist_client(manager->client_hash, manager->client_hash_len, manager->client TSRMLS_CC);
 
 cleanup:
-	if (hash) {
-		pefree(hash, 1);
-	}
-
 	bson_destroy(&bson_options);
 
 	if (uri) {
