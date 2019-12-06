@@ -181,12 +181,12 @@ if test "$PHP_MONGODB" != "no"; then
                                [MongoDB: Use system libmongoc [default=no]])],
                [no],
                [no])
-  PHP_ARG_WITH([libmongocrypt],
-               [whether to compile with libmongocrypt],
-               [AS_HELP_STRING([--with-libmongocrypt=@<:@auto/yes/no@:>@],
-                               [MongoDB: Compile with libmongocrypt support [default=auto]])],
-               [auto],
-               [no])
+  PHP_ARG_ENABLE([client-side-encryption],
+                 [whether to enable for client-side encryption],
+                 [AS_HELP_STRING([--enable-client-side-encryption=@<:@auto/yes/no@:>@],
+                                 [MongoDB: Enable client-side encryption [default=auto]])],
+                 [auto],
+                 [no])
 
   if test "$PHP_LIBBSON" != "no"; then
     if test "$PHP_LIBMONGOC" = "no"; then
@@ -236,7 +236,7 @@ if test "$PHP_MONGODB" != "no"; then
     AC_DEFINE(HAVE_SYSTEM_LIBMONGOC, 1, [Use system libmongoc])
   fi
 
-  if test "$PHP_LIBMONGOCRYPT" != "no" -a "$PHP_LIBBSON" = "yes"; then
+  if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no" -a "$PHP_LIBBSON" = "yes"; then
     AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
     AC_MSG_CHECKING(for libmongocrypt)
 
@@ -251,14 +251,14 @@ if test "$PHP_MONGODB" != "no"; then
         PHP_EVAL_LIBLINE($PHP_MONGODB_MONGOCRYPT_LIBS, MONGODB_SHARED_LIBADD)
         AC_DEFINE(HAVE_SYSTEM_LIBMONGOCRYPT, 1, [Use system libmongocrypt])
         AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 1)
-      elif test "$PHP_LIBMONGOCRYPT" = "yes"; then
+      elif test "$PHP_CLIENT_SIDE_ENCRYPTION" = "yes"; then
         AC_MSG_ERROR(system libmongocrypt must be upgraded to version >= 1.0.0)
       else
         AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
         AC_MSG_RESULT(found in an older version, compiling without client-side encryption)
       fi
     else
-      if test "$PHP_LIBMONGOCRYPT" = "yes"; then
+      if test "$PHP_CLIENT_SIDE_ENCRYPTION" = "yes"; then
         AC_MSG_ERROR(pkgconfig and libmongocrypt must be installed)
       else
         AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
@@ -395,7 +395,7 @@ if test "$PHP_MONGODB" != "no"; then
       AC_CONFIG_FILES([${ac_config_dir}/src/libmongoc/src/zlib-1.2.11/zconf.h])
     fi
 
-    if test "$PHP_LIBMONGOCRYPT" != "no"; then
+    if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
       PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], $PHP_MONGODB_MONGOCRYPT_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
       PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], $PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
 

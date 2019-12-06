@@ -45,7 +45,7 @@ function mongodb_parse_version_file(inpath, prefix)
 
 ARG_ENABLE("mongodb", "MongoDB support", "no");
 ARG_WITH("mongodb-sasl", "MongoDB: Build against Cyrus-SASL", "yes");
-ARG_WITH("libmongocrypt", "MongoDB: Build with libmongocrypt", "yes");
+ARG_ENABLE("client-side-encryption", "MongoDB: Enable client-side encryption", "auto");
 
 if (PHP_MONGODB != "no") {
   /* Note: ADD_EXTENSION_DEP() cannot be used to declare that we depend on the
@@ -246,7 +246,7 @@ if (PHP_MONGODB != "no") {
     WARNING("mongodb libsasl support not enabled, libs not found");
   }
 
-  if (PHP_LIBMONGOCRYPT != "no") {
+  if (PHP_CLIENT_SIDE_ENCRYPTION != "no") {
     mongoc_opts.MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION = 1;
 
     ADD_SOURCES(configure_module_dirname + "/src/libmongocrypt/src", PHP_MONGODB_MONGOCRYPT_SOURCES, "mongodb");
