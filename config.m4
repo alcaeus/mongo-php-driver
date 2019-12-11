@@ -269,7 +269,6 @@ if test "$PHP_MONGODB" != "no"; then
 
   if test "$PHP_LIBBSON" = "no" -a "$PHP_LIBMONGOC" = "no"; then
     PHP_MONGODB_BUNDLED_CFLAGS="$STD_CFLAGS -DBSON_COMPILATION -DMONGOC_COMPILATION"
-    PHP_MONGODB_LIBMONGOCRYPT_CFLAGS="$PHP_MONGODB_BUNDLED_CFLAGS -std=gnu99"
 
     dnl M4 doesn't know if we're building statically or as a shared module, so
     dnl attempt to include both paths while ignoring errors. If neither path
@@ -311,7 +310,9 @@ if test "$PHP_MONGODB" != "no"; then
     _include([scripts/autotools/libmongoc/Versions.m4])
     _include([scripts/autotools/libmongoc/WeakSymbols.m4])
 
-    _include([scripts/autotools/libmongocrypt/Version.m4])
+    if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
+      _include([scripts/autotools/libmongocrypt/Version.m4])
+    fi
 
     m4_popdef([_include])
 
@@ -322,9 +323,6 @@ if test "$PHP_MONGODB" != "no"; then
     AC_SUBST(MONGOC_ENABLE_RDTSCP, 0)
     AC_SUBST(MONGOC_ENABLE_SHM_COUNTERS, 0)
     AC_SUBST(MONGOC_TRACE, 1)
-    AC_SUBST(MONGOCRYPT_ENABLE_TRACE, 1)
-    AC_SUBST(MONGOCRYPT_IS_POSIX, 1)
-    AC_SUBST(MONGOCRYPT_IS_WIN, 0)
 
     dnl Assignments for metadata handshake. Leave CFLAGS/LDFLAGS empty as they
     dnl would likely cause platform info (PHP version) to be truncated. We can
@@ -348,15 +346,6 @@ if test "$PHP_MONGODB" != "no"; then
 
     dnl Generated with: find src/libmongoc/src/zlib-1.2.11 -maxdepth 1 -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
     PHP_MONGODB_ZLIB_SOURCES="adler32.c compress.c crc32.c deflate.c gzclose.c gzlib.c gzread.c gzwrite.c infback.c inffast.c inflate.c inftrees.c trees.c uncompr.c zutil.c"
-
-    dnl Generated with: find src/libmongocrypt/src -maxdepth 1 -name '*.c' -print0 | cut -sz -d / -f 4- | sort -dz | tr '\000' ' '
-    PHP_MONGODB_MONGOCRYPT_SOURCES="mongocrypt-binary.c mongocrypt-buffer.c mongocrypt.c mongocrypt-cache.c mongocrypt-cache-collinfo.c mongocrypt-cache-key.c mongocrypt-ciphertext.c mongocrypt-crypto.c mongocrypt-ctx.c mongocrypt-ctx-datakey.c mongocrypt-ctx-decrypt.c mongocrypt-ctx-encrypt.c mongocrypt-key-broker.c mongocrypt-key.c mongocrypt-kms-ctx.c mongocrypt-log.c mongocrypt-marking.c mongocrypt-opts.c mongocrypt-status.c mongocrypt-traverse-util.c"
-
-    dnl Generated with: find src/libmongocrypt/src/os_posix -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
-    PHP_MONGODB_MONGOCRYPT_POSIX_SOURCES="os_mutex.c os_once.c"
-
-    dnl Generated with: find src/libmongocrypt/kms-message/src -name '*.c' ! -name 'kms_crypto_*' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
-    PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES="hexlify.c kms_b64.c kms_caller_identity_request.c kms_decrypt_request.c kms_encrypt_request.c kms_kv_list.c kms_message.c kms_request.c kms_request_opt.c kms_request_str.c kms_response.c kms_response_parser.c sort.c"
 
     PHP_MONGODB_ADD_SOURCES([src/libmongoc/src/common/], $PHP_MONGODB_COMMON_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
     PHP_MONGODB_ADD_SOURCES([src/libmongoc/src/libbson/src/bson/], $PHP_MONGODB_BSON_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
@@ -393,6 +382,17 @@ if test "$PHP_MONGODB" != "no"; then
     fi
 
     if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
+      PHP_MONGODB_LIBMONGOCRYPT_CFLAGS="$PHP_MONGODB_BUNDLED_CFLAGS -std=gnu99"
+
+      dnl Generated with: find src/libmongocrypt/src -maxdepth 1 -name '*.c' -print0 | cut -sz -d / -f 4- | sort -dz | tr '\000' ' '
+      PHP_MONGODB_MONGOCRYPT_SOURCES="mongocrypt-binary.c mongocrypt-buffer.c mongocrypt.c mongocrypt-cache.c mongocrypt-cache-collinfo.c mongocrypt-cache-key.c mongocrypt-ciphertext.c mongocrypt-crypto.c mongocrypt-ctx.c mongocrypt-ctx-datakey.c mongocrypt-ctx-decrypt.c mongocrypt-ctx-encrypt.c mongocrypt-key-broker.c mongocrypt-key.c mongocrypt-kms-ctx.c mongocrypt-log.c mongocrypt-marking.c mongocrypt-opts.c mongocrypt-status.c mongocrypt-traverse-util.c"
+
+      dnl Generated with: find src/libmongocrypt/src/os_posix -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
+      PHP_MONGODB_MONGOCRYPT_POSIX_SOURCES="os_mutex.c os_once.c"
+
+      dnl Generated with: find src/libmongocrypt/kms-message/src -name '*.c' ! -name 'kms_crypto_*' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
+      PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES="hexlify.c kms_b64.c kms_caller_identity_request.c kms_decrypt_request.c kms_encrypt_request.c kms_kv_list.c kms_message.c kms_request.c kms_request_opt.c kms_request_str.c kms_response.c kms_response_parser.c sort.c"
+
       PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], $PHP_MONGODB_MONGOCRYPT_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
       PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], $PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
 
@@ -408,6 +408,9 @@ if test "$PHP_MONGODB" != "no"; then
         ${ac_config_dir}/src/libmongocrypt/src/mongocrypt.h
       ])
 
+      AC_SUBST(MONGOCRYPT_ENABLE_TRACE, 1)
+      AC_SUBST(MONGOCRYPT_IS_POSIX, 1)
+      AC_SUBST(MONGOCRYPT_IS_WIN, 0)
       AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 1)
     else
       AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)

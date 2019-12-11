@@ -3222,7 +3222,7 @@ PHP_MINFO_FUNCTION(mongodb)
 #else
 	php_info_print_table_row(2, "libmongocrypt crypto", "disabled");
 #endif
-#else
+#else /* MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION */
 	php_info_print_table_row(2, "libmongocrypt", "disabled");
 #endif
 
