@@ -3210,11 +3210,11 @@ PHP_MINFO_FUNCTION(mongodb)
 #ifdef MONGOCRYPT_ENABLE_CRYPTO
 	php_info_print_table_row(2, "libmongocrypt crypto", "enabled");
 
-#if defined(MONGOC_ENABLE_CRYPTO_OPENSSL)
+#if defined(MONGOCRYPT_ENABLE_CRYPTO_OPENSSL)
 	php_info_print_table_row(2, "libmongocrypt crypto library", "OpenSSL");
-#elif defined(MONGOC_ENABLE_CRYPTO_COMMON_CRYPTO)
+#elif defined(MONGOCRYPT_ENABLE_CRYPTO_COMMON_CRYPTO)
 	php_info_print_table_row(2, "libmongocrypt crypto library", "Common Crypto");
-#elif defined(MONGOC_ENABLE_CRYPTO_CNG)
+#elif defined(MONGOCRYPT_ENABLE_CRYPTO_CNG)
 	php_info_print_table_row(2, "libmongocrypt crypto library", "CNG");
 #else
 	php_info_print_table_row(2, "libmongocrypt crypto library", "unknown");
