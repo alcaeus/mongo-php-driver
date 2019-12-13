@@ -290,7 +290,6 @@ if test "$PHP_MONGODB" != "no"; then
 
     _include([scripts/autotools/CheckCompiler.m4])
     _include([scripts/autotools/CheckHost.m4])
-    _include([scripts/autotools/CheckSSL.m4])
 
     _include([scripts/autotools/libbson/CheckAtomics.m4])
     _include([scripts/autotools/libbson/CheckHeaders.m4])
@@ -301,15 +300,16 @@ if test "$PHP_MONGODB" != "no"; then
     _include([scripts/autotools/libmongoc/CheckCompression.m4])
     _include([scripts/autotools/libmongoc/CheckResolv.m4])
     _include([scripts/autotools/libmongoc/CheckSasl.m4])
+    _include([scripts/autotools/libmongoc/CheckSSL.m4])
     _include([scripts/autotools/libmongoc/CheckICU.m4])
     _include([scripts/autotools/libmongoc/FindDependencies.m4])
     _include([scripts/autotools/libmongoc/PlatformFlags.m4])
     _include([scripts/autotools/libmongoc/Versions.m4])
     _include([scripts/autotools/libmongoc/WeakSymbols.m4])
 
-    if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
-      _include([scripts/autotools/libmongocrypt/Version.m4])
-    fi
+    _include([scripts/autotools/libmongocrypt/libmongocrypt.m4])
+    _include([scripts/autotools/libmongocrypt/CheckSSL.m4])
+    _include([scripts/autotools/libmongocrypt/Version.m4])
 
     m4_popdef([_include])
 
@@ -327,25 +327,6 @@ if test "$PHP_MONGODB" != "no"; then
     AC_SUBST(MONGOC_CC, [$CC])
     AC_SUBST(MONGOC_USER_SET_CFLAGS, [])
     AC_SUBST(MONGOC_USER_SET_LDFLAGS, [])
-
-    if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
-      dnl Check if we are compiling with SSL, disable client-side encryption if not
-      if test "$PHP_MONGODB_SSL" = "openssl" -o "$PHP_MONGODB_SSL" = "libressl" -o "$PHP_MONGODB_SSL" = "darwin"; then
-        AC_SUBST(MONGOCRYPT_ENABLE_TRACE, 1)
-        AC_SUBST(MONGOCRYPT_IS_POSIX, 1)
-        AC_SUBST(MONGOCRYPT_IS_WIN, 0)
-        AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 1)
-      else
-        if test "$PHP_CLIENT_SIDE_ENCRYPTION" == "yes"; then
-          AC_MSG_ERROR(Need an SSL library to compile with libmongocrypt. Please specify it using the --with-mongodb-ssl option)
-        else
-          AC_MSG_RESULT(No SSL library found. Compiling without libmongocrypt. Please specify a library using the --with-mongodb-ssl option)
-          AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
-        fi
-      fi
-    else
-      AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
-    fi
 
     dnl On MacOS, use gcut from the coreutils brew package instead of cut
     dnl Generated with: find src/libmongoc/src/common -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
@@ -398,27 +379,6 @@ if test "$PHP_MONGODB" != "no"; then
     fi
 
     if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
-      PHP_MONGODB_LIBMONGOCRYPT_CFLAGS="$PHP_MONGODB_BUNDLED_CFLAGS -std=gnu99"
-
-      dnl Generated with: find src/libmongocrypt/src -maxdepth 1 -name '*.c' -print0 | cut -sz -d / -f 4- | sort -dz | tr '\000' ' '
-      PHP_MONGODB_MONGOCRYPT_SOURCES="mongocrypt-binary.c mongocrypt-buffer.c mongocrypt.c mongocrypt-cache.c mongocrypt-cache-collinfo.c mongocrypt-cache-key.c mongocrypt-ciphertext.c mongocrypt-crypto.c mongocrypt-ctx.c mongocrypt-ctx-datakey.c mongocrypt-ctx-decrypt.c mongocrypt-ctx-encrypt.c mongocrypt-key-broker.c mongocrypt-key.c mongocrypt-kms-ctx.c mongocrypt-log.c mongocrypt-marking.c mongocrypt-opts.c mongocrypt-status.c mongocrypt-traverse-util.c"
-
-      dnl Generated with: find src/libmongocrypt/src/os_posix -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
-      PHP_MONGODB_MONGOCRYPT_POSIX_SOURCES="os_mutex.c os_once.c"
-
-      dnl Generated with: find src/libmongocrypt/kms-message/src -name '*.c' ! -name 'kms_crypto_*' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
-      PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES="hexlify.c kms_b64.c kms_caller_identity_request.c kms_decrypt_request.c kms_encrypt_request.c kms_kv_list.c kms_message.c kms_request.c kms_request_opt.c kms_request_str.c kms_response.c kms_response_parser.c sort.c"
-
-      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], $PHP_MONGODB_MONGOCRYPT_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
-      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], $PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
-
-      PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/os_posix], $PHP_MONGODB_MONGOCRYPT_POSIX_SOURCES, $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
-
-      PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt/src])
-      PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt/kms-message/src])
-      PHP_MONGODB_ADD_INCLUDE([src/libmongocrypt-compat])
-
-      PHP_MONGODB_ADD_BUILD_DIR([src/libmongocrypt/src])
       AC_CONFIG_FILES([
         ${ac_config_dir}/src/libmongocrypt/src/mongocrypt-config.h
         ${ac_config_dir}/src/libmongocrypt/src/mongocrypt.h
