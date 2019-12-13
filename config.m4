@@ -329,10 +329,20 @@ if test "$PHP_MONGODB" != "no"; then
     AC_SUBST(MONGOC_USER_SET_LDFLAGS, [])
 
     if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
-      AC_SUBST(MONGOCRYPT_ENABLE_TRACE, 1)
-      AC_SUBST(MONGOCRYPT_IS_POSIX, 1)
-      AC_SUBST(MONGOCRYPT_IS_WIN, 0)
-      AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 1)
+      dnl Check if we are compiling with SSL, disable client-side encryption if not
+      if test "$PHP_MONGODB_SSL" = "openssl" -o "$PHP_MONGODB_SSL" = "libressl" -o "$PHP_MONGODB_SSL" = "darwin"; then
+        AC_SUBST(MONGOCRYPT_ENABLE_TRACE, 1)
+        AC_SUBST(MONGOCRYPT_IS_POSIX, 1)
+        AC_SUBST(MONGOCRYPT_IS_WIN, 0)
+        AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 1)
+      else
+        if test "$PHP_CLIENT_SIDE_ENCRYPTION" == "yes"; then
+          AC_MSG_ERROR(Need an SSL library to compile with libmongocrypt. Please specify it using the --with-mongodb-ssl option)
+        else
+          AC_MSG_RESULT(No SSL library found. Compiling without libmongocrypt. Please specify a library using the --with-mongodb-ssl option)
+          AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
+        fi
+      fi
     else
       AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
     fi
