@@ -11,6 +11,7 @@ if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
     AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO_OPENSSL, 0)
     AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO_COMMON_CRYPTO, 1)
 
+    dnl TODO remove these extra calls once MONGOCRYPT-218 is merged
     PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], "crypto/commoncrypto.c", $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
     PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], "kms_crypto_apple.c", $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
   elif test "$PHP_MONGODB_SSL" = "openssl" -o "$PHP_MONGODB_SSL" = "libressl"; then
@@ -19,6 +20,7 @@ if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
     AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO_OPENSSL, 1)
     AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO_COMMON_CRYPTO, 0)
 
+    dnl TODO remove these extra calls once MONGOCRYPT-218 is merged
     PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/src/], "crypto/openssl.c", $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
     PHP_MONGODB_ADD_SOURCES([src/libmongocrypt/kms-message/src/], "kms_crypto_openssl.c", $PHP_MONGODB_LIBMONGOCRYPT_CFLAGS)
   elif test "$PHP_CLIENT_SIDE_ENCRYPTION" = "auto"; then
