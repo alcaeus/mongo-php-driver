@@ -3,6 +3,7 @@ if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
   AC_SUBST(MONGOCRYPT_IS_POSIX, 1)
   AC_SUBST(MONGOCRYPT_IS_WIN, 0)
 
+  dnl TODO: MONGOCRYPT-219 makes the -std argument obsolete
   PHP_MONGODB_LIBMONGOCRYPT_CFLAGS="$PHP_MONGODB_BUNDLED_CFLAGS -std=gnu99"
 
   dnl Generated with: find src/libmongocrypt/src -maxdepth 1 -name '*.c' -print0 | cut -sz -d / -f 4- | sort -dz | tr '\000' ' '
