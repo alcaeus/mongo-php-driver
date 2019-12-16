@@ -327,6 +327,12 @@ if test "$PHP_MONGODB" != "no"; then
     AC_SUBST(MONGOC_USER_SET_CFLAGS, [])
     AC_SUBST(MONGOC_USER_SET_LDFLAGS, [])
 
+    if test "$PHP_CLIENT_SIDE_ENCRYPTION" = "yes"; then
+      AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 1)
+    else
+      AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
+    fi
+
     dnl On MacOS, use gcut from the coreutils brew package instead of cut
     dnl Generated with: find src/libmongoc/src/common -name '*.c' -print0 | cut -sz -d / -f 5- | sort -dz | tr '\000' ' '
     PHP_MONGODB_COMMON_SOURCES="common-b64.c common-md5.c"
@@ -377,7 +383,7 @@ if test "$PHP_MONGODB" != "no"; then
       AC_CONFIG_FILES([${ac_config_dir}/src/libmongoc/src/zlib-1.2.11/zconf.h])
     fi
 
-    if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
+    if test "$PHP_CLIENT_SIDE_ENCRYPTION" = "yes"; then
       dnl TODO: MONGOCRYPT-219 makes the -std argument obsolete
       PHP_MONGODB_LIBMONGOCRYPT_CFLAGS="$PHP_MONGODB_BUNDLED_CFLAGS -std=gnu99"
 
