@@ -2972,6 +2972,96 @@ bool php_phongo_parse_int64(int64_t* retval, const char* data, phongo_zpp_char_l
 	return true;
 } /* }}} */
 
+#ifdef MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION
+/* {{{ Client-Side Encryption */
+static mongoc_client_encryption_opts_t* phongo_clientencryption_opts_from_zval(mongoc_client_t* client, zval* options TSRMLS_DC) /* {{{ */
+{
+	mongoc_client_encryption_opts_t* opts;
+
+	opts = mongoc_client_encryption_opts_new();
+	mongoc_client_encryption_opts_set_keyvault_client(opts, client);
+
+	if (!options || Z_TYPE_P(options) != IS_ARRAY) {
+		return opts;
+	}
+
+	if (php_array_existsc(options, "keyVaultNamespace")) {
+		char*     keyvault_namespace;
+		char*     db_name;
+		char*     coll_name;
+		int       plen;
+		zend_bool pfree;
+
+		keyvault_namespace = php_array_fetchc_string(options, "keyVaultNamespace", &plen, &pfree);
+
+		if (!phongo_split_namespace(keyvault_namespace, &db_name, &coll_name)) {
+			phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT TSRMLS_CC, "Expected \"keyVaultNamespace\" encryption option to contain a full collection name");
+
+			goto cleanup;
+		}
+
+		mongoc_client_encryption_opts_set_keyvault_namespace(opts, db_name, coll_name);
+		efree(db_name);
+		efree(coll_name);
+
+		if (pfree) {
+			efree(keyvault_namespace);
+		}
+	}
+
+	if (php_array_existsc(options, "kmsProviders")) {
+		zval*  kms_providers  = php_array_fetchc(options, "kmsProviders");
+		bson_t bson_providers = BSON_INITIALIZER;
+
+		if (Z_TYPE_P(kms_providers) != IS_ARRAY) {
+			phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT TSRMLS_CC, "Expected \"kmsProviders\" encryption option to be an array");
+			goto cleanup;
+		}
+
+		php_phongo_zval_to_bson(kms_providers, PHONGO_BSON_NONE, &bson_providers, NULL TSRMLS_CC);
+		if (EG(exception)) {
+			goto cleanup;
+		}
+
+		mongoc_client_encryption_opts_set_kms_providers(opts, &bson_providers);
+		bson_destroy(&bson_providers);
+	}
+
+	return opts;
+
+cleanup:
+	if (opts) {
+		mongoc_client_encryption_opts_destroy(opts);
+	}
+
+	return NULL;
+} /* }}} */
+
+void phongo_clientencryption_init(php_phongo_clientencryption_t* clientencryption, mongoc_client_t* client, zval* options TSRMLS_DC) /* {{{ */
+{
+	mongoc_client_encryption_t*      ce;
+	mongoc_client_encryption_opts_t* opts;
+	bson_error_t                     error = { 0 };
+
+	opts = phongo_clientencryption_opts_from_zval(client, options TSRMLS_CC);
+
+	ce = mongoc_client_encryption_new(opts, &error);
+	if (!ce) {
+		phongo_throw_exception_from_bson_error_t(&error TSRMLS_CC);
+
+		goto cleanup;
+	}
+
+	clientencryption->client_encryption = ce;
+
+cleanup:
+	if (opts) {
+		mongoc_client_encryption_opts_destroy(opts);
+	}
+} /* }}} */
+/* }}} */
+#endif /* MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION */
+
 /* {{{ Memory allocation wrappers */
 static void* php_phongo_malloc(size_t num_bytes) /* {{{ */
 {
@@ -3244,6 +3334,7 @@ PHP_MINIT_FUNCTION(mongodb)
 	php_phongo_cursor_interface_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 
 	php_phongo_bulkwrite_init_ce(INIT_FUNC_ARGS_PASSTHRU);
+	php_phongo_clientencryption_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_command_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_cursor_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_cursorid_init_ce(INIT_FUNC_ARGS_PASSTHRU);
