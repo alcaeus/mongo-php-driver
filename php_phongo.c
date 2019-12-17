@@ -3059,6 +3059,128 @@ cleanup:
 		mongoc_client_encryption_opts_destroy(opts);
 	}
 } /* }}} */
+
+static mongoc_client_encryption_datakey_opts_t* phongo_clientencryption_datakey_opts_from_zval(zval* options TSRMLS_DC) /* {{{ */
+{
+	mongoc_client_encryption_datakey_opts_t* opts;
+
+	opts = mongoc_client_encryption_datakey_opts_new();
+
+	if (!options || Z_TYPE_P(options) != IS_ARRAY) {
+		return opts;
+	}
+
+	if (php_array_existsc(options, "keyAltNames")) {
+		zval* zkeyaltnames = php_array_fetchc_array(options, "keyAltNames");
+
+		if (zkeyaltnames) {
+			HashTable* ht_data           = HASH_OF(zkeyaltnames);
+			uint32_t   keyaltnames_count = ht_data ? zend_hash_num_elements(ht_data) : 0;
+			char**     keyaltnames       = bson_malloc(sizeof(char*) * keyaltnames_count);
+			uint32_t   i                 = 0;
+			bool       failed            = false;
+
+#if PHP_VERSION_ID >= 70000
+			{
+				zval* keyaltname;
+
+				ZEND_HASH_FOREACH_VAL(ht_data, keyaltname)
+				{
+					if (i == keyaltnames_count) {
+						phongo_throw_exception(PHONGO_ERROR_LOGIC TSRMLS_CC, "Iterating over too many keyAltNames. Please file a bug report");
+						failed = true;
+					}
+
+					keyaltnames[i] = bson_strdup(Z_STRVAL_P(keyaltname));
+					i++;
+				}
+				ZEND_HASH_FOREACH_END();
+			}
+#else
+			{
+				HashPosition pos;
+				zval**       keyaltname;
+				bool         failed = false;
+
+				for (
+					zend_hash_internal_pointer_reset_ex(ht_data, &pos);
+					zend_hash_get_current_data_ex(ht_data, (void**) &keyaltname, &pos) == SUCCESS;
+					zend_hash_move_forward_ex(ht_data, &pos)) {
+
+					if (i == keyaltnames_count) {
+						phongo_throw_exception(PHONGO_ERROR_LOGIC TSRMLS_CC, "Iterating over too many keyAltNames. Please file a bug report");
+						failed = true;
+						break;
+					}
+
+					keyaltnames[i] = bson_strdup(Z_STRVAL_PP(keyaltname));
+					i++;
+				}
+			}
+#endif
+
+			if (!failed) {
+				mongoc_client_encryption_datakey_opts_set_keyaltnames(opts, keyaltnames, keyaltnames_count);
+			}
+
+			for (i = 0; i < keyaltnames_count; i++) {
+				bson_free(keyaltnames[i]);
+			}
+			bson_free(keyaltnames);
+
+			if (failed) {
+				goto cleanup;
+			}
+		}
+	}
+
+	if (php_array_existsc(options, "masterKey")) {
+		bson_t masterkey = BSON_INITIALIZER;
+
+		php_phongo_zval_to_bson(php_array_fetchc(options, "masterKey"), PHONGO_BSON_NONE, &masterkey, NULL TSRMLS_CC);
+		if (EG(exception)) {
+			goto cleanup;
+		}
+
+		mongoc_client_encryption_datakey_opts_set_masterkey(opts, &masterkey);
+	}
+
+	return opts;
+
+cleanup:
+	if (opts) {
+		mongoc_client_encryption_datakey_opts_destroy(opts);
+	}
+
+	return NULL;
+} /* }}} */
+
+void phongo_clientencryption_create_datakey(php_phongo_clientencryption_t* clientencryption, zval* return_value, char* kms_provider, zval* options TSRMLS_DC) /* {{{ */
+{
+	mongoc_client_encryption_datakey_opts_t* opts;
+	bson_value_t                             keyid;
+	bson_error_t                             error = { 0 };
+
+	if (!(opts = phongo_clientencryption_datakey_opts_from_zval(options TSRMLS_CC))) {
+		/* Exception already thrown */
+		goto cleanup;
+	}
+
+	if (!mongoc_client_encryption_create_datakey(clientencryption->client_encryption, kms_provider, opts, &keyid, &error)) {
+		phongo_throw_exception_from_bson_error_t(&error TSRMLS_CC);
+		goto cleanup;
+	}
+
+	if (!php_phongo_bson_value_to_zval(&keyid, return_value)) {
+		phongo_throw_exception(PHONGO_ERROR_UNEXPECTED_VALUE TSRMLS_CC, "Could not convert BSON value to ZVAL");
+		goto cleanup;
+	}
+
+cleanup:
+	if (opts) {
+		mongoc_client_encryption_datakey_opts_destroy(opts);
+	}
+} /* }}} */
 /* }}} */
 #endif /* MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION */
 
