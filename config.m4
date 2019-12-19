@@ -309,6 +309,8 @@ if test "$PHP_MONGODB" != "no"; then
     _include([scripts/autotools/libmongoc/Versions.m4])
     _include([scripts/autotools/libmongoc/WeakSymbols.m4])
 
+    dnl This include modifies the value of $PHP_CLIENT_SIDE_ENCRYPTION to "yes"
+    dnl or "no" depending on whether dependencies for libmongocrypt are fulfilled
     _include([scripts/autotools/libmongocrypt/CheckSSL.m4])
     _include([scripts/autotools/libmongocrypt/Version.m4])
 
