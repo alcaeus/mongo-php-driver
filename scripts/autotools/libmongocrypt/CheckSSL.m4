@@ -25,10 +25,6 @@ if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no"; then
     PHP_CLIENT_SIDE_ENCRYPTION="no"
 
     AC_MSG_RESULT(No SSL library found. Compiling without libmongocrypt. Please specify a library using the --with-mongodb-ssl option)
-    AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
-    AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO, 0)
-    AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO_LIBCRYPTO, 0)
-    AC_SUBST(MONGOCRYPT_ENABLE_CRYPTO_COMMON_CRYPTO, 0)
   else
     AC_MSG_ERROR(Need an SSL library to compile with libmongocrypt. Please specify it using the --with-mongodb-ssl option)
   fi
