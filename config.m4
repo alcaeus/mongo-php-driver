@@ -389,8 +389,6 @@ if test "$PHP_MONGODB" != "no"; then
 
     if test "$PHP_MONGODB_CLIENT_SIDE_ENCRYPTION" = "yes"; then
       AC_SUBST(MONGOCRYPT_ENABLE_TRACE, 1)
-      AC_SUBST(MONGOCRYPT_IS_POSIX, 1)
-      AC_SUBST(MONGOCRYPT_IS_WIN, 0)
 
       dnl Generated with: find src/libmongocrypt/src -name '*.c' -print0 | cut -sz -d / -f 4- | sort -dz | tr '\000' ' '
       PHP_MONGODB_MONGOCRYPT_SOURCES="crypto/cng.c crypto/commoncrypto.c crypto/libcrypto.c crypto/none.c mongocrypt-binary.c mongocrypt-buffer.c mongocrypt.c mongocrypt-cache.c mongocrypt-cache-collinfo.c mongocrypt-cache-key.c mongocrypt-ciphertext.c mongocrypt-crypto.c mongocrypt-ctx.c mongocrypt-ctx-datakey.c mongocrypt-ctx-decrypt.c mongocrypt-ctx-encrypt.c mongocrypt-key-broker.c mongocrypt-key.c mongocrypt-kms-ctx.c mongocrypt-log.c mongocrypt-marking.c mongocrypt-opts.c mongocrypt-status.c mongocrypt-traverse-util.c os_posix/os_mutex.c os_posix/os_once.c os_win/os_mutex.c os_win/os_once.c"

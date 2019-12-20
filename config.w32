@@ -235,8 +235,6 @@ if (PHP_MONGODB != "no") {
 
     var mongocrypt_opts = {
       MONGOCRYPT_ENABLE_TRACE: 1,
-      MONGOCRYPT_IS_POSIX: 0,
-      MONGOCRYPT_IS_WIN: 1,
       MONGOCRYPT_ENABLE_CRYPTO: 0,
       MONGOCRYPT_ENABLE_CRYPTO_LIBCRYPTO: 0,
       // TODO: Support building with Secure Channel on Windows
