@@ -181,9 +181,9 @@ if test "$PHP_MONGODB" != "no"; then
                                [MongoDB: Use system libmongoc [default=no]])],
                [no],
                [no])
-  PHP_ARG_ENABLE([client-side-encryption],
+  PHP_ARG_WITH([mongodb-client-side-encryption],
                  [whether to enable client-side encryption],
-                 [AS_HELP_STRING([--enable-client-side-encryption=@<:@auto/yes/no@:>@],
+                 [AS_HELP_STRING([--with-mongodb-client-side-encryption=@<:@auto/yes/no@:>@],
                                  [MongoDB: Enable client-side encryption [default=auto]])],
                  [auto],
                  [no])
@@ -236,7 +236,7 @@ if test "$PHP_MONGODB" != "no"; then
     AC_DEFINE(HAVE_SYSTEM_LIBMONGOC, 1, [Use system libmongoc])
   fi
 
-  if test "$PHP_CLIENT_SIDE_ENCRYPTION" != "no" -a "$PHP_LIBBSON" = "yes"; then
+  if test "$PHP_MONGODB_CLIENT_SIDE_ENCRYPTION" != "no" -a "$PHP_LIBBSON" = "yes"; then
     AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
     AC_MSG_CHECKING(for libmongocrypt)
 
@@ -250,13 +250,13 @@ if test "$PHP_MONGODB" != "no"; then
         PHP_MONGODB_CFLAGS="$PHP_MONGODB_CFLAGS $PHP_MONGODB_MONGOCRYPT_CFLAGS"
         PHP_EVAL_LIBLINE($PHP_MONGODB_MONGOCRYPT_LIBS, MONGODB_SHARED_LIBADD)
         AC_DEFINE(HAVE_SYSTEM_LIBMONGOCRYPT, 1, [Use system libmongocrypt])
-      elif test "$PHP_CLIENT_SIDE_ENCRYPTION" = "yes"; then
+      elif test "$PHP_MONGODB_CLIENT_SIDE_ENCRYPTION" = "yes"; then
         AC_MSG_ERROR(system libmongocrypt must be upgraded to version >= 1.0.0)
       else
         AC_MSG_RESULT(found an older version, compiling without client-side encryption)
       fi
     else
-      if test "$PHP_CLIENT_SIDE_ENCRYPTION" = "yes"; then
+      if test "$PHP_MONGODB_CLIENT_SIDE_ENCRYPTION" = "yes"; then
         AC_MSG_ERROR(pkgconfig and libmongocrypt must be installed)
       else
         AC_MSG_RESULT(not found, compiling without client-side encryption)
@@ -309,7 +309,7 @@ if test "$PHP_MONGODB" != "no"; then
     _include([scripts/autotools/libmongoc/Versions.m4])
     _include([scripts/autotools/libmongoc/WeakSymbols.m4])
 
-    dnl This include modifies the value of $PHP_CLIENT_SIDE_ENCRYPTION to "yes"
+    dnl This include modifies the value of $PHP_MONGODB_CLIENT_SIDE_ENCRYPTION to "yes"
     dnl or "no" depending on whether dependencies for libmongocrypt are fulfilled
     _include([scripts/autotools/libmongocrypt/CheckSSL.m4])
     _include([scripts/autotools/libmongocrypt/Version.m4])
@@ -331,7 +331,7 @@ if test "$PHP_MONGODB" != "no"; then
     AC_SUBST(MONGOC_USER_SET_CFLAGS, [])
     AC_SUBST(MONGOC_USER_SET_LDFLAGS, [])
 
-    if test "$PHP_CLIENT_SIDE_ENCRYPTION" = "yes"; then
+    if test "$PHP_MONGODB_CLIENT_SIDE_ENCRYPTION" = "yes"; then
       AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 1)
     else
       AC_SUBST(MONGOC_ENABLE_CLIENT_SIDE_ENCRYPTION, 0)
@@ -387,7 +387,7 @@ if test "$PHP_MONGODB" != "no"; then
       AC_CONFIG_FILES([${ac_config_dir}/src/libmongoc/src/zlib-1.2.11/zconf.h])
     fi
 
-    if test "$PHP_CLIENT_SIDE_ENCRYPTION" = "yes"; then
+    if test "$PHP_MONGODB_CLIENT_SIDE_ENCRYPTION" = "yes"; then
       AC_SUBST(MONGOCRYPT_ENABLE_TRACE, 1)
       AC_SUBST(MONGOCRYPT_IS_POSIX, 1)
       AC_SUBST(MONGOCRYPT_IS_WIN, 0)
