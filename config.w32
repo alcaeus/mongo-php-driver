@@ -230,11 +230,12 @@ if (PHP_MONGODB != "no") {
     ADD_FLAG("CFLAGS_MONGODB", "/I" + configure_module_dirname + "/src/libmongocrypt/src");
     ADD_FLAG("CFLAGS_MONGODB", "/I" + configure_module_dirname + "/src/libmongocrypt/kms-message/src");
     ADD_FLAG("CFLAGS_MONGODB", "/I" + configure_module_dirname + "/src/libmongocrypt-compat");
+    ADD_FLAG("CFLAGS_MONGODB", "/D KMS_MESSAGE_ENABLE_CRYPTO=1 /D KMS_MESSAGE_ENABLE_CRYPTO_LIBCRYPTO=1");
 
     var mongocrypt_opts = {
       MONGOCRYPT_ENABLE_TRACE: 1,
-      MONGOCRYPT_ENABLE_CRYPTO: 0,
-      MONGOCRYPT_ENABLE_CRYPTO_LIBCRYPTO: 0,
+      MONGOCRYPT_ENABLE_CRYPTO: 1,
+      MONGOCRYPT_ENABLE_CRYPTO_LIBCRYPTO: 1,
       // TODO: Support building with Secure Channel on Windows
       MONGOCRYPT_ENABLE_CRYPTO_CNG: 0,
       // Secure Transport does not apply to Windows
