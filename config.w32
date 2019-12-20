@@ -263,8 +263,8 @@ if (PHP_MONGODB != "no") {
     ADD_SOURCES(configure_module_dirname + "/src/libmongocrypt/src/os_win", PHP_MONGODB_MONGOCRYPT_OS_WIN_SOURCES, "mongodb");
     ADD_SOURCES(configure_module_dirname + "/src/libmongocrypt/kms-message/src", PHP_MONGODB_MONGOCRYPT_KMS_MESSAGE_SOURCES, "mongodb");
 
-    mongoc_opts.MONGOCRYPT_ENABLE_CRYPTO = 1;
-    mongoc_opts.MONGOCRYPT_ENABLE_CRYPTO_LIBCRYPTO = 1;
+    var mongocrypt_version = mongodb_parse_version_file(configure_module_dirname + "/src/LIBMONGOCRYPT_VERSION_CURRENT", "")
+    mongocrypt_opts.MONGOCRYPT_BUILD_VERSION = mongocrypt_version.VERSION;
 
     mongodb_generate_header(
       configure_module_dirname + "/src/libmongocrypt/src/mongocrypt-config.h.in",
