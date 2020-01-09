@@ -3067,7 +3067,12 @@ static mongoc_client_encryption_datakey_opts_t* phongo_clientencryption_datakey_
 	opts = mongoc_client_encryption_datakey_opts_new();
 
 	if (options) {
-		phongo_throw_exception(PHONGO_ERROR_LOGIC TSRMLS_CC, "Received options");
+		if (Z_TYPE_P(options) == IS_STRING) {
+			phongo_throw_exception(PHONGO_ERROR_LOGIC TSRMLS_CC, "Received options with value %s", Z_STRVAL_P(options));
+		} else {
+			phongo_throw_exception(PHONGO_ERROR_LOGIC TSRMLS_CC, "Received options of type %d", Z_TYPE_P(options));
+		}
+
 		goto cleanup;
 	} else {
 		return opts;
