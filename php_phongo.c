@@ -3066,7 +3066,7 @@ static mongoc_client_encryption_datakey_opts_t* phongo_clientencryption_datakey_
 
 	opts = mongoc_client_encryption_datakey_opts_new();
 
-	if (!options || Z_TYPE_P(options) != IS_ARRAY) {
+	if (!options) {
 		return opts;
 	}
 
