@@ -30,9 +30,9 @@ zend_class_entry* php_phongo_clientencryption_ce;
    Creates a new key document and inserts into the key vault collection. */
 static PHP_METHOD(ClientEncryption, createDataKey)
 {
-	char*                          kms_provider;
-	phongo_zpp_char_len            kms_provider_len;
-	zval*                          options;
+	char*                          kms_provider     = NULL;
+	phongo_zpp_char_len            kms_provider_len = 0;
+	zval*                          options          = NULL;
 	zend_error_handling            error_handling;
 	php_phongo_clientencryption_t* intern;
 
