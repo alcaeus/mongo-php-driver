@@ -3062,9 +3062,16 @@ cleanup:
 
 static mongoc_client_encryption_datakey_opts_t* phongo_clientencryption_datakey_opts_from_zval(zval* options TSRMLS_DC) /* {{{ */
 {
-	mongoc_client_encryption_datakey_opts_t* opts;
+	mongoc_client_encryption_datakey_opts_t *opts;
 
 	opts = mongoc_client_encryption_datakey_opts_new();
+
+	if (options) {
+		phongo_throw_exception(PHONGO_ERROR_LOGIC TSRMLS_CC, "Received options");
+		goto cleanup;
+	} else {
+		return opts;
+	}
 
 	if (!options || Z_TYPE_P(options) != IS_ARRAY) {
 		return opts;
