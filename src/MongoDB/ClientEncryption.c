@@ -94,12 +94,12 @@ static PHP_METHOD(ClientEncryption, decrypt)
 
 ZEND_BEGIN_ARG_INFO_EX(ai_ClientEncryption_createDataKey, 0, 0, 1)
 	ZEND_ARG_INFO(0, kmsProvider)
-	ZEND_ARG_INFO(0, options)
+	ZEND_ARG_ARRAY_INFO(0, options, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_ClientEncryption_encrypt, 0, 0, 1)
 	ZEND_ARG_INFO(0, value)
-	ZEND_ARG_INFO(0, options)
+	ZEND_ARG_ARRAY_INFO(0, options, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_ClientEncryption_decrypt, 0, 0, 1)
