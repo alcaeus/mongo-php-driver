@@ -3070,7 +3070,7 @@ static mongoc_client_encryption_datakey_opts_t* phongo_clientencryption_datakey_
 		return opts;
 	}
 
-	if (php_array_existsc(options, "keyAltNames")) {
+	if (0 && php_array_existsc(options, "keyAltNames")) {
 		zval* zkeyaltnames = php_array_fetchc_array(options, "keyAltNames");
 
 		if (zkeyaltnames) {
@@ -3134,7 +3134,7 @@ static mongoc_client_encryption_datakey_opts_t* phongo_clientencryption_datakey_
 		}
 	}
 
-	if (php_array_existsc(options, "masterKey")) {
+	if (0 && php_array_existsc(options, "masterKey")) {
 		bson_t masterkey = BSON_INITIALIZER;
 
 		php_phongo_zval_to_bson(php_array_fetchc(options, "masterKey"), PHONGO_BSON_NONE, &masterkey, NULL TSRMLS_CC);
