@@ -3441,6 +3441,11 @@ static inline void php_phongo_pclient_destroy(php_phongo_pclient_t* pclient)
 	pefree(pclient, 1);
 }
 
+static void php_phongo_pclient_dtor(zval* zv)
+{
+	php_phongo_pclient_destroy((php_phongo_pclient_t*) Z_PTR_P(zv));
+}
+
 /* {{{ PHP_RINIT_FUNCTION */
 PHP_RINIT_FUNCTION(mongodb)
 {
@@ -3471,7 +3476,7 @@ PHP_GINIT_FUNCTION(mongodb)
 	mongodb_globals->bsonMemVTable = bsonMemVTable;
 
 	/* Initialize HashTable for persistent clients */
-	zend_hash_init_ex(&mongodb_globals->pclients, 0, NULL, NULL, 1, 0);
+	zend_hash_init_ex(&mongodb_globals->pclients, 0, NULL, php_phongo_pclient_dtor, 1, 0);
 }
 /* }}} */
 
@@ -3617,24 +3622,10 @@ PHP_MINIT_FUNCTION(mongodb)
 /* {{{ PHP_MSHUTDOWN_FUNCTION */
 PHP_MSHUTDOWN_FUNCTION(mongodb)
 {
-	HashTable* pclients = &MONGODB_G(pclients);
-	zval*      z_ptr;
 	(void) type; /* We don't care if we are loaded via dl() or extension= */
 
-	/* Destroy mongoc_client_t objects in reverse order. This is necessary to
-	 * prevent segmentation faults as clients may reference other clients in
-	 * encryption settings. */
-	ZEND_HASH_REVERSE_FOREACH_VAL(pclients, z_ptr)
-	{
-		if ((Z_TYPE_P(z_ptr) != IS_PTR)) {
-			continue;
-		}
-
-		php_phongo_pclient_destroy((php_phongo_pclient_t*) Z_PTR_P(z_ptr));
-	}
-	ZEND_HASH_FOREACH_END();
-
-	/* Destroy HashTable for persistent clients. mongoc_client_t objects have been destroyed earlier. */
+	/* Destroy HashTable for persistent clients. The HashTable destructor will
+	 * destroy any mongoc_client_t objects that were created by this process. */
 	zend_hash_destroy(&MONGODB_G(pclients));
 
 	bson_mem_restore_vtable();
