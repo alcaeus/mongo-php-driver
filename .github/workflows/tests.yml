@@ -32,6 +32,10 @@ jobs:
         topology:
           - "server"
         include:
+          - os: "ubuntu-22.04"
+            php-version: "7.4"
+            mongodb-version: "6.0"
+            topology: "server"
           - os: "ubuntu-20.04"
             php-version: "8.0"
             mongodb-version: "6.0"
@@ -57,7 +61,7 @@ jobs:
           submodules: true
 
       - id: setup-mongodb
-        uses: mongodb-labs/drivers-evergreen-tools@master
+        uses: alcaeus/drivers-evergreen-tools@ubuntu-22.04
         with:
           version: ${{ matrix.mongodb-version }}
           topology: ${{ matrix.topology }}
