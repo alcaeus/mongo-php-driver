@@ -190,6 +190,13 @@ typedef struct {
 } php_phongo_document_t;
 
 typedef struct {
+	bson_t*     bson;
+	char*       key;
+	size_t      key_len;
+	zend_object std;
+} php_phongo_documentwriter_t;
+
+typedef struct {
 	zval        bson;
 	bson_iter_t iter;
 	bool        valid;
@@ -279,13 +286,6 @@ typedef struct {
 	HashTable*  properties;
 	zend_object std;
 } php_phongo_utcdatetime_t;
-
-typedef struct {
-	bson_t*     bson;
-	char*       key;
-	size_t      key_len;
-	zend_object std;
-} php_phongo_writer_t;
 
 typedef struct {
 	zval        manager;

@@ -210,6 +210,7 @@ PHP_MINIT_FUNCTION(mongodb) /* {{{ */
 	php_phongo_iterator_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_arraylist_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_document_init_ce(INIT_FUNC_ARGS_PASSTHRU);
+	php_phongo_documentwriter_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 
 	php_phongo_binary_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_dbpointer_init_ce(INIT_FUNC_ARGS_PASSTHRU);
@@ -225,7 +226,6 @@ PHP_MINIT_FUNCTION(mongodb) /* {{{ */
 	php_phongo_timestamp_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_undefined_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_utcdatetime_init_ce(INIT_FUNC_ARGS_PASSTHRU);
-	php_phongo_writer_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 
 	php_phongo_cursor_interface_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 

@@ -1,23 +1,23 @@
 --TEST--
-MongoDB\BSON\Writer::writeInt64() only accepts ints or Int64 objects
+MongoDB\BSON\DocumentWriter::writeInt() only accepts ints or Int64 objects
 --FILE--
 <?php
 
 require_once __DIR__ . '/../utils/basic.inc';
 
 echo throws(function () {
-    (new MongoDB\BSON\Writer())
-        ->writeKey('int')->writeInt64(null);
+    (new MongoDB\BSON\DocumentWriter())
+        ->writeKey('int')->writeInt(null);
 }, MongoDB\Driver\Exception\InvalidArgumentException::class), "\n";
 
 echo throws(function () {
-    (new MongoDB\BSON\Writer())
-        ->writeKey('int')->writeInt64('3');
+    (new MongoDB\BSON\DocumentWriter())
+        ->writeKey('int')->writeInt('3');
 }, MongoDB\Driver\Exception\InvalidArgumentException::class), "\n";
 
 echo throws(function () {
-    (new MongoDB\BSON\Writer())
-        ->writeKey('int')->writeInt64(new MongoDB\BSON\ObjectId());
+    (new MongoDB\BSON\DocumentWriter())
+        ->writeKey('int')->writeInt(new MongoDB\BSON\ObjectId());
 }, MongoDB\Driver\Exception\InvalidArgumentException::class), "\n";
 
 ?>

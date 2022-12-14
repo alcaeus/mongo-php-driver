@@ -1,5 +1,5 @@
 --TEST--
-MongoDB\BSON\Writer error test
+MongoDB\BSON\DocumentWriter error test
 --FILE--
 <?php
 
@@ -7,12 +7,12 @@ require_once __DIR__ . '/../utils/basic.inc';
 
 // Cannot write without a key
 echo throws(function () {
-    (new MongoDB\BSON\Writer())->writeString('foo');
+    (new MongoDB\BSON\DocumentWriter())->writeString('foo');
 }, MongoDB\Driver\Exception\LogicException::class), "\n";
 
 // Key is deleted after first write call
 echo throws(function () {
-    (new MongoDB\BSON\Writer())
+    (new MongoDB\BSON\DocumentWriter())
         ->writeKey('foo')->writeString('foo')
         ->writeString('bar');
 }, MongoDB\Driver\Exception\LogicException::class), "\n";

@@ -106,6 +106,10 @@ static inline php_phongo_document_t* php_document_fetch_object(zend_object* obj)
 {
 	return (php_phongo_document_t*) ((char*) obj - XtOffsetOf(php_phongo_document_t, std));
 }
+static inline php_phongo_documentwriter_t* php_documentwriter_fetch_object(zend_object* obj)
+{
+	return (php_phongo_documentwriter_t*) ((char*) obj - XtOffsetOf(php_phongo_documentwriter_t, std));
+}
 static inline php_phongo_iterator_t* php_iterator_fetch_object(zend_object* obj)
 {
 	return (php_phongo_iterator_t*) ((char*) obj - XtOffsetOf(php_phongo_iterator_t, std));
@@ -157,10 +161,6 @@ static inline php_phongo_undefined_t* php_undefined_fetch_object(zend_object* ob
 static inline php_phongo_utcdatetime_t* php_utcdatetime_fetch_object(zend_object* obj)
 {
 	return (php_phongo_utcdatetime_t*) ((char*) obj - XtOffsetOf(php_phongo_utcdatetime_t, std));
-}
-static inline php_phongo_writer_t* php_writer_fetch_object(zend_object* obj)
-{
-	return (php_phongo_writer_t*) ((char*) obj - XtOffsetOf(php_phongo_writer_t, std));
 }
 static inline php_phongo_commandfailedevent_t* php_commandfailedevent_fetch_object(zend_object* obj)
 {
@@ -232,6 +232,7 @@ static inline php_phongo_topologyopeningevent_t* php_topologyopeningevent_fetch_
 #define Z_BINARY_OBJ_P(zv) (php_binary_fetch_object(Z_OBJ_P(zv)))
 #define Z_ARRAYLIST_OBJ_P(zv) (php_arraylist_fetch_object(Z_OBJ_P(zv)))
 #define Z_DOCUMENT_OBJ_P(zv) (php_document_fetch_object(Z_OBJ_P(zv)))
+#define Z_DOCUMENTWRITER_OBJ_P(zv) (php_documentwriter_fetch_object(Z_OBJ_P(zv)))
 #define Z_ITERATOR_OBJ_P(zv) (php_iterator_fetch_object(Z_OBJ_P(zv)))
 #define Z_DBPOINTER_OBJ_P(zv) (php_dbpointer_fetch_object(Z_OBJ_P(zv)))
 #define Z_DECIMAL128_OBJ_P(zv) (php_decimal128_fetch_object(Z_OBJ_P(zv)))
@@ -245,7 +246,6 @@ static inline php_phongo_topologyopeningevent_t* php_topologyopeningevent_fetch_
 #define Z_TIMESTAMP_OBJ_P(zv) (php_timestamp_fetch_object(Z_OBJ_P(zv)))
 #define Z_UNDEFINED_OBJ_P(zv) (php_undefined_fetch_object(Z_OBJ_P(zv)))
 #define Z_UTCDATETIME_OBJ_P(zv) (php_utcdatetime_fetch_object(Z_OBJ_P(zv)))
-#define Z_WRITER_OBJ_P(zv) (php_writer_fetch_object(Z_OBJ_P(zv)))
 #define Z_COMMANDFAILEDEVENT_OBJ_P(zv) (php_commandfailedevent_fetch_object(Z_OBJ_P(zv)))
 #define Z_COMMANDSTARTEDEVENT_OBJ_P(zv) (php_commandstartedevent_fetch_object(Z_OBJ_P(zv)))
 #define Z_COMMANDSUCCEEDEDEVENT_OBJ_P(zv) (php_commandsucceededevent_fetch_object(Z_OBJ_P(zv)))
@@ -280,6 +280,7 @@ static inline php_phongo_topologyopeningevent_t* php_topologyopeningevent_fetch_
 #define Z_OBJ_BINARY(zo) (php_binary_fetch_object(zo))
 #define Z_OBJ_ARRAYLIST(zo) (php_arraylist_fetch_object(zo))
 #define Z_OBJ_DOCUMENT(zo) (php_document_fetch_object(zo))
+#define Z_OBJ_DOCUMENTWRITER(zo) (php_documentwriter_fetch_object(zo))
 #define Z_OBJ_ITERATOR(zo) (php_iterator_fetch_object(zo))
 #define Z_OBJ_DBPOINTER(zo) (php_dbpointer_fetch_object(zo))
 #define Z_OBJ_DECIMAL128(zo) (php_decimal128_fetch_object(zo))
@@ -293,7 +294,6 @@ static inline php_phongo_topologyopeningevent_t* php_topologyopeningevent_fetch_
 #define Z_OBJ_TIMESTAMP(zo) (php_timestamp_fetch_object(zo))
 #define Z_OBJ_UNDEFINED(zo) (php_undefined_fetch_object(zo))
 #define Z_OBJ_UTCDATETIME(zo) (php_utcdatetime_fetch_object(zo))
-#define Z_OBJ_WRITER(zo) (php_writer_fetch_object(zo))
 #define Z_OBJ_COMMANDFAILEDEVENT(zo) (php_commandfailedevent_fetch_object(zo))
 #define Z_OBJ_COMMANDSTARTEDEVENT(zo) (php_commandstartedevent_fetch_object(zo))
 #define Z_OBJ_COMMANDSUCCEEDEDEVENT(zo) (php_commandsucceededevent_fetch_object(zo))
@@ -351,6 +351,7 @@ extern zend_class_entry* php_phongo_serializable_ce;
 extern zend_class_entry* php_phongo_binary_ce;
 extern zend_class_entry* php_phongo_arraylist_ce;
 extern zend_class_entry* php_phongo_document_ce;
+extern zend_class_entry* php_phongo_documentwriter_ce;
 extern zend_class_entry* php_phongo_iterator_ce;
 extern zend_class_entry* php_phongo_dbpointer_ce;
 extern zend_class_entry* php_phongo_decimal128_ce;
@@ -364,7 +365,6 @@ extern zend_class_entry* php_phongo_symbol_ce;
 extern zend_class_entry* php_phongo_timestamp_ce;
 extern zend_class_entry* php_phongo_undefined_ce;
 extern zend_class_entry* php_phongo_utcdatetime_ce;
-extern zend_class_entry* php_phongo_writer_ce;
 
 extern zend_class_entry* php_phongo_binary_interface_ce;
 extern zend_class_entry* php_phongo_decimal128_interface_ce;
@@ -395,6 +395,7 @@ extern zend_class_entry* php_phongo_topologyopeningevent_ce;
 extern void php_phongo_binary_init_ce(INIT_FUNC_ARGS);
 extern void php_phongo_arraylist_init_ce(INIT_FUNC_ARGS);
 extern void php_phongo_document_init_ce(INIT_FUNC_ARGS);
+extern void php_phongo_documentwriter_init_ce(INIT_FUNC_ARGS);
 extern void php_phongo_iterator_init_ce(INIT_FUNC_ARGS);
 extern void php_phongo_dbpointer_init_ce(INIT_FUNC_ARGS);
 extern void php_phongo_decimal128_init_ce(INIT_FUNC_ARGS);
@@ -412,7 +413,6 @@ extern void php_phongo_type_init_ce(INIT_FUNC_ARGS);
 extern void php_phongo_undefined_init_ce(INIT_FUNC_ARGS);
 extern void php_phongo_unserializable_init_ce(INIT_FUNC_ARGS);
 extern void php_phongo_utcdatetime_init_ce(INIT_FUNC_ARGS);
-extern void php_phongo_writer_init_ce(INIT_FUNC_ARGS);
 
 extern void php_phongo_binary_interface_init_ce(INIT_FUNC_ARGS);
 extern void php_phongo_decimal128_interface_init_ce(INIT_FUNC_ARGS);

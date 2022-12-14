@@ -1,5 +1,5 @@
 --TEST--
-MongoDB\BSON\Writer::writeInt() writes $numberLong depending on size (64-bit platforms)
+MongoDB\BSON\DocumentWriter::writeInt() writes $numberLong depending on size (64-bit platforms)
 --FILE--
 <?php
 
@@ -14,7 +14,7 @@ $tests = [
 
 foreach ($tests as $test => $value) {
     echo "Testing ", $test, "\n";
-    echo (new MongoDB\BSON\Writer())
+    echo (new MongoDB\BSON\DocumentWriter())
         ->writeKey('int')->writeInt($value)
         ->write()
         ->toCanonicalExtendedJSON(), "\n";

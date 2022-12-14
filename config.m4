@@ -122,6 +122,7 @@ if test "$PHP_MONGODB" != "no"; then
     src/BSON/BinaryInterface.c \
     src/BSON/ArrayList.c \
     src/BSON/Document.c \
+    src/BSON/DocumentWriter.c \
     src/BSON/Iterator.c \
     src/BSON/DBPointer.c \
     src/BSON/Decimal128.c \
@@ -147,7 +148,6 @@ if test "$PHP_MONGODB" != "no"; then
     src/BSON/Unserializable.c \
     src/BSON/UTCDateTime.c \
     src/BSON/UTCDateTimeInterface.c \
-    src/BSON/Writer.c \
     src/BSON/functions.c \
     src/MongoDB/BulkWrite.c \
     src/MongoDB/ClientEncryption.c \

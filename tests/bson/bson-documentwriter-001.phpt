@@ -1,9 +1,9 @@
 --TEST--
-MongoDB\BSON\Writer test
+MongoDB\BSON\DocumentWriter test
 --FILE--
 <?php
 
-$document = (new MongoDB\BSON\Writer())
+$document = (new MongoDB\BSON\DocumentWriter())
     // Write an identifier
     ->writeKey('_id')->writeObjectId(new MongoDB\BSON\ObjectId())
 
