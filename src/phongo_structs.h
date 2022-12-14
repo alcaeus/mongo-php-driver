@@ -281,6 +281,13 @@ typedef struct {
 } php_phongo_utcdatetime_t;
 
 typedef struct {
+	bson_t*     bson;
+	char*       key;
+	size_t      key_len;
+	zend_object std;
+} php_phongo_writer_t;
+
+typedef struct {
 	zval        manager;
 	char*       command_name;
 	uint32_t    server_id;
