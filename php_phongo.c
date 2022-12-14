@@ -227,6 +227,7 @@ PHP_MINIT_FUNCTION(mongodb) /* {{{ */
 	php_phongo_iterator_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_packedarray_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_document_init_ce(INIT_FUNC_ARGS_PASSTHRU);
+	php_phongo_documentwriter_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 
 	php_phongo_binary_init_ce(INIT_FUNC_ARGS_PASSTHRU);
 	php_phongo_dbpointer_init_ce(INIT_FUNC_ARGS_PASSTHRU);
