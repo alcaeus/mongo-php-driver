@@ -214,9 +214,3 @@ jobs:
 
       - name: "Upload SBOM as release artifact"
         run: gh release upload ${{ inputs.version }} ${{ env.S3_ASSETS }}/cyclonedx.sbom.json
-
-      - name: Upload S3 assets
-        uses: mongodb-labs/drivers-github-tools/upload-s3-assets@v2
-        with:
-          version: ${{ inputs.version }}
-          product_name: mongo-php-driver
