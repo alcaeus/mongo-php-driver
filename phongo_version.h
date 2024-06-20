@@ -22,8 +22,8 @@
  * publishing a release. */
 
 /* clang-format off */
-#define PHP_MONGODB_VERSION "1.19.4dev"
-#define PHP_MONGODB_STABILITY "devel"
+#define PHP_MONGODB_VERSION "1.19.4beta1"
+#define PHP_MONGODB_STABILITY "beta"
 #define PHP_MONGODB_VERSION_DESC 1,19,4,1
 /* clang-format on */
 
