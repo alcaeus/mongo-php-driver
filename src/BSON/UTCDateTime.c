@@ -223,11 +223,9 @@ static PHP_METHOD(MongoDB_BSON_UTCDateTime, toDateTime)
 	object_init_ex(return_value, php_date_get_date_ce());
 	datetime_obj = Z_PHPDATE_P(return_value);
 
-	sec_len = spprintf(&sec, 0, "@%" PRId64, intern->milliseconds / 1000);
+	sec_len = spprintf(&sec, 0, "@%.6f", (double) intern->milliseconds / 1000);
 	php_date_initialize(datetime_obj, sec, sec_len, NULL, NULL, 0);
 	efree(sec);
-
-	datetime_obj->time->us = (intern->milliseconds % 1000) * 1000;
 }
 
 static PHP_METHOD(MongoDB_BSON_UTCDateTime, jsonSerialize)
