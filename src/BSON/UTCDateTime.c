@@ -223,7 +223,10 @@ static PHP_METHOD(MongoDB_BSON_UTCDateTime, toDateTime)
 	object_init_ex(return_value, php_date_get_date_ce());
 	datetime_obj = Z_PHPDATE_P(return_value);
 
-	sec_len = spprintf(&sec, 0, "@%.6f", (double) intern->milliseconds / 1000);
+	/* Initialize a DateTime using "Unix Timestamp with microseconds" notation.
+	 * PHP 7.4 expects exactly six points of precision to denote microseconds.
+	 * PHP 8.0+ accepts between zero and six points of precision. */
+	sec_len = spprintf(&sec, 0, "@%" PRId64 ".%.6d", intern->milliseconds / 1000, abs((int) (intern->milliseconds % 1000) * 1000));
 	php_date_initialize(datetime_obj, sec, sec_len, NULL, NULL, 0);
 	efree(sec);
 }
