@@ -16,5 +16,6 @@ var_dump($server->getServerDescription()->getHost());
 ===DONE===
 <?php exit(0); ?>
 --EXPECTF--
+Deprecated: Method MongoDB\Driver\ServerDescription::getHost() is deprecated%S
 string(%s) %s
 ===DONE===

@@ -16,5 +16,6 @@ var_dump($server->getServerDescription()->getRoundTripTime());
 ===DONE===
 <?php exit(0); ?>
 --EXPECTF--
+Deprecated: Method MongoDB\Driver\ServerDescription::getRoundTripTime() is deprecated%S
 %r(NULL|int\(\d+\))%r
 ===DONE===

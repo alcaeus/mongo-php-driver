@@ -18,13 +18,13 @@ echo var_export($server->getServerDescription(), true), "\n";
 <?php exit(0); ?>
 --EXPECTF--
 %r\\?%rMongoDB\Driver\ServerDescription::__set_state(array(
-   'host' => '%s',
-   'port' => %d,
-   'type' => '%r(Standalone|Mongos|RSPrimary|LoadBalancer)%r',
-   'hello_response' =>%w
+   'helloResponse' =>%w
   array (%A
   ),
-   'last_update_time' => %r('\d+'|\d+)%r,
-   'round_trip_time' => %r(NULL|\d+)%r,
+   'host' => '%s',
+   'lastUpdateTime' => %r('\d+'|\d+)%r,
+   'roundTripTime' => %r(NULL|\d+)%r,
+   'port' => %d,
+   'type' => '%r(Standalone|Mongos|RSPrimary|LoadBalancer)%r',
 ))
 ===DONE===

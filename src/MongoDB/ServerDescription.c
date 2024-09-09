@@ -180,101 +180,12 @@ static zend_object* php_phongo_serverdescription_create_object(zend_class_entry*
 	return &intern->std;
 }
 
-HashTable* php_phongo_serverdescription_get_properties_hash(zend_object* object, bool is_debug)
-{
-	php_phongo_serverdescription_t* intern = NULL;
-	HashTable*                      props;
-
-	intern = Z_OBJ_SERVERDESCRIPTION(object);
-
-	PHONGO_GET_PROPERTY_HASH_INIT_PROPS(is_debug, intern, props, 6);
-
-	if (!intern->server_description) {
-		return props;
-	}
-
-	{
-		zval                host, port, type;
-		mongoc_host_list_t* host_list = mongoc_server_description_host(intern->server_description);
-
-		ZVAL_STRING(&host, host_list->host);
-		zend_hash_str_update(props, "host", sizeof("host") - 1, &host);
-
-		ZVAL_LONG(&port, host_list->port);
-		zend_hash_str_update(props, "port", sizeof("port") - 1, &port);
-
-		ZVAL_STRING(&type, mongoc_server_description_type(intern->server_description));
-		zend_hash_str_update(props, "type", sizeof("type") - 1, &type);
-	}
-
-	{
-		const bson_t*         hello_response = mongoc_server_description_hello_response(intern->server_description);
-		php_phongo_bson_state state;
-
-		PHONGO_BSON_INIT_DEBUG_STATE(state);
-
-		if (!php_phongo_bson_to_zval_ex(hello_response, &state)) {
-			zval_ptr_dtor(&state.zchild);
-			goto done;
-		}
-		zend_hash_str_update(props, "hello_response", sizeof("hello_response") - 1, &state.zchild);
-	}
-
-	{
-		int64_t last_update_time;
-		zval    z_last_update_time;
-
-		last_update_time = mongoc_server_description_last_update_time(intern->server_description);
-
-#if SIZEOF_ZEND_LONG == 4
-		if (last_update_time > INT32_MAX || last_update_time < INT32_MIN) {
-			ZVAL_INT64_STRING(&z_last_update_time, last_update_time);
-		} else {
-			ZVAL_LONG(&z_last_update_time, last_update_time);
-		}
-#else
-		ZVAL_LONG(&z_last_update_time, last_update_time);
-#endif
-
-		zend_hash_str_update(props, "last_update_time", sizeof("last_update_time") - 1, &z_last_update_time);
-	}
-
-	{
-		zval round_trip_time;
-
-		/* TODO: Use MONGOC_RTT_UNSET once it is added to libmongoc's public API (CDRIVER-4176) */
-		if (mongoc_server_description_round_trip_time(intern->server_description) == -1) {
-			ZVAL_NULL(&round_trip_time);
-		} else {
-			ZVAL_LONG(&round_trip_time, mongoc_server_description_round_trip_time(intern->server_description));
-		}
-
-		zend_hash_str_update(props, "round_trip_time", sizeof("round_trip_time") - 1, &round_trip_time);
-	}
-
-done:
-	return props;
-}
-
-static HashTable* php_phongo_serverdescription_get_debug_info(zend_object* object, int* is_temp)
-{
-	*is_temp = 1;
-	return php_phongo_serverdescription_get_properties_hash(object, true);
-}
-
-static HashTable* php_phongo_serverdescription_get_properties(zend_object* object)
-{
-	return php_phongo_serverdescription_get_properties_hash(object, false);
-}
-
 void php_phongo_serverdescription_init_ce(INIT_FUNC_ARGS)
 {
 	php_phongo_serverdescription_ce                = register_class_MongoDB_Driver_ServerDescription();
 	php_phongo_serverdescription_ce->create_object = php_phongo_serverdescription_create_object;
 
 	memcpy(&php_phongo_handler_serverdescription, phongo_get_std_object_handlers(), sizeof(zend_object_handlers));
-	php_phongo_handler_serverdescription.get_debug_info = php_phongo_serverdescription_get_debug_info;
-	php_phongo_handler_serverdescription.get_properties = php_phongo_serverdescription_get_properties;
 	php_phongo_handler_serverdescription.free_obj       = php_phongo_serverdescription_free_object;
 	php_phongo_handler_serverdescription.offset         = XtOffsetOf(php_phongo_serverdescription_t, std);
 }
@@ -282,11 +193,44 @@ void php_phongo_serverdescription_init_ce(INIT_FUNC_ARGS)
 void phongo_serverdescription_init_ex(zval* return_value, mongoc_server_description_t* server_description, bool copy)
 {
 	php_phongo_serverdescription_t* intern;
+	const bson_t*                   helloResponse;
+	php_phongo_bson_state           state;
 
 	object_init_ex(return_value, php_phongo_serverdescription_ce);
 
 	intern                     = Z_SERVERDESCRIPTION_OBJ_P(return_value);
 	intern->server_description = copy ? mongoc_server_description_new_copy(server_description) : server_description;
+
+	/* Note: the hello response will be empty for load balancers since they are
+	 * not monitored. Unlike Server::getInfo(), we do not attempt to fetch the
+	 * corresponding handshake description, as that would require holding a
+	 * reference to the libmongoc client (and likely a Manager object) on the
+	 * ServerDescription and TopologyDescription classes. */
+	helloResponse = mongoc_server_description_hello_response(intern->server_description);
+
+	PHONGO_BSON_INIT_DEBUG_STATE(state);
+
+	if (!php_phongo_bson_to_zval_ex(helloResponse, &state)) {
+		/* Exception should already have been thrown */
+		zval_ptr_dtor(&state.zchild);
+		return;
+	}
+
+	zend_update_property(php_phongo_serverdescription_ce, Z_OBJ_P(return_value), "helloResponse", sizeof("helloResponse")-1, &state.zchild);
+	zval_ptr_dtor(&state.zchild);
+
+	zend_update_property_string(php_phongo_serverdescription_ce, Z_OBJ_P(return_value), "host", sizeof("host")-1, mongoc_server_description_host(intern->server_description)->host);
+	zend_update_property_long(php_phongo_serverdescription_ce, Z_OBJ_P(return_value), "lastUpdateTime", sizeof("lastUpdateTime")-1, mongoc_server_description_last_update_time(intern->server_description));
+
+	/* TODO: Use MONGOC_RTT_UNSET once it is added to libmongoc's public API (CDRIVER-4176) */
+	if (mongoc_server_description_round_trip_time(intern->server_description) == -1) {
+		zend_update_property_null(php_phongo_serverdescription_ce, Z_OBJ_P(return_value), "roundTripTime", sizeof("roundTripTime") - 1);
+	} else {
+		zend_update_property_long(php_phongo_serverdescription_ce, Z_OBJ_P(return_value), "roundTripTime", sizeof("roundTripTime") - 1, mongoc_server_description_round_trip_time(intern->server_description));
+	}
+
+	zend_update_property_long(php_phongo_serverdescription_ce, Z_OBJ_P(return_value), "port", sizeof("port")-1, mongoc_server_description_host(intern->server_description)->port);
+	zend_update_property_string(php_phongo_serverdescription_ce, Z_OBJ_P(return_value), "type", sizeof("type")-1, mongoc_server_description_type(intern->server_description));
 }
 
 php_phongo_server_description_type_t php_phongo_server_description_type(mongoc_server_description_t* sd)

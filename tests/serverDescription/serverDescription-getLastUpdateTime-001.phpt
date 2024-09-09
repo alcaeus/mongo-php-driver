@@ -17,5 +17,6 @@ var_dump($server->getServerDescription()->getLastUpdateTime());
 ===DONE===
 <?php exit(0); ?>
 --EXPECTF--
+Deprecated: Method MongoDB\Driver\ServerDescription::getLastUpdateTime() is deprecated%S
 int(%d)
 ===DONE===

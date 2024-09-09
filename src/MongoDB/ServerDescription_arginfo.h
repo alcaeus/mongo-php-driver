@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 482425509937fc9119cf140099b41af3c4a20fde */
+ * Stub hash: f7a3fcd41b5ae0caf295b24c2c9283737f4224ec */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_MongoDB_Driver_ServerDescription___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
@@ -32,12 +32,12 @@ static ZEND_METHOD(MongoDB_Driver_ServerDescription, getType);
 
 static const zend_function_entry class_MongoDB_Driver_ServerDescription_methods[] = {
 	ZEND_ME(MongoDB_Driver_ServerDescription, __construct, arginfo_class_MongoDB_Driver_ServerDescription___construct, ZEND_ACC_PRIVATE|ZEND_ACC_FINAL)
-	ZEND_ME(MongoDB_Driver_ServerDescription, getHelloResponse, arginfo_class_MongoDB_Driver_ServerDescription_getHelloResponse, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
-	ZEND_ME(MongoDB_Driver_ServerDescription, getHost, arginfo_class_MongoDB_Driver_ServerDescription_getHost, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
-	ZEND_ME(MongoDB_Driver_ServerDescription, getLastUpdateTime, arginfo_class_MongoDB_Driver_ServerDescription_getLastUpdateTime, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
-	ZEND_ME(MongoDB_Driver_ServerDescription, getPort, arginfo_class_MongoDB_Driver_ServerDescription_getPort, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
-	ZEND_ME(MongoDB_Driver_ServerDescription, getRoundTripTime, arginfo_class_MongoDB_Driver_ServerDescription_getRoundTripTime, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
-	ZEND_ME(MongoDB_Driver_ServerDescription, getType, arginfo_class_MongoDB_Driver_ServerDescription_getType, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
+	ZEND_ME(MongoDB_Driver_ServerDescription, getHelloResponse, arginfo_class_MongoDB_Driver_ServerDescription_getHelloResponse, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL|ZEND_ACC_DEPRECATED)
+	ZEND_ME(MongoDB_Driver_ServerDescription, getHost, arginfo_class_MongoDB_Driver_ServerDescription_getHost, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL|ZEND_ACC_DEPRECATED)
+	ZEND_ME(MongoDB_Driver_ServerDescription, getLastUpdateTime, arginfo_class_MongoDB_Driver_ServerDescription_getLastUpdateTime, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL|ZEND_ACC_DEPRECATED)
+	ZEND_ME(MongoDB_Driver_ServerDescription, getPort, arginfo_class_MongoDB_Driver_ServerDescription_getPort, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL|ZEND_ACC_DEPRECATED)
+	ZEND_ME(MongoDB_Driver_ServerDescription, getRoundTripTime, arginfo_class_MongoDB_Driver_ServerDescription_getRoundTripTime, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL|ZEND_ACC_DEPRECATED)
+	ZEND_ME(MongoDB_Driver_ServerDescription, getType, arginfo_class_MongoDB_Driver_ServerDescription_getType, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL|ZEND_ACC_DEPRECATED)
 	ZEND_FE_END
 };
 
@@ -118,6 +118,42 @@ static zend_class_entry *register_class_MongoDB_Driver_ServerDescription(void)
 	zend_string *const_TYPE_LOAD_BALANCER_name = zend_string_init_interned("TYPE_LOAD_BALANCER", sizeof("TYPE_LOAD_BALANCER") - 1, 1);
 	zend_declare_class_constant_ex(class_entry, const_TYPE_LOAD_BALANCER_name, &const_TYPE_LOAD_BALANCER_value, ZEND_ACC_PUBLIC, NULL);
 	zend_string_release(const_TYPE_LOAD_BALANCER_name);
+
+	zval property_helloResponse_default_value;
+	ZVAL_UNDEF(&property_helloResponse_default_value);
+	zend_string *property_helloResponse_name = zend_string_init("helloResponse", sizeof("helloResponse") - 1, 1);
+	zend_declare_typed_property(class_entry, property_helloResponse_name, &property_helloResponse_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
+	zend_string_release(property_helloResponse_name);
+
+	zval property_host_default_value;
+	ZVAL_UNDEF(&property_host_default_value);
+	zend_string *property_host_name = zend_string_init("host", sizeof("host") - 1, 1);
+	zend_declare_typed_property(class_entry, property_host_name, &property_host_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+	zend_string_release(property_host_name);
+
+	zval property_lastUpdateTime_default_value;
+	ZVAL_UNDEF(&property_lastUpdateTime_default_value);
+	zend_string *property_lastUpdateTime_name = zend_string_init("lastUpdateTime", sizeof("lastUpdateTime") - 1, 1);
+	zend_declare_typed_property(class_entry, property_lastUpdateTime_name, &property_lastUpdateTime_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_lastUpdateTime_name);
+
+	zval property_roundTripTime_default_value;
+	ZVAL_UNDEF(&property_roundTripTime_default_value);
+	zend_string *property_roundTripTime_name = zend_string_init("roundTripTime", sizeof("roundTripTime") - 1, 1);
+	zend_declare_typed_property(class_entry, property_roundTripTime_name, &property_roundTripTime_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG|MAY_BE_NULL));
+	zend_string_release(property_roundTripTime_name);
+
+	zval property_port_default_value;
+	ZVAL_UNDEF(&property_port_default_value);
+	zend_string *property_port_name = zend_string_init("port", sizeof("port") - 1, 1);
+	zend_declare_typed_property(class_entry, property_port_name, &property_port_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_port_name);
+
+	zval property_type_default_value;
+	ZVAL_UNDEF(&property_type_default_value);
+	zend_string *property_type_name = zend_string_init("type", sizeof("type") - 1, 1);
+	zend_declare_typed_property(class_entry, property_type_name, &property_type_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+	zend_string_release(property_type_name);
 
 	return class_entry;
 }

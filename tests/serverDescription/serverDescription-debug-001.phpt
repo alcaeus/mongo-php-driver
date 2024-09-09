@@ -16,18 +16,18 @@ var_dump($server->getServerDescription());
 <?php exit(0); ?>
 --EXPECTF--
 object(MongoDB\Driver\ServerDescription)#%d (%d) {
+  ["helloResponse"]=>
+  array(%d) {%A
+  }
   ["host"]=>
   string(%d) "%s"
+  ["lastUpdateTime"]=>
+  %r(string\(\d+\) "\d+"|int\(\d+\))%r
+  ["roundTripTime"]=>
+  %r(NULL|int\(\d+\))%r
   ["port"]=>
   int(%d)
   ["type"]=>
   string(%d) "%r(Standalone|Mongos|RSPrimary|LoadBalancer)%r"
-  ["hello_response"]=>
-  array(%d) {%A
-  }
-  ["last_update_time"]=>
-  %r(string\(\d+\) "\d+"|int\(\d+\))%r
-  ["round_trip_time"]=>
-  %r(NULL|int\(\d+\))%r
 }
 ===DONE===

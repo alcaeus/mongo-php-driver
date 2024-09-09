@@ -16,5 +16,6 @@ var_dump($server->getServerDescription()->getPort());
 ===DONE===
 <?php exit(0); ?>
 --EXPECTF--
+Deprecated: Method MongoDB\Driver\ServerDescription::getPort() is deprecated%S
 int(%d)
 ===DONE===

@@ -16,5 +16,6 @@ var_dump($server->getServerDescription()->getType());
 ===DONE===
 <?php exit(0); ?>
 --EXPECTF--
+Deprecated: Method MongoDB\Driver\ServerDescription::getType() is deprecated%S
 string(%d) "%r(Standalone|Mongos|RSPrimary|LoadBalancer)%r"
 ===DONE===

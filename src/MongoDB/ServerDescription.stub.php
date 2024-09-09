@@ -70,17 +70,30 @@ final class ServerDescription
      */
     public const TYPE_LOAD_BALANCER = UNKNOWN;
 
+    public readonly array $helloResponse;
+    public readonly string $host;
+    public readonly int $lastUpdateTime;
+    public readonly ?int $roundTripTime;
+    public readonly int $port;
+    public readonly string $type;
+
     final private function __construct() {}
 
+    /** @deprecated */
     final public function getHelloResponse(): array {}
 
+    /** @deprecated */
     final public function getHost(): string {}
 
+    /** @deprecated */
     final public function getLastUpdateTime(): int {}
 
+    /** @deprecated */
     final public function getPort(): int {}
 
+    /** @deprecated */
     final public function getRoundTripTime(): ?int {}
 
+    /** @deprecated */
     final public function getType(): string {}
 }
