@@ -54,6 +54,10 @@ format-changed:
 format-check:
 	$(top_srcdir)/scripts/clang-format.sh check
 
+run-test.sh: Makefile
+	@printf '#!/bin/sh\nexec $(PHP_EXECUTABLE) -n -d extension_dir=$(top_builddir)/modules/ $(PHP_TEST_SHARED_EXTENSIONS) "$$@"\n' > $(top_srcdir)/run-test.sh
+	@chmod +x $(top_srcdir)/run-test.sh
+
 test-clean:
 	find $(top_srcdir)/tests -not \( -path $(top_srcdir)/tests/utils -prune \) -type f -name "*.diff" -o -name "*.exp" -o -name "*.log" -o -name "*.mem" -o -name "*.out" -o -name "*.php" -o -name "*.sh" | xargs -r rm
 

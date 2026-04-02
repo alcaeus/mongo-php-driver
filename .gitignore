@@ -29,6 +29,7 @@ Makefile.objects
 missing
 mkinstalldirs
 modules
+run-test.sh
 run-tests.php
 tags
 .lvimrc
