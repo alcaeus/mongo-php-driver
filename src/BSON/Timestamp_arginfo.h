@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 5b6c8488c5502a6d0fc472449f49de60560ec15e */
+ * Stub hash: a2df5ca7741c54f4983e3b847fdb35bc2673e550 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_MongoDB_BSON_Timestamp___construct, 0, 0, 2)
 	ZEND_ARG_TYPE_MASK(0, increment, MAY_BE_LONG|MAY_BE_STRING, NULL)
@@ -61,6 +61,18 @@ static zend_class_entry *register_class_MongoDB_BSON_Timestamp(zend_class_entry 
 	class_entry->ce_flags |= ZEND_ACC_FINAL;
 #endif
 	zend_class_implements(class_entry, 4, class_entry_MongoDB_BSON_TimestampInterface, class_entry_JsonSerializable, class_entry_MongoDB_BSON_Type, class_entry_Stringable);
+
+	zval property_increment_default_value;
+	ZVAL_UNDEF(&property_increment_default_value);
+	zend_string *property_increment_name = zend_string_init("increment", sizeof("increment") - 1, 1);
+	zend_declare_typed_property(class_entry, property_increment_name, &property_increment_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_increment_name);
+
+	zval property_timestamp_default_value;
+	ZVAL_UNDEF(&property_timestamp_default_value);
+	zend_string *property_timestamp_name = zend_string_init("timestamp", sizeof("timestamp") - 1, 1);
+	zend_declare_typed_property(class_entry, property_timestamp_name, &property_timestamp_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_timestamp_name);
 
 	return class_entry;
 }

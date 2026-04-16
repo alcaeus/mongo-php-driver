@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 5bf645c9a3fc1bccb4d6a6cfa8e5f3e4956a9835 */
+ * Stub hash: c4a52779a5770fc1acb08bab442e9e5480f4f4cf */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_MongoDB_BSON_Javascript___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, code, IS_STRING, 0)
@@ -61,6 +61,16 @@ static zend_class_entry *register_class_MongoDB_BSON_Javascript(zend_class_entry
 	class_entry->ce_flags |= ZEND_ACC_FINAL;
 #endif
 	zend_class_implements(class_entry, 4, class_entry_MongoDB_BSON_JavascriptInterface, class_entry_JsonSerializable, class_entry_MongoDB_BSON_Type, class_entry_Stringable);
+
+	zval property_code_default_value;
+	ZVAL_UNDEF(&property_code_default_value);
+	zend_declare_typed_property(class_entry, ZSTR_KNOWN(ZEND_STR_CODE), &property_code_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+
+	zval property_scope_default_value;
+	ZVAL_UNDEF(&property_scope_default_value);
+	zend_string *property_scope_name = zend_string_init("scope", sizeof("scope") - 1, 1);
+	zend_declare_typed_property(class_entry, property_scope_name, &property_scope_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_OBJECT|MAY_BE_NULL));
+	zend_string_release(property_scope_name);
 
 	return class_entry;
 }

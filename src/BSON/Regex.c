@@ -34,6 +34,12 @@ static int phongo_regex_compare_flags(const void* f1, const void* f2)
 	return (*(const char*) f1 > *(const char*) f2) ? 1 : -1;
 }
 
+static void phongo_regex_update_properties(phongo_regex_t* intern)
+{
+	zend_update_property_stringl(phongo_regex_ce, &intern->std, ZEND_STRL("pattern"), intern->pattern, intern->pattern_len);
+	zend_update_property_stringl(phongo_regex_ce, &intern->std, ZEND_STRL("flags"), intern->flags, intern->flags_len);
+}
+
 /* Initialize the object and return whether it was successful. An exception will
  * be thrown on error. */
 static bool phongo_regex_init(phongo_regex_t* intern, const char* pattern, size_t pattern_len, const char* flags, size_t flags_len)
@@ -59,6 +65,8 @@ static bool phongo_regex_init(phongo_regex_t* intern, const char* pattern, size_
 		intern->flags_len = 0;
 	}
 
+	phongo_regex_update_properties(intern);
+
 	return true;
 }
 
@@ -76,31 +84,6 @@ static bool phongo_regex_init_from_hash(phongo_regex_t* intern, HashTable* props
 
 	phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "%s initialization requires \"pattern\" and \"flags\" string fields", ZSTR_VAL(phongo_regex_ce->name));
 	return false;
-}
-
-static HashTable* phongo_regex_get_properties_hash(zend_object* object, bool is_temp)
-{
-	PHONGO_INTERN_FROM_Z_OBJ(regex, object);
-
-	HashTable* props;
-
-	PHONGO_GET_PROPERTY_HASH_INIT_PROPS(is_temp, intern, props, 2);
-
-	if (!intern->pattern) {
-		return props;
-	}
-
-	{
-		zval pattern, flags;
-
-		ZVAL_STRINGL(&pattern, intern->pattern, intern->pattern_len);
-		zend_hash_str_update(props, "pattern", sizeof("pattern") - 1, &pattern);
-
-		ZVAL_STRINGL(&flags, intern->flags, intern->flags_len);
-		zend_hash_str_update(props, "flags", sizeof("flags") - 1, &flags);
-	}
-
-	return props;
 }
 
 /* Constructs a new BSON regular expression type. */
@@ -183,9 +166,13 @@ static PHP_METHOD(MongoDB_BSON_Regex, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Regex, __serialize)
 {
+	PHONGO_INTERN_FROM_THIS(regex);
+
 	PHONGO_PARSE_PARAMETERS_NONE();
 
-	RETURN_ARR(phongo_regex_get_properties_hash(Z_OBJ_P(getThis()), true));
+	array_init_size(return_value, 2);
+	ADD_ASSOC_STRINGL(return_value, "pattern", intern->pattern, intern->pattern_len);
+	ADD_ASSOC_STRINGL(return_value, "flags", intern->flags, intern->flags_len);
 }
 
 static PHP_METHOD(MongoDB_BSON_Regex, __unserialize)
@@ -214,11 +201,6 @@ static void phongo_regex_free_object(zend_object* object)
 
 	if (intern->flags) {
 		efree(intern->flags);
-	}
-
-	if (intern->properties) {
-		zend_hash_destroy(intern->properties);
-		FREE_HASHTABLE(intern->properties);
 	}
 }
 
@@ -268,28 +250,15 @@ static int phongo_regex_compare_objects(zval* o1, zval* o2)
 	return strcmp(intern1->flags, intern2->flags);
 }
 
-static HashTable* phongo_regex_get_debug_info(zend_object* object, int* is_temp)
-{
-	*is_temp = 1;
-	return phongo_regex_get_properties_hash(object, true);
-}
-
-static HashTable* phongo_regex_get_properties(zend_object* object)
-{
-	return phongo_regex_get_properties_hash(object, false);
-}
-
 void phongo_regex_init_ce(INIT_FUNC_ARGS)
 {
 	phongo_regex_ce                = register_class_MongoDB_BSON_Regex(phongo_regex_interface_ce, phongo_json_serializable_ce, phongo_type_ce, zend_ce_stringable);
 	phongo_regex_ce->create_object = phongo_regex_create_object;
 
 	memcpy(&phongo_handler_regex, phongo_get_std_object_handlers(), sizeof(zend_object_handlers));
-	phongo_handler_regex.compare        = phongo_regex_compare_objects;
-	phongo_handler_regex.clone_obj      = phongo_regex_clone_object;
-	phongo_handler_regex.get_debug_info = phongo_regex_get_debug_info;
-	phongo_handler_regex.get_properties = phongo_regex_get_properties;
-	phongo_handler_regex.free_obj       = phongo_regex_free_object;
+	phongo_handler_regex.compare   = phongo_regex_compare_objects;
+	phongo_handler_regex.clone_obj = phongo_regex_clone_object;
+	phongo_handler_regex.free_obj  = phongo_regex_free_object;
 	phongo_handler_regex.offset         = XtOffsetOf(phongo_regex_t, std);
 }
 
@@ -300,6 +269,8 @@ bool phongo_regex_new(zval* object, const char* pattern, const char* flags)
 	intern->pattern     = estrndup(pattern, intern->pattern_len);
 	intern->flags_len   = strlen(flags);
 	intern->flags       = estrndup(flags, intern->flags_len);
+
+	phongo_regex_update_properties(intern);
 
 	return true;
 }

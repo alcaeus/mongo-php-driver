@@ -24,6 +24,12 @@
 
 zend_class_entry* phongo_timestamp_ce;
 
+static void phongo_timestamp_update_properties(phongo_timestamp_t* intern)
+{
+	zend_update_property_long(phongo_timestamp_ce, &intern->std, ZEND_STRL("increment"), intern->increment);
+	zend_update_property_long(phongo_timestamp_ce, &intern->std, ZEND_STRL("timestamp"), intern->timestamp);
+}
+
 /* Initialize the object and return whether it was successful. An exception will
  * be thrown on error. */
 static bool phongo_timestamp_init(phongo_timestamp_t* intern, int64_t increment, int64_t timestamp)
@@ -41,6 +47,8 @@ static bool phongo_timestamp_init(phongo_timestamp_t* intern, int64_t increment,
 	intern->increment   = (uint32_t) increment;
 	intern->timestamp   = (uint32_t) timestamp;
 	intern->initialized = true;
+
+	phongo_timestamp_update_properties(intern);
 
 	return true;
 }
@@ -83,38 +91,6 @@ static bool phongo_timestamp_init_from_hash(phongo_timestamp_t* intern, HashTabl
 
 	phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "%s initialization requires \"increment\" and \"timestamp\" integer or numeric string fields", ZSTR_VAL(phongo_timestamp_ce->name));
 	return false;
-}
-
-static HashTable* phongo_timestamp_get_properties_hash(zend_object* object, bool is_temp)
-{
-	PHONGO_INTERN_FROM_Z_OBJ(timestamp, object);
-
-	HashTable* props;
-	char       s_increment[24];
-	char       s_timestamp[24];
-	int        s_increment_len;
-	int        s_timestamp_len;
-
-	PHONGO_GET_PROPERTY_HASH_INIT_PROPS(is_temp, intern, props, 2);
-
-	if (!intern->initialized) {
-		return props;
-	}
-
-	s_increment_len = snprintf(s_increment, sizeof(s_increment), "%" PRIu32, intern->increment);
-	s_timestamp_len = snprintf(s_timestamp, sizeof(s_timestamp), "%" PRIu32, intern->timestamp);
-
-	{
-		zval increment, timestamp;
-
-		ZVAL_STRINGL(&increment, s_increment, s_increment_len);
-		zend_hash_str_update(props, "increment", sizeof("increment") - 1, &increment);
-
-		ZVAL_STRINGL(&timestamp, s_timestamp, s_timestamp_len);
-		zend_hash_str_update(props, "timestamp", sizeof("timestamp") - 1, &timestamp);
-	}
-
-	return props;
 }
 
 /* Construct a new BSON timestamp type, which consists of a 4-byte increment and
@@ -224,9 +200,21 @@ static PHP_METHOD(MongoDB_BSON_Timestamp, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Timestamp, __serialize)
 {
+	PHONGO_INTERN_FROM_THIS(timestamp);
+
+	char s_increment[24];
+	char s_timestamp[24];
+	int  s_increment_len;
+	int  s_timestamp_len;
+
 	PHONGO_PARSE_PARAMETERS_NONE();
 
-	RETURN_ARR(phongo_timestamp_get_properties_hash(Z_OBJ_P(getThis()), true));
+	s_increment_len = snprintf(s_increment, sizeof(s_increment), "%" PRIu32, intern->increment);
+	s_timestamp_len = snprintf(s_timestamp, sizeof(s_timestamp), "%" PRIu32, intern->timestamp);
+
+	array_init_size(return_value, 2);
+	ADD_ASSOC_STRINGL(return_value, "increment", s_increment, s_increment_len);
+	ADD_ASSOC_STRINGL(return_value, "timestamp", s_timestamp, s_timestamp_len);
 }
 
 static PHP_METHOD(MongoDB_BSON_Timestamp, __unserialize)
@@ -248,11 +236,6 @@ static void phongo_timestamp_free_object(zend_object* object)
 	PHONGO_INTERN_FROM_Z_OBJ(timestamp, object);
 
 	zend_object_std_dtor(&intern->std);
-
-	if (intern->properties) {
-		zend_hash_destroy(intern->properties);
-		FREE_HASHTABLE(intern->properties);
-	}
 }
 
 static zend_object* phongo_timestamp_create_object(zend_class_entry* class_type)
@@ -302,28 +285,15 @@ static int phongo_timestamp_compare_objects(zval* o1, zval* o2)
 	return 0;
 }
 
-static HashTable* phongo_timestamp_get_debug_info(zend_object* object, int* is_temp)
-{
-	*is_temp = 1;
-	return phongo_timestamp_get_properties_hash(object, true);
-}
-
-static HashTable* phongo_timestamp_get_properties(zend_object* object)
-{
-	return phongo_timestamp_get_properties_hash(object, false);
-}
-
 void phongo_timestamp_init_ce(INIT_FUNC_ARGS)
 {
 	phongo_timestamp_ce                = register_class_MongoDB_BSON_Timestamp(phongo_timestamp_interface_ce, phongo_json_serializable_ce, phongo_type_ce, zend_ce_stringable);
 	phongo_timestamp_ce->create_object = phongo_timestamp_create_object;
 
 	memcpy(&phongo_handler_timestamp, phongo_get_std_object_handlers(), sizeof(zend_object_handlers));
-	phongo_handler_timestamp.compare        = phongo_timestamp_compare_objects;
-	phongo_handler_timestamp.clone_obj      = phongo_timestamp_clone_object;
-	phongo_handler_timestamp.get_debug_info = phongo_timestamp_get_debug_info;
-	phongo_handler_timestamp.get_properties = phongo_timestamp_get_properties;
-	phongo_handler_timestamp.free_obj       = phongo_timestamp_free_object;
+	phongo_handler_timestamp.compare   = phongo_timestamp_compare_objects;
+	phongo_handler_timestamp.clone_obj = phongo_timestamp_clone_object;
+	phongo_handler_timestamp.free_obj  = phongo_timestamp_free_object;
 	phongo_handler_timestamp.offset         = XtOffsetOf(phongo_timestamp_t, std);
 }
 
@@ -333,6 +303,8 @@ bool phongo_timestamp_new(zval* object, uint32_t increment, uint32_t timestamp)
 	intern->increment   = increment;
 	intern->timestamp   = timestamp;
 	intern->initialized = true;
+
+	phongo_timestamp_update_properties(intern);
 
 	return true;
 }

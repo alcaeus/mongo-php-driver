@@ -9,6 +9,10 @@ namespace MongoDB\BSON;
 
 final class Javascript implements JavascriptInterface, \JsonSerializable, Type, \Stringable
 {
+    public readonly string $code;
+
+    public readonly ?object $scope;
+
     final public function __construct(string $code, array|object|null $scope = null) {}
 
     final public static function __set_state(array $properties): Javascript {}

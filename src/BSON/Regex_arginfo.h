@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: fc23b5f166d4e4ffe43ffe15b4b4b16dcfdba2b9 */
+ * Stub hash: 01bf337079de0f257deba5cc875aaaf498d909da */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_MongoDB_BSON_Regex___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, pattern, IS_STRING, 0)
@@ -60,6 +60,18 @@ static zend_class_entry *register_class_MongoDB_BSON_Regex(zend_class_entry *cla
 	class_entry->ce_flags |= ZEND_ACC_FINAL;
 #endif
 	zend_class_implements(class_entry, 4, class_entry_MongoDB_BSON_RegexInterface, class_entry_JsonSerializable, class_entry_MongoDB_BSON_Type, class_entry_Stringable);
+
+	zval property_pattern_default_value;
+	ZVAL_UNDEF(&property_pattern_default_value);
+	zend_string *property_pattern_name = zend_string_init("pattern", sizeof("pattern") - 1, 1);
+	zend_declare_typed_property(class_entry, property_pattern_name, &property_pattern_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+	zend_string_release(property_pattern_name);
+
+	zval property_flags_default_value;
+	ZVAL_UNDEF(&property_flags_default_value);
+	zend_string *property_flags_name = zend_string_init("flags", sizeof("flags") - 1, 1);
+	zend_declare_typed_property(class_entry, property_flags_name, &property_flags_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+	zend_string_release(property_flags_name);
 
 	return class_entry;
 }

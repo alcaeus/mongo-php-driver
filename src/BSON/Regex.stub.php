@@ -9,6 +9,10 @@ namespace MongoDB\BSON;
 
 final class Regex implements RegexInterface, \JsonSerializable, Type, \Stringable
 {
+    public readonly string $pattern;
+
+    public readonly string $flags;
+
     final public function __construct(string $pattern, string $flags = '') {}
 
     final public function getPattern(): string {}
