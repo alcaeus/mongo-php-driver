@@ -259,7 +259,11 @@ static zend_object* phongo_timestamp_clone_object(zend_object* object)
 	new_intern = Z_OBJ_TIMESTAMP(new_object);
 	zend_objects_clone_members(&new_intern->std, &intern->std);
 
-	phongo_timestamp_init(new_intern, intern->increment, intern->timestamp);
+	/* Copy C struct fields directly; zend_objects_clone_members already
+	 * copied the native read-only properties from the original. */
+	new_intern->increment   = intern->increment;
+	new_intern->timestamp   = intern->timestamp;
+	new_intern->initialized = intern->initialized;
 
 	return new_object;
 }
@@ -294,7 +298,7 @@ void phongo_timestamp_init_ce(INIT_FUNC_ARGS)
 	phongo_handler_timestamp.compare   = phongo_timestamp_compare_objects;
 	phongo_handler_timestamp.clone_obj = phongo_timestamp_clone_object;
 	phongo_handler_timestamp.free_obj  = phongo_timestamp_free_object;
-	phongo_handler_timestamp.offset         = XtOffsetOf(phongo_timestamp_t, std);
+	phongo_handler_timestamp.offset    = XtOffsetOf(phongo_timestamp_t, std);
 }
 
 bool phongo_timestamp_new(zval* object, uint32_t increment, uint32_t timestamp)

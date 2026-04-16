@@ -26,6 +26,28 @@
 
 zend_class_entry* phongo_javascript_ce;
 
+static void phongo_javascript_update_properties(phongo_javascript_t* intern)
+{
+	zend_update_property_stringl(phongo_javascript_ce, &intern->std, ZEND_STRL("code"), intern->code, intern->code_len);
+
+	if (intern->scope && intern->scope->len) {
+		phongo_bson_state state;
+
+		PHONGO_BSON_INIT_STATE(state);
+
+		if (!phongo_bson_to_zval_ex(intern->scope, &state)) {
+			zval_ptr_dtor(&state.zchild);
+			zend_update_property_null(phongo_javascript_ce, &intern->std, ZEND_STRL("scope"));
+			return;
+		}
+
+		zend_update_property(phongo_javascript_ce, &intern->std, ZEND_STRL("scope"), &state.zchild);
+		zval_ptr_dtor(&state.zchild);
+	} else {
+		zend_update_property_null(phongo_javascript_ce, &intern->std, ZEND_STRL("scope"));
+	}
+}
+
 /* Initialize the object and return whether it was successful. An exception will
  * be thrown on error. */
 static bool phongo_javascript_init(phongo_javascript_t* intern, const char* code, size_t code_len, zval* scope)
@@ -50,6 +72,8 @@ static bool phongo_javascript_init(phongo_javascript_t* intern, const char* code
 		intern->scope = NULL;
 	}
 
+	phongo_javascript_update_properties(intern);
+
 	return true;
 }
 
@@ -67,49 +91,6 @@ static bool phongo_javascript_init_from_hash(phongo_javascript_t* intern, HashTa
 
 	phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "%s initialization requires \"code\" string field", ZSTR_VAL(phongo_javascript_ce->name));
 	return false;
-}
-
-HashTable* phongo_javascript_get_properties_hash(zend_object* object, bool is_temp)
-{
-	PHONGO_INTERN_FROM_Z_OBJ(javascript, object);
-
-	HashTable* props;
-
-	PHONGO_GET_PROPERTY_HASH_INIT_PROPS(is_temp, intern, props, 2);
-
-	if (!intern->code) {
-		return props;
-	}
-
-	{
-		zval code;
-
-		ZVAL_STRING(&code, intern->code);
-		zend_hash_str_update(props, "code", sizeof("code") - 1, &code);
-
-		if (intern->scope) {
-			phongo_bson_state state;
-
-			PHONGO_BSON_INIT_STATE(state);
-			if (!phongo_bson_to_zval_ex(intern->scope, &state)) {
-				zval_ptr_dtor(&state.zchild);
-				goto failure;
-			}
-
-			zend_hash_str_update(props, "scope", sizeof("scope") - 1, &state.zchild);
-		} else {
-			zval scope;
-
-			ZVAL_NULL(&scope);
-			zend_hash_str_update(props, "scope", sizeof("scope") - 1, &scope);
-		}
-	}
-
-	return props;
-
-failure:
-	PHONGO_GET_PROPERTY_HASH_FREE_PROPS(is_temp, props);
-	return NULL;
 }
 
 /* Construct a new BSON Javascript type. The scope is a document mapping
@@ -216,9 +197,27 @@ static PHP_METHOD(MongoDB_BSON_Javascript, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Javascript, __serialize)
 {
+	PHONGO_INTERN_FROM_THIS(javascript);
+
 	PHONGO_PARSE_PARAMETERS_NONE();
 
-	RETURN_ARR(phongo_javascript_get_properties_hash(Z_OBJ_P(getThis()), true));
+	array_init_size(return_value, 2);
+	ADD_ASSOC_STRINGL(return_value, "code", intern->code, intern->code_len);
+
+	if (intern->scope && intern->scope->len) {
+		phongo_bson_state state;
+
+		PHONGO_BSON_INIT_STATE(state);
+
+		if (!phongo_bson_to_zval_ex(intern->scope, &state)) {
+			zval_ptr_dtor(&state.zchild);
+			return;
+		}
+
+		ADD_ASSOC_ZVAL_EX(return_value, "scope", &state.zchild);
+	} else {
+		add_assoc_null(return_value, "scope");
+	}
 }
 
 static PHP_METHOD(MongoDB_BSON_Javascript, __unserialize)
@@ -248,11 +247,6 @@ static void phongo_javascript_free_object(zend_object* object)
 		bson_destroy(intern->scope);
 		intern->scope = NULL;
 	}
-
-	if (intern->properties) {
-		zend_hash_destroy(intern->properties);
-		FREE_HASHTABLE(intern->properties);
-	}
 }
 
 zend_object* phongo_javascript_create_object(zend_class_entry* class_type)
@@ -276,8 +270,11 @@ static zend_object* phongo_javascript_clone_object(zend_object* object)
 	new_intern = Z_OBJ_JAVASCRIPT(new_object);
 	zend_objects_clone_members(&new_intern->std, &intern->std);
 
-	phongo_javascript_init(new_intern, intern->code, intern->code_len, NULL);
-	new_intern->scope = intern->scope ? bson_copy(intern->scope) : NULL;
+	/* Copy C struct fields directly; zend_objects_clone_members already
+	 * copied the native read-only properties from the original. */
+	new_intern->code     = estrndup(intern->code, intern->code_len);
+	new_intern->code_len = intern->code_len;
+	new_intern->scope    = intern->scope ? bson_copy(intern->scope) : NULL;
 
 	return new_object;
 }
@@ -295,29 +292,16 @@ static int phongo_javascript_compare_objects(zval* o1, zval* o2)
 	return strcmp(intern1->code, intern2->code);
 }
 
-static HashTable* phongo_javascript_get_debug_info(zend_object* object, int* is_temp)
-{
-	*is_temp = 1;
-	return phongo_javascript_get_properties_hash(object, true);
-}
-
-static HashTable* phongo_javascript_get_properties(zend_object* object)
-{
-	return phongo_javascript_get_properties_hash(object, false);
-}
-
 void phongo_javascript_init_ce(INIT_FUNC_ARGS)
 {
 	phongo_javascript_ce                = register_class_MongoDB_BSON_Javascript(phongo_javascript_interface_ce, phongo_json_serializable_ce, phongo_type_ce, zend_ce_stringable);
 	phongo_javascript_ce->create_object = phongo_javascript_create_object;
 
 	memcpy(&phongo_handler_javascript, phongo_get_std_object_handlers(), sizeof(zend_object_handlers));
-	phongo_handler_javascript.compare        = phongo_javascript_compare_objects;
-	phongo_handler_javascript.clone_obj      = phongo_javascript_clone_object;
-	phongo_handler_javascript.get_debug_info = phongo_javascript_get_debug_info;
-	phongo_handler_javascript.get_properties = phongo_javascript_get_properties;
-	phongo_handler_javascript.free_obj       = phongo_javascript_free_object;
-	phongo_handler_javascript.offset         = XtOffsetOf(phongo_javascript_t, std);
+	phongo_handler_javascript.compare   = phongo_javascript_compare_objects;
+	phongo_handler_javascript.clone_obj = phongo_javascript_clone_object;
+	phongo_handler_javascript.free_obj  = phongo_javascript_free_object;
+	phongo_handler_javascript.offset    = XtOffsetOf(phongo_javascript_t, std);
 }
 
 bool phongo_javascript_new(zval* object, const char* code, size_t code_len, const bson_t* scope)
@@ -340,6 +324,8 @@ bool phongo_javascript_new(zval* object, const char* code, size_t code_len, cons
 	intern->code     = estrndup(code, code_len);
 	intern->code_len = code_len;
 	intern->scope    = scope ? bson_copy(scope) : NULL;
+
+	phongo_javascript_update_properties(intern);
 
 	return true;
 }

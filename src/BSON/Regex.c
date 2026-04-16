@@ -225,7 +225,12 @@ static zend_object* phongo_regex_clone_object(zend_object* object)
 	new_intern = Z_OBJ_REGEX(new_object);
 	zend_objects_clone_members(&new_intern->std, &intern->std);
 
-	phongo_regex_init(new_intern, intern->pattern, intern->pattern_len, intern->flags, intern->flags_len);
+	/* Copy C struct fields directly; zend_objects_clone_members already
+	 * copied the native read-only properties from the original. */
+	new_intern->pattern     = estrndup(intern->pattern, intern->pattern_len);
+	new_intern->pattern_len = intern->pattern_len;
+	new_intern->flags       = estrndup(intern->flags, intern->flags_len);
+	new_intern->flags_len   = intern->flags_len;
 
 	return new_object;
 }
@@ -259,7 +264,7 @@ void phongo_regex_init_ce(INIT_FUNC_ARGS)
 	phongo_handler_regex.compare   = phongo_regex_compare_objects;
 	phongo_handler_regex.clone_obj = phongo_regex_clone_object;
 	phongo_handler_regex.free_obj  = phongo_regex_free_object;
-	phongo_handler_regex.offset         = XtOffsetOf(phongo_regex_t, std);
+	phongo_handler_regex.offset    = XtOffsetOf(phongo_regex_t, std);
 }
 
 bool phongo_regex_new(zval* object, const char* pattern, const char* flags)
