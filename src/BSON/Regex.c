@@ -164,17 +164,6 @@ static PHP_METHOD(MongoDB_BSON_Regex, jsonSerialize)
 	ADD_ASSOC_STRINGL(return_value, "$options", intern->flags, intern->flags_len);
 }
 
-static PHP_METHOD(MongoDB_BSON_Regex, __serialize)
-{
-	PHONGO_INTERN_FROM_THIS(regex);
-
-	PHONGO_PARSE_PARAMETERS_NONE();
-
-	array_init_size(return_value, 2);
-	ADD_ASSOC_STRINGL(return_value, "pattern", intern->pattern, intern->pattern_len);
-	ADD_ASSOC_STRINGL(return_value, "flags", intern->flags, intern->flags_len);
-}
-
 static PHP_METHOD(MongoDB_BSON_Regex, __unserialize)
 {
 	zval* data;

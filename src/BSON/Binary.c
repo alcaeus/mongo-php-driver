@@ -162,17 +162,6 @@ static PHP_METHOD(MongoDB_BSON_Binary, jsonSerialize)
 	ADD_ASSOC_STRINGL(return_value, "$type", type, type_len);
 }
 
-static PHP_METHOD(MongoDB_BSON_Binary, __serialize)
-{
-	PHONGO_INTERN_FROM_THIS(binary);
-
-	PHONGO_PARSE_PARAMETERS_NONE();
-
-	array_init_size(return_value, 2);
-	ADD_ASSOC_STRINGL(return_value, "data", intern->data, intern->data_len);
-	ADD_ASSOC_LONG_EX(return_value, "type", intern->type);
-}
-
 static PHP_METHOD(MongoDB_BSON_Binary, __unserialize)
 {
 	zval* data;

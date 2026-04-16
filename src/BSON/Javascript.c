@@ -195,31 +195,6 @@ static PHP_METHOD(MongoDB_BSON_Javascript, jsonSerialize)
 	}
 }
 
-static PHP_METHOD(MongoDB_BSON_Javascript, __serialize)
-{
-	PHONGO_INTERN_FROM_THIS(javascript);
-
-	PHONGO_PARSE_PARAMETERS_NONE();
-
-	array_init_size(return_value, 2);
-	ADD_ASSOC_STRINGL(return_value, "code", intern->code, intern->code_len);
-
-	if (intern->scope && intern->scope->len) {
-		phongo_bson_state state;
-
-		PHONGO_BSON_INIT_STATE(state);
-
-		if (!phongo_bson_to_zval_ex(intern->scope, &state)) {
-			zval_ptr_dtor(&state.zchild);
-			return;
-		}
-
-		ADD_ASSOC_ZVAL_EX(return_value, "scope", &state.zchild);
-	} else {
-		add_assoc_null(return_value, "scope");
-	}
-}
-
 static PHP_METHOD(MongoDB_BSON_Javascript, __unserialize)
 {
 	zval* data;

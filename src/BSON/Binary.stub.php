@@ -97,7 +97,5 @@ final class Binary implements BinaryInterface, \JsonSerializable, Type, \Stringa
 
     final public function __unserialize(array $data): void {}
 
-    final public function __serialize(): array {}
-
     final public function jsonSerialize(): mixed {}
 }

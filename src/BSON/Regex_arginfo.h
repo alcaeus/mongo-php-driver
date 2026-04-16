@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 01bf337079de0f257deba5cc875aaaf498d909da */
+ * Stub hash: 4ca76edec5de7d32995ae3d0a64e99c459ab0900 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_MongoDB_BSON_Regex___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, pattern, IS_STRING, 0)
@@ -21,9 +21,6 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Regex___unser
 	ZEND_ARG_TYPE_INFO(0, data, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Regex___serialize, 0, 0, IS_ARRAY, 0)
-ZEND_END_ARG_INFO()
-
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Regex_jsonSerialize, 0, 0, IS_MIXED, 0)
 ZEND_END_ARG_INFO()
 
@@ -33,7 +30,6 @@ static ZEND_METHOD(MongoDB_BSON_Regex, getFlags);
 static ZEND_METHOD(MongoDB_BSON_Regex, __toString);
 static ZEND_METHOD(MongoDB_BSON_Regex, __set_state);
 static ZEND_METHOD(MongoDB_BSON_Regex, __unserialize);
-static ZEND_METHOD(MongoDB_BSON_Regex, __serialize);
 static ZEND_METHOD(MongoDB_BSON_Regex, jsonSerialize);
 
 static const zend_function_entry class_MongoDB_BSON_Regex_methods[] = {
@@ -43,7 +39,6 @@ static const zend_function_entry class_MongoDB_BSON_Regex_methods[] = {
 	ZEND_ME(MongoDB_BSON_Regex, __toString, arginfo_class_MongoDB_BSON_Regex___toString, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Regex, __set_state, arginfo_class_MongoDB_BSON_Regex___set_state, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Regex, __unserialize, arginfo_class_MongoDB_BSON_Regex___unserialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
-	ZEND_ME(MongoDB_BSON_Regex, __serialize, arginfo_class_MongoDB_BSON_Regex___serialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Regex, jsonSerialize, arginfo_class_MongoDB_BSON_Regex_jsonSerialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_FE_END
 };

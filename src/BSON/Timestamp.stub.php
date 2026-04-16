@@ -25,7 +25,5 @@ final class Timestamp implements TimestampInterface, \JsonSerializable, Type, \S
 
     final public function __unserialize(array $data): void {}
 
-    final public function __serialize(): array {}
-
     final public function jsonSerialize(): mixed {}
 }

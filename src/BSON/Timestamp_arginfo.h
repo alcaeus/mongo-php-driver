@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: a2df5ca7741c54f4983e3b847fdb35bc2673e550 */
+ * Stub hash: 42177bc7e34c87a4a713fe6b32614f442d513e3b */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_MongoDB_BSON_Timestamp___construct, 0, 0, 2)
 	ZEND_ARG_TYPE_MASK(0, increment, MAY_BE_LONG|MAY_BE_STRING, NULL)
@@ -22,9 +22,6 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Timestamp___u
 	ZEND_ARG_TYPE_INFO(0, data, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Timestamp___serialize, 0, 0, IS_ARRAY, 0)
-ZEND_END_ARG_INFO()
-
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Timestamp_jsonSerialize, 0, 0, IS_MIXED, 0)
 ZEND_END_ARG_INFO()
 
@@ -34,7 +31,6 @@ static ZEND_METHOD(MongoDB_BSON_Timestamp, getIncrement);
 static ZEND_METHOD(MongoDB_BSON_Timestamp, __toString);
 static ZEND_METHOD(MongoDB_BSON_Timestamp, __set_state);
 static ZEND_METHOD(MongoDB_BSON_Timestamp, __unserialize);
-static ZEND_METHOD(MongoDB_BSON_Timestamp, __serialize);
 static ZEND_METHOD(MongoDB_BSON_Timestamp, jsonSerialize);
 
 static const zend_function_entry class_MongoDB_BSON_Timestamp_methods[] = {
@@ -44,7 +40,6 @@ static const zend_function_entry class_MongoDB_BSON_Timestamp_methods[] = {
 	ZEND_ME(MongoDB_BSON_Timestamp, __toString, arginfo_class_MongoDB_BSON_Timestamp___toString, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Timestamp, __set_state, arginfo_class_MongoDB_BSON_Timestamp___set_state, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Timestamp, __unserialize, arginfo_class_MongoDB_BSON_Timestamp___unserialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
-	ZEND_ME(MongoDB_BSON_Timestamp, __serialize, arginfo_class_MongoDB_BSON_Timestamp___serialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Timestamp, jsonSerialize, arginfo_class_MongoDB_BSON_Timestamp_jsonSerialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_FE_END
 };

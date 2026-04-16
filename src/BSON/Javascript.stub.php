@@ -25,7 +25,5 @@ final class Javascript implements JavascriptInterface, \JsonSerializable, Type, 
 
     final public function __unserialize(array $data): void {}
 
-    final public function __serialize(): array {}
-
     final public function jsonSerialize(): mixed {}
 }

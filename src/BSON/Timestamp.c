@@ -198,25 +198,6 @@ static PHP_METHOD(MongoDB_BSON_Timestamp, jsonSerialize)
 	}
 }
 
-static PHP_METHOD(MongoDB_BSON_Timestamp, __serialize)
-{
-	PHONGO_INTERN_FROM_THIS(timestamp);
-
-	char s_increment[24];
-	char s_timestamp[24];
-	int  s_increment_len;
-	int  s_timestamp_len;
-
-	PHONGO_PARSE_PARAMETERS_NONE();
-
-	s_increment_len = snprintf(s_increment, sizeof(s_increment), "%" PRIu32, intern->increment);
-	s_timestamp_len = snprintf(s_timestamp, sizeof(s_timestamp), "%" PRIu32, intern->timestamp);
-
-	array_init_size(return_value, 2);
-	ADD_ASSOC_STRINGL(return_value, "increment", s_increment, s_increment_len);
-	ADD_ASSOC_STRINGL(return_value, "timestamp", s_timestamp, s_timestamp_len);
-}
-
 static PHP_METHOD(MongoDB_BSON_Timestamp, __unserialize)
 {
 	zval* data;

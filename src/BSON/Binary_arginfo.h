@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: a1cff09bdcfbc942ed96f143d466c0c3ee1bdd3c */
+ * Stub hash: 2be729569518407a9fa8a52765e887826f1f302b */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_MongoDB_BSON_Binary___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, data, IS_STRING, 0)
@@ -33,8 +33,6 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Binary___unse
 	ZEND_ARG_TYPE_INFO(0, data, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_MongoDB_BSON_Binary___serialize arginfo_class_MongoDB_BSON_Binary_toArray
-
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Binary_jsonSerialize, 0, 0, IS_MIXED, 0)
 ZEND_END_ARG_INFO()
 
@@ -47,7 +45,6 @@ static ZEND_METHOD(MongoDB_BSON_Binary, toArray);
 static ZEND_METHOD(MongoDB_BSON_Binary, __set_state);
 static ZEND_METHOD(MongoDB_BSON_Binary, __toString);
 static ZEND_METHOD(MongoDB_BSON_Binary, __unserialize);
-static ZEND_METHOD(MongoDB_BSON_Binary, __serialize);
 static ZEND_METHOD(MongoDB_BSON_Binary, jsonSerialize);
 
 static const zend_function_entry class_MongoDB_BSON_Binary_methods[] = {
@@ -60,7 +57,6 @@ static const zend_function_entry class_MongoDB_BSON_Binary_methods[] = {
 	ZEND_ME(MongoDB_BSON_Binary, __set_state, arginfo_class_MongoDB_BSON_Binary___set_state, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Binary, __toString, arginfo_class_MongoDB_BSON_Binary___toString, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Binary, __unserialize, arginfo_class_MongoDB_BSON_Binary___unserialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
-	ZEND_ME(MongoDB_BSON_Binary, __serialize, arginfo_class_MongoDB_BSON_Binary___serialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Binary, jsonSerialize, arginfo_class_MongoDB_BSON_Binary_jsonSerialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_FE_END
 };

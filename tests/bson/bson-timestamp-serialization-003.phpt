@@ -28,7 +28,7 @@ object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["timestamp"]=>
   int(5678)
 }
-string(88) "O:22:"MongoDB\BSON\Timestamp":2:{s:9:"increment";s:4:"1234";s:9:"timestamp";s:4:"5678";}"
+string(80) "O:22:"MongoDB\BSON\Timestamp":2:{s:9:"increment";i:1234;s:9:"timestamp";i:5678;}"
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
   int(1234)
@@ -42,7 +42,7 @@ object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["timestamp"]=>
   int(0)
 }
-string(92) "O:22:"MongoDB\BSON\Timestamp":2:{s:9:"increment";s:10:"2147483647";s:9:"timestamp";s:1:"0";}"
+string(83) "O:22:"MongoDB\BSON\Timestamp":2:{s:9:"increment";i:2147483647;s:9:"timestamp";i:0;}"
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
   int(2147483647)
@@ -56,7 +56,7 @@ object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["timestamp"]=>
   int(2147483647)
 }
-string(92) "O:22:"MongoDB\BSON\Timestamp":2:{s:9:"increment";s:1:"0";s:9:"timestamp";s:10:"2147483647";}"
+string(83) "O:22:"MongoDB\BSON\Timestamp":2:{s:9:"increment";i:0;s:9:"timestamp";i:2147483647;}"
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
   int(0)

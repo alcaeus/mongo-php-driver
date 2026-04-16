@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: c4a52779a5770fc1acb08bab442e9e5480f4f4cf */
+ * Stub hash: a9146db50032c40673a564835063ad223587297a */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_MongoDB_BSON_Javascript___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, code, IS_STRING, 0)
@@ -22,9 +22,6 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Javascript___
 	ZEND_ARG_TYPE_INFO(0, data, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Javascript___serialize, 0, 0, IS_ARRAY, 0)
-ZEND_END_ARG_INFO()
-
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_MongoDB_BSON_Javascript_jsonSerialize, 0, 0, IS_MIXED, 0)
 ZEND_END_ARG_INFO()
 
@@ -34,7 +31,6 @@ static ZEND_METHOD(MongoDB_BSON_Javascript, getCode);
 static ZEND_METHOD(MongoDB_BSON_Javascript, getScope);
 static ZEND_METHOD(MongoDB_BSON_Javascript, __toString);
 static ZEND_METHOD(MongoDB_BSON_Javascript, __unserialize);
-static ZEND_METHOD(MongoDB_BSON_Javascript, __serialize);
 static ZEND_METHOD(MongoDB_BSON_Javascript, jsonSerialize);
 
 static const zend_function_entry class_MongoDB_BSON_Javascript_methods[] = {
@@ -44,7 +40,6 @@ static const zend_function_entry class_MongoDB_BSON_Javascript_methods[] = {
 	ZEND_ME(MongoDB_BSON_Javascript, getScope, arginfo_class_MongoDB_BSON_Javascript_getScope, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Javascript, __toString, arginfo_class_MongoDB_BSON_Javascript___toString, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Javascript, __unserialize, arginfo_class_MongoDB_BSON_Javascript___unserialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
-	ZEND_ME(MongoDB_BSON_Javascript, __serialize, arginfo_class_MongoDB_BSON_Javascript___serialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_ME(MongoDB_BSON_Javascript, jsonSerialize, arginfo_class_MongoDB_BSON_Javascript_jsonSerialize, ZEND_ACC_PUBLIC|ZEND_ACC_FINAL)
 	ZEND_FE_END
 };
