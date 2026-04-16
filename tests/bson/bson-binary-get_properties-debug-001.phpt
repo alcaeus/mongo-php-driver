@@ -13,7 +13,7 @@ var_dump($binary);
 --EXPECTF--
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(8) "Zm9vYmFy"
+  string(6) "foobar"
   ["type"]=>
   int(0)
 }

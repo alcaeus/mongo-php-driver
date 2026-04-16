@@ -9,6 +9,8 @@ namespace MongoDB\BSON;
 
 final class ObjectId implements ObjectIdInterface, \JsonSerializable, Type, \Stringable
 {
+    public readonly int $timestamp;
+
     final public function __construct(?string $id = null) {}
 
     final public function getTimestamp(): int {}

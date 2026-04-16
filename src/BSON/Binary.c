@@ -32,6 +32,12 @@ static phongo_bson_vector_type_t phongo_binary_get_vector_type_from_data(const u
 static phongo_bson_vector_type_t phongo_binary_get_vector_type(const phongo_binary_t* intern);
 static void                      phongo_binary_get_vector_as_array(const phongo_binary_t* intern, zval* return_value);
 
+static void phongo_binary_update_properties(phongo_binary_t* intern)
+{
+	zend_update_property_stringl(phongo_binary_ce, &intern->std, ZEND_STRL("data"), intern->data, intern->data_len);
+	zend_update_property_long(phongo_binary_ce, &intern->std, ZEND_STRL("type"), intern->type);
+}
+
 /* Initialize the object and return whether it was successful. An exception will
  * be thrown on error. */
 static bool phongo_binary_init(phongo_binary_t* intern, const char* data, size_t data_len, zend_long type)
@@ -55,6 +61,8 @@ static bool phongo_binary_init(phongo_binary_t* intern, const char* data, size_t
 	intern->data_len = data_len;
 	intern->type     = (uint8_t) type;
 
+	phongo_binary_update_properties(intern);
+
 	return true;
 }
 
@@ -72,36 +80,6 @@ static bool phongo_binary_init_from_hash(phongo_binary_t* intern, HashTable* pro
 
 	phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "%s initialization requires \"data\" string and \"type\" integer fields", ZSTR_VAL(phongo_binary_ce->name));
 	return false;
-}
-
-static HashTable* phongo_binary_get_properties_hash(zend_object* object, bool is_temp, bool is_debug)
-{
-	PHONGO_INTERN_FROM_Z_OBJ(binary, object);
-
-	HashTable* props;
-
-	PHONGO_GET_PROPERTY_HASH_INIT_PROPS(is_temp, intern, props, 2);
-
-	if (!intern->data) {
-		return props;
-	}
-
-	{
-		zval data, type;
-
-		if (is_debug) {
-			ZVAL_NEW_STR(&data, php_base64_encode((unsigned char*) intern->data, intern->data_len));
-		} else {
-			ZVAL_STRINGL(&data, intern->data, intern->data_len);
-		}
-
-		zend_hash_str_update(props, "data", sizeof("data") - 1, &data);
-
-		ZVAL_LONG(&type, intern->type);
-		zend_hash_str_update(props, "type", sizeof("type") - 1, &type);
-	}
-
-	return props;
 }
 
 /* Construct a new BSON binary type */
@@ -186,9 +164,13 @@ static PHP_METHOD(MongoDB_BSON_Binary, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Binary, __serialize)
 {
+	PHONGO_INTERN_FROM_THIS(binary);
+
 	PHONGO_PARSE_PARAMETERS_NONE();
 
-	RETURN_ARR(phongo_binary_get_properties_hash(Z_OBJ_P(getThis()), true, false));
+	array_init_size(return_value, 2);
+	ADD_ASSOC_STRINGL(return_value, "data", intern->data, intern->data_len);
+	ADD_ASSOC_LONG_EX(return_value, "type", intern->type);
 }
 
 static PHP_METHOD(MongoDB_BSON_Binary, __unserialize)
@@ -214,11 +196,6 @@ static void phongo_binary_free_object(zend_object* object)
 	if (intern->data) {
 		efree(intern->data);
 	}
-
-	if (intern->properties) {
-		zend_hash_destroy(intern->properties);
-		FREE_HASHTABLE(intern->properties);
-	}
 }
 
 static zend_object* phongo_binary_create_object(zend_class_entry* class_type)
@@ -242,7 +219,11 @@ static zend_object* phongo_binary_clone_object(zend_object* object)
 	new_intern = Z_OBJ_BINARY(new_object);
 	zend_objects_clone_members(&new_intern->std, &intern->std);
 
-	phongo_binary_init(new_intern, intern->data, intern->data_len, intern->type);
+	// Copy C-side fields directly; zend_objects_clone_members already copied the
+	// PHP-side readonly properties, so we must not call phongo_binary_init here.
+	new_intern->data     = estrndup(intern->data, intern->data_len);
+	new_intern->data_len = intern->data_len;
+	new_intern->type     = intern->type;
 
 	return new_object;
 }
@@ -269,57 +250,16 @@ static int phongo_binary_compare_objects(zval* o1, zval* o2)
 	return zend_binary_strcmp(intern1->data, intern1->data_len, intern2->data, intern2->data_len);
 }
 
-static HashTable* phongo_binary_get_debug_info(zend_object* object, int* is_temp)
-{
-	*is_temp         = 1;
-	HashTable* props = phongo_binary_get_properties_hash(object, true, true);
-
-	PHONGO_INTERN_FROM_Z_OBJ(binary, object);
-
-	if (intern->type == BSON_SUBTYPE_VECTOR) {
-		zval vector;
-
-		phongo_binary_get_vector_as_array(intern, &vector);
-
-		if (EG(exception)) {
-			return props;
-		}
-
-		zend_hash_str_update(props, "vector", sizeof("vector") - 1, &vector);
-
-		zval         vector_type;
-		zend_object* vector_type_case = phongo_bson_vector_type_to_case(phongo_binary_get_vector_type(intern));
-
-		// The vector should always be valid by this point, but check for an error
-		if (!vector_type_case) {
-			phongo_throw_exception(PHONGO_ERROR_UNEXPECTED_VALUE, "Binary vector data is invalid");
-			return props;
-		}
-
-		ZVAL_OBJ_COPY(&vector_type, vector_type_case);
-		zend_hash_str_update(props, "vectorType", sizeof("vectorType") - 1, &vector_type);
-	}
-
-	return props;
-}
-
-static HashTable* phongo_binary_get_properties(zend_object* object)
-{
-	return phongo_binary_get_properties_hash(object, false, false);
-}
-
 void phongo_binary_init_ce(INIT_FUNC_ARGS)
 {
 	phongo_binary_ce                = register_class_MongoDB_BSON_Binary(phongo_binary_interface_ce, phongo_json_serializable_ce, phongo_type_ce, zend_ce_stringable);
 	phongo_binary_ce->create_object = phongo_binary_create_object;
 
 	memcpy(&phongo_handler_binary, phongo_get_std_object_handlers(), sizeof(zend_object_handlers));
-	phongo_handler_binary.compare        = phongo_binary_compare_objects;
-	phongo_handler_binary.clone_obj      = phongo_binary_clone_object;
-	phongo_handler_binary.get_debug_info = phongo_binary_get_debug_info;
-	phongo_handler_binary.get_properties = phongo_binary_get_properties;
-	phongo_handler_binary.free_obj       = phongo_binary_free_object;
-	phongo_handler_binary.offset         = XtOffsetOf(phongo_binary_t, std);
+	phongo_handler_binary.compare   = phongo_binary_compare_objects;
+	phongo_handler_binary.clone_obj = phongo_binary_clone_object;
+	phongo_handler_binary.free_obj  = phongo_binary_free_object;
+	phongo_handler_binary.offset    = XtOffsetOf(phongo_binary_t, std);
 }
 
 bool phongo_binary_new(zval* object, const char* data, size_t data_len, bson_subtype_t type)

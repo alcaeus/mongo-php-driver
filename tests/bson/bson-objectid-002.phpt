@@ -11,11 +11,11 @@ var_dump(new MongoDB\BSON\ObjectId(null));
 <?php exit(0); ?>
 --EXPECTF--
 object(MongoDB\BSON\ObjectId)#%d (%d) {
-  ["oid"]=>
-  string(24) "%x"
+  ["timestamp"]=>
+  int(%d)
 }
 object(MongoDB\BSON\ObjectId)#%d (%d) {
-  ["oid"]=>
-  string(24) "%x"
+  ["timestamp"]=>
+  int(%d)
 }
 ===DONE===

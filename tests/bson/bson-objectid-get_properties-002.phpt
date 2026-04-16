@@ -14,6 +14,6 @@ foreach ($oid as $key => $value) {
 ===DONE===
 <?php exit(0); ?>
 --EXPECT--
-string(3) "oid"
-string(24) "53e2a1c40640fd72175d4603"
+string(9) "timestamp"
+int(1407361476)
 ===DONE===

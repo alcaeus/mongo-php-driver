@@ -75,6 +75,10 @@ final class Binary implements BinaryInterface, \JsonSerializable, Type, \Stringa
      */
     public const TYPE_USER_DEFINED = UNKNOWN;
 
+    public readonly string $data;
+
+    public readonly int $type;
+
     final public function __construct(string $data, int $type = Binary::TYPE_GENERIC) {}
 
     final public static function fromVector(array $vector, VectorType $vectorType): Binary {}

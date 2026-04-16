@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 897b6b28554999a55d29f4fa299a210c608b400e */
+ * Stub hash: a1cff09bdcfbc942ed96f143d466c0c3ee1bdd3c */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_MongoDB_BSON_Binary___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, data, IS_STRING, 0)
@@ -143,6 +143,16 @@ static zend_class_entry *register_class_MongoDB_BSON_Binary(zend_class_entry *cl
 	zend_string *const_TYPE_USER_DEFINED_name = zend_string_init_interned("TYPE_USER_DEFINED", sizeof("TYPE_USER_DEFINED") - 1, 1);
 	zend_declare_class_constant_ex(class_entry, const_TYPE_USER_DEFINED_name, &const_TYPE_USER_DEFINED_value, ZEND_ACC_PUBLIC, NULL);
 	zend_string_release(const_TYPE_USER_DEFINED_name);
+
+	zval property_data_default_value;
+	ZVAL_UNDEF(&property_data_default_value);
+	zend_string *property_data_name = zend_string_init("data", sizeof("data") - 1, 1);
+	zend_declare_typed_property(class_entry, property_data_name, &property_data_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+	zend_string_release(property_data_name);
+
+	zval property_type_default_value;
+	ZVAL_UNDEF(&property_type_default_value);
+	zend_declare_typed_property(class_entry, ZSTR_KNOWN(ZEND_STR_TYPE), &property_type_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
 
 	return class_entry;
 }

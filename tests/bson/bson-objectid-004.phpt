@@ -10,7 +10,7 @@ var_dump(new MongoDB\BSON\ObjectId('56925B7330616224D0000001'));
 <?php exit(0); ?>
 --EXPECTF--
 object(MongoDB\BSON\ObjectId)#%d (%d) {
-  ["oid"]=>
-  string(24) "56925b7330616224d0000001"
+  ["timestamp"]=>
+  int(1452432243)
 }
 ===DONE===

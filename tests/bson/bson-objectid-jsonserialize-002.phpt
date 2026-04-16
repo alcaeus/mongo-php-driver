@@ -21,8 +21,8 @@ var_dump(toPHP(fromJSON($json)));
 object(stdClass)#%d (%d) {
   ["foo"]=>
   object(MongoDB\BSON\ObjectId)#%d (%d) {
-    ["oid"]=>
-    string(24) "5820ca4bef62d52d9924d0d8"
+    ["timestamp"]=>
+    int(1478543947)
   }
 }
 ===DONE===

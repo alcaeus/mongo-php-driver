@@ -12,7 +12,7 @@ var_dump(get_object_vars($oid));
 <?php exit(0); ?>
 --EXPECT--
 array(1) {
-  ["oid"]=>
-  string(24) "53e2a1c40640fd72175d4603"
+  ["timestamp"]=>
+  int(1407361476)
 }
 ===DONE===

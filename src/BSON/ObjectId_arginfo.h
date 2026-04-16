@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 6498d9a4685323f610d5673621b43cb5362bd49d */
+ * Stub hash: 01f3b945bf4ebeb16a445ebec8839090241840ca */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_MongoDB_BSON_ObjectId___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, id, IS_STRING, 1, "null")
@@ -56,6 +56,12 @@ static zend_class_entry *register_class_MongoDB_BSON_ObjectId(zend_class_entry *
 	class_entry->ce_flags |= ZEND_ACC_FINAL;
 #endif
 	zend_class_implements(class_entry, 4, class_entry_MongoDB_BSON_ObjectIdInterface, class_entry_JsonSerializable, class_entry_MongoDB_BSON_Type, class_entry_Stringable);
+
+	zval property_timestamp_default_value;
+	ZVAL_UNDEF(&property_timestamp_default_value);
+	zend_string *property_timestamp_name = zend_string_init("timestamp", sizeof("timestamp") - 1, 1);
+	zend_declare_typed_property(class_entry, property_timestamp_name, &property_timestamp_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_timestamp_name);
 
 	return class_entry;
 }

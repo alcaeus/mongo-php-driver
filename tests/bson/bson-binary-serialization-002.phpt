@@ -27,14 +27,14 @@ foreach ($tests as $test) {
 --EXPECTF--
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(8) "Zm9vYmFy"
+  string(6) "foobar"
   ["type"]=>
   int(0)
 }
 string(70) "O:19:"MongoDB\BSON\Binary":2:{s:4:"data";s:6:"foobar";s:4:"type";i:0;}"
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(8) "Zm9vYmFy"
+  string(6) "foobar"
   ["type"]=>
   int(0)
 }
@@ -55,84 +55,58 @@ object(MongoDB\BSON\Binary)#%d (%d) {
 
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(8) "AGZvbw=="
+  string(4) "%a"
   ["type"]=>
   int(0)
 }
 string(68) "O:19:"MongoDB\BSON\Binary":2:{s:4:"data";s:4:"%sfoo";s:4:"type";i:0;}"
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(8) "AGZvbw=="
+  string(4) "%a"
   ["type"]=>
   int(0)
 }
 
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(24) "Ej5FZ+ibEtOkVkJmVUQAAA=="
+  string(16) "%a"
   ["type"]=>
   int(4)
 }
 string(81) "O:19:"MongoDB\BSON\Binary":2:{s:4:"data";s:16:"%s";s:4:"type";i:4;}"
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(24) "Ej5FZ+ibEtOkVkJmVUQAAA=="
+  string(16) "%a"
   ["type"]=>
   int(4)
 }
 
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(24) "OFj2IjCsPJFfMAxmQxLGPw=="
+  string(16) "%a"
   ["type"]=>
   int(5)
 }
 string(81) "O:19:"MongoDB\BSON\Binary":2:{s:4:"data";s:16:"%s";s:4:"type";i:5;}"
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(24) "OFj2IjCsPJFfMAxmQxLGPw=="
+  string(16) "%a"
   ["type"]=>
   int(5)
 }
 
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(8) "AwABAgME"
+  string(6) "%a"
   ["type"]=>
   int(9)
-  ["vector"]=>
-  array(4) {
-    [0]=>
-    int(1)
-    [1]=>
-    int(2)
-    [2]=>
-    int(3)
-    [3]=>
-    int(4)
-  }
-  ["vectorType"]=>
-  enum(MongoDB\BSON\VectorType::Int8)
 }
 string(70) "O:19:"MongoDB\BSON\Binary":2:{s:4:"data";s:6:"%a";s:4:"type";i:9;}"
 object(MongoDB\BSON\Binary)#%d (%d) {
   ["data"]=>
-  string(8) "AwABAgME"
+  string(6) "%a"
   ["type"]=>
   int(9)
-  ["vector"]=>
-  array(4) {
-    [0]=>
-    int(1)
-    [1]=>
-    int(2)
-    [2]=>
-    int(3)
-    [3]=>
-    int(4)
-  }
-  ["vectorType"]=>
-  enum(MongoDB\BSON\VectorType::Int8)
 }
 
 ===DONE===

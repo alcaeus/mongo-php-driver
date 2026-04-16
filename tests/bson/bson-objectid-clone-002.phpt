@@ -23,8 +23,8 @@ var_dump($clone);
 --EXPECTF--
 bool(true)
 bool(false)
-object(MongoDB\BSON\ObjectId)#%d (1) {
-  ["oid"]=>
-  string(24) "53e2a1c40640fd72175d4603"
+object(MongoDB\BSON\ObjectId)#%d (%d) {
+  ["timestamp"]=>
+  int(1407361476)
 }
 ===DONE===

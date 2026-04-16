@@ -39,7 +39,7 @@ bool(true)
 bool(false)
 object(MongoDB\BSON\Binary)#%d (2) {
   ["data"]=>
-  string(24) "cmFuZG9tQmluYXJ5RGF0YQ=="
+  string(16) "randomBinaryData"
   ["type"]=>
   int(0)
 }
@@ -47,7 +47,7 @@ bool(true)
 bool(false)
 object(MongoDB\BSON\Binary)#%d (2) {
   ["data"]=>
-  string(24) "cmFuZG9tQmluYXJ5RGF0YQ=="
+  string(16) "randomBinaryData"
   ["type"]=>
   int(1)
 }
@@ -55,7 +55,7 @@ bool(true)
 bool(false)
 object(MongoDB\BSON\Binary)#%d (2) {
   ["data"]=>
-  string(24) "cmFuZG9tQmluYXJ5RGF0YQ=="
+  string(16) "randomBinaryData"
   ["type"]=>
   int(2)
 }
@@ -63,7 +63,7 @@ bool(true)
 bool(false)
 object(MongoDB\BSON\Binary)#%d (2) {
   ["data"]=>
-  string(24) "cmFuZG9tQmluYXJ5RGF0YQ=="
+  string(16) "randomBinaryData"
   ["type"]=>
   int(3)
 }
@@ -71,7 +71,7 @@ bool(true)
 bool(false)
 object(MongoDB\BSON\Binary)#%d (2) {
   ["data"]=>
-  string(24) "cmFuZG9tQmluYXJ5RGF0YQ=="
+  string(16) "randomBinaryData"
   ["type"]=>
   int(4)
 }
@@ -79,7 +79,7 @@ bool(true)
 bool(false)
 object(MongoDB\BSON\Binary)#%d (2) {
   ["data"]=>
-  string(24) "cmFuZG9tQmluYXJ5RGF0YQ=="
+  string(16) "randomBinaryData"
   ["type"]=>
   int(5)
 }
@@ -87,7 +87,7 @@ bool(true)
 bool(false)
 object(MongoDB\BSON\Binary)#%d (2) {
   ["data"]=>
-  string(24) "cmFuZG9tQmluYXJ5RGF0YQ=="
+  string(16) "randomBinaryData"
   ["type"]=>
   int(128)
 }
@@ -95,7 +95,7 @@ bool(true)
 bool(false)
 object(MongoDB\BSON\Binary)#%d (2) {
   ["data"]=>
-  string(24) "cmFuZG9tQmluYXJ5RGF0YQ=="
+  string(16) "randomBinaryData"
   ["type"]=>
   int(133)
 }
