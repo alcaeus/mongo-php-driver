@@ -204,7 +204,7 @@ object(stdClass)#%d (2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "TXlDbGFzcw=="
+    string(7) "MyClass"
     ["type"]=>
     int(128)
   }
@@ -217,7 +217,7 @@ object(stdClass)#%d (2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "WW91ckNsYXNz"
+    string(9) "YourClass"
     ["type"]=>
     int(128)
   }
@@ -230,7 +230,7 @@ object(OurClass)#%d (3) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "T3VyQ2xhc3M="
+    string(8) "OurClass"
     ["type"]=>
     int(128)
   }
@@ -245,7 +245,7 @@ object(stdClass)#%d (2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "WW91ckNsYXNz"
+    string(9) "YourClass"
     ["type"]=>
     int(68)
   }
@@ -279,7 +279,7 @@ object(YourClass)#%d (3) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(36) "TW9uZ29EQlxCU09OXFVuc2VyaWFsaXphYmxl"
+    string(27) "MongoDB\BSON\Unserializable"
     ["type"]=>
     int(128)
   }
@@ -297,7 +297,7 @@ object(YourClass)#%d (3) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "TXlDbGFzcw=="
+    string(7) "MyClass"
     ["type"]=>
     int(128)
   }
@@ -312,7 +312,7 @@ object(OurClass)#%d (3) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "T3VyQ2xhc3M="
+    string(8) "OurClass"
     ["type"]=>
     int(128)
   }
@@ -327,7 +327,7 @@ object(TheirClass)#%d (3) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(16) "VGhlaXJDbGFzcw=="
+    string(10) "TheirClass"
     ["type"]=>
     int(128)
   }
@@ -342,7 +342,7 @@ object(YourClass)#%d (3) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "WW91ckNsYXNz"
+    string(9) "YourClass"
     ["type"]=>
     int(128)
   }
@@ -360,7 +360,7 @@ object(TheirClass)#%d (3) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(16) "VGhlaXJDbGFzcw=="
+    string(10) "TheirClass"
     ["type"]=>
     int(128)
   }
@@ -418,7 +418,7 @@ array(2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "TXlDbGFzcw=="
+    string(7) "MyClass"
     ["type"]=>
     int(128)
   }
@@ -431,7 +431,7 @@ array(2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "T3VyQ2xhc3M="
+    string(8) "OurClass"
     ["type"]=>
     int(128)
   }
@@ -447,7 +447,7 @@ object(stdClass)#%d (2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "TXlDbGFzcw=="
+    string(7) "MyClass"
     ["type"]=>
     int(128)
   }
@@ -460,7 +460,7 @@ object(stdClass)#%d (2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(12) "T3VyQ2xhc3M="
+    string(8) "OurClass"
     ["type"]=>
     int(128)
   }

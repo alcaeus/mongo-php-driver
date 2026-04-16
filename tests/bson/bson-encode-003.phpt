@@ -62,7 +62,7 @@ object(stdClass)#%d (1) {
       ["__pclass"]=>
       object(MongoDB\BSON\Binary)#%d (2) {
         ["data"]=>
-        string(12) "TXlDbGFzcw=="
+        string(7) "MyClass"
         ["type"]=>
         int(128)
       }
@@ -86,7 +86,7 @@ object(stdClass)#%d (1) {
       ["__pclass"]=>
       object(MongoDB\BSON\Binary)#%d (2) {
         ["data"]=>
-        string(12) "TXlDbGFzczI="
+        string(8) "MyClass2"
         ["type"]=>
         int(128)
       }
@@ -119,7 +119,7 @@ object(stdClass)#%d (1) {
         ["__pclass"]=>
         object(MongoDB\BSON\Binary)#%d (2) {
           ["data"]=>
-          string(12) "TXlDbGFzcw=="
+          string(7) "MyClass"
           ["type"]=>
           int(128)
         }
@@ -136,7 +136,7 @@ object(stdClass)#%d (1) {
         ["__pclass"]=>
         object(MongoDB\BSON\Binary)#%d (2) {
           ["data"]=>
-          string(12) "TXlDbGFzczI="
+          string(8) "MyClass2"
           ["type"]=>
           int(128)
         }

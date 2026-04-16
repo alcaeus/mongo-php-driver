@@ -25,8 +25,8 @@ object(stdClass)#%d (%d) {
   array(1) {
     [0]=>
     object(MongoDB\BSON\ObjectId)#%d (%d) {
-      ["oid"]=>
-      string(24) "201700601301102102609060"
+      ["timestamp"]=>
+      int(538378336)
     }
   }
 }
@@ -46,8 +46,8 @@ object(stdClass)#%d (%d) {
 object(stdClass)#%d (%d) {
   ["0"]=>
   object(MongoDB\BSON\ObjectId)#%d (%d) {
-    ["oid"]=>
-    string(24) "55f2b3f1f657b3fa97c9c0a2"
+    ["timestamp"]=>
+    int(1441969137)
   }
   ["1"]=>
   object(MongoDB\BSON\UTCDateTime)#%d (%d) {

@@ -10,11 +10,11 @@ var_dump($timestamp);
 ?>
 ===DONE===
 <?php exit(0); ?>
---EXPECTF--
-object(MongoDB\BSON\Timestamp)#%d (%d) {
+--EXPECT--
+object(MongoDB\BSON\Timestamp)#1 (2) {
   ["increment"]=>
-  string(4) "1234"
+  int(1234)
   ["timestamp"]=>
-  string(4) "5678"
+  int(5678)
 }
 ===DONE===

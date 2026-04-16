@@ -25,30 +25,30 @@ foreach ($tests as $test) {
 --EXPECTF--
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
-  string(10) "4294967295"
+  int(4294967295)
   ["timestamp"]=>
-  string(1) "0"
+  int(0)
 }
 string(92) "O:22:"MongoDB\BSON\Timestamp":2:{s:9:"increment";s:10:"4294967295";s:9:"timestamp";s:1:"0";}"
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
-  string(10) "4294967295"
+  int(4294967295)
   ["timestamp"]=>
-  string(1) "0"
+  int(0)
 }
 
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
-  string(1) "0"
+  int(0)
   ["timestamp"]=>
-  string(10) "4294967295"
+  int(4294967295)
 }
 string(92) "O:22:"MongoDB\BSON\Timestamp":2:{s:9:"increment";s:1:"0";s:9:"timestamp";s:10:"4294967295";}"
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
-  string(1) "0"
+  int(0)
   ["timestamp"]=>
-  string(10) "4294967295"
+  int(4294967295)
 }
 
 ===DONE===

@@ -80,8 +80,8 @@ object(MongoDB\BSON\Javascript)#%d (%d) {
   object(stdClass)#%d (%d) {
     ["id"]=>
     object(MongoDB\BSON\ObjectId)#%d (%d) {
-      ["oid"]=>
-      string(24) "53e2a1c40640fd72175d4603"
+      ["timestamp"]=>
+      int(1407361476)
     }
   }
 }
@@ -93,8 +93,8 @@ object(MongoDB\BSON\Javascript)#%d (%d) {
   object(stdClass)#%d (%d) {
     ["id"]=>
     object(MongoDB\BSON\ObjectId)#%d (%d) {
-      ["oid"]=>
-      string(24) "53e2a1c40640fd72175d4603"
+      ["timestamp"]=>
+      int(1407361476)
     }
   }
 }

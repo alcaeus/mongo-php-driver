@@ -31,7 +31,7 @@ object(stdClass)#%d (%d) {
     ["__pclass"]=>
     object(MongoDB\BSON\Binary)#%d (%d) {
       ["data"]=>
-      string(16) "TWlzc2luZ0NsYXNz"
+      string(12) "MissingClass"
       ["type"]=>
       int(128)
     }

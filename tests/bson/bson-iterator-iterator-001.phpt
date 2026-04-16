@@ -30,8 +30,8 @@ var_dump(iterator_to_array($iterator));
 array(9) {
   ["objectId"]=>
   object(MongoDB\BSON\ObjectId)#%d (%d) {
-    ["oid"]=>
-    string(24) "56315a7c6118fd1b920270b1"
+    ["timestamp"]=>
+    int(1446075004)
   }
   ["string"]=>
   string(3) "foo"
@@ -96,8 +96,8 @@ array(9) {
 array(9) {
   [0]=>
   object(MongoDB\BSON\ObjectId)#%d (%d) {
-    ["oid"]=>
-    string(24) "56315a7c6118fd1b920270b1"
+    ["timestamp"]=>
+    int(1446075004)
   }
   [1]=>
   string(3) "foo"

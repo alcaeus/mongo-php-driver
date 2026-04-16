@@ -22,9 +22,9 @@ object(stdClass)#%d (%d) {
   ["foo"]=>
   object(MongoDB\BSON\Timestamp)#%d (%d) {
     ["increment"]=>
-    string(4) "1234"
+    int(1234)
     ["timestamp"]=>
-    string(4) "5678"
+    int(5678)
   }
 }
 ===DONE===

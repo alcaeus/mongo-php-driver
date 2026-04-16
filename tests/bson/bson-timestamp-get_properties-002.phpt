@@ -15,7 +15,7 @@ foreach ($timestamp as $key => $value) {
 <?php exit(0); ?>
 --EXPECT--
 string(9) "increment"
-string(4) "1234"
+int(1234)
 string(9) "timestamp"
-string(4) "5678"
+int(5678)
 ===DONE===

@@ -23,33 +23,33 @@ foreach ($tests as $test) {
 Test [2147483647:0]
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
-  string(10) "2147483647"
+  int(2147483647)
   ["timestamp"]=>
-  string(1) "0"
+  int(0)
 }
 
 Test [0:2147483647]
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
-  string(1) "0"
+  int(0)
   ["timestamp"]=>
-  string(10) "2147483647"
+  int(2147483647)
 }
 
 Test [4294967295:0]
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
-  string(10) "4294967295"
+  int(4294967295)
   ["timestamp"]=>
-  string(1) "0"
+  int(0)
 }
 
 Test [0:4294967295]
 object(MongoDB\BSON\Timestamp)#%d (%d) {
   ["increment"]=>
-  string(1) "0"
+  int(0)
   ["timestamp"]=>
-  string(10) "4294967295"
+  int(4294967295)
 }
 
 ===DONE===

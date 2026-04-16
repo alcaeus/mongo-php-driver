@@ -47,7 +47,7 @@ object(stdClass)#%d (2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(24) "TXlBYnN0cmFjdERvY3VtZW50"
+    string(18) "MyAbstractDocument"
     ["type"]=>
     int(128)
   }
@@ -60,7 +60,7 @@ object(stdClass)#%d (2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(16) "TXlEb2N1bWVudA=="
+    string(10) "MyDocument"
     ["type"]=>
     int(128)
   }
@@ -73,7 +73,7 @@ object(stdClass)#%d (2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(36) "TW9uZ29EQlxCU09OXFVuc2VyaWFsaXphYmxl"
+    string(27) "MongoDB\BSON\Unserializable"
     ["type"]=>
     int(128)
   }
@@ -86,7 +86,7 @@ object(stdClass)#%d (2) {
   ["__pclass"]=>
   object(MongoDB\BSON\Binary)#%d (2) {
     ["data"]=>
-    string(32) "TW9uZ29EQlxCU09OXFBlcnNpc3RhYmxl"
+    string(24) "MongoDB\BSON\Persistable"
     ["type"]=>
     int(68)
   }
