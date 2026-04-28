@@ -68,7 +68,7 @@
 #define PHONGO_PROPERTY_GETTER(className, getter, name, property) \
 	static PHP_METHOD(className, getter)                          \
 	{                                                             \
-		PHONGO_PARSE_PARAMETERS_NONE();                           \
+		ZEND_PARSE_PARAMETERS_NONE();                           \
                                                                   \
 		PHONGO_RETURN_PROPERTY(name, property);                   \
 	}

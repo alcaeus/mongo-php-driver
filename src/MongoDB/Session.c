@@ -167,9 +167,9 @@ static PHP_METHOD(MongoDB_Driver_Session, advanceClusterTime)
 
 	SESSION_CHECK_LIVELINESS(intern, "advanceClusterTime")
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY_OR_OBJECT(zcluster_time)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_zval_to_bson(zcluster_time, PHONGO_BSON_NONE, &cluster_time, NULL);
 
@@ -195,9 +195,9 @@ static PHP_METHOD(MongoDB_Driver_Session, advanceOperationTime)
 
 	SESSION_CHECK_LIVELINESS(intern, "advanceOperationTime")
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_OBJECT_OF_CLASS(ztimestamp, phongo_timestamp_interface_ce)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (!phongo_session_get_timestamp_parts(ztimestamp, &timestamp, &increment)) {
 		return;
@@ -218,7 +218,7 @@ static PHP_METHOD(MongoDB_Driver_Session, getClusterTime)
 
 	SESSION_CHECK_LIVELINESS(intern, "getClusterTime")
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	cluster_time = mongoc_client_session_get_cluster_time(intern->client_session);
 
@@ -247,7 +247,7 @@ static PHP_METHOD(MongoDB_Driver_Session, getLogicalSessionId)
 
 	SESSION_CHECK_LIVELINESS(intern, "getLogicalSessionId")
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	lsid = mongoc_client_session_get_lsid(intern->client_session);
 
@@ -269,7 +269,7 @@ static PHP_METHOD(MongoDB_Driver_Session, getOperationTime)
 
 	SESSION_CHECK_LIVELINESS(intern, "getOperationTime")
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	mongoc_client_session_get_operation_time(intern->client_session, &timestamp, &increment);
 
@@ -292,7 +292,7 @@ static PHP_METHOD(MongoDB_Driver_Session, getServer)
 
 	SESSION_CHECK_LIVELINESS(intern, "getServer")
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	server_id = mongoc_client_session_get_server_id(intern->client_session);
 
@@ -311,7 +311,7 @@ static PHP_METHOD(MongoDB_Driver_Session, getTransactionOptions)
 
 	SESSION_CHECK_LIVELINESS(intern, "getTransactionOptions")
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_transaction_options_to_zval(intern->client_session, return_value);
 }
@@ -325,7 +325,7 @@ static PHP_METHOD(MongoDB_Driver_Session, getTransactionState)
 
 	SESSION_CHECK_LIVELINESS(intern, "getTransactionState")
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	state = phongo_get_transaction_state_string(mongoc_client_session_get_transaction_state(intern->client_session));
 	if (!state) {
@@ -444,10 +444,10 @@ static PHP_METHOD(MongoDB_Driver_Session, startTransaction)
 
 	SESSION_CHECK_LIVELINESS(intern, "startTransaction")
 
-	PHONGO_PARSE_PARAMETERS_START(0, 1)
+	ZEND_PARSE_PARAMETERS_START(0, 1)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (options) {
 		txn_options = php_mongodb_session_parse_transaction_options(options);
@@ -475,7 +475,7 @@ static PHP_METHOD(MongoDB_Driver_Session, commitTransaction)
 
 	SESSION_CHECK_LIVELINESS(intern, "commitTransaction")
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if (!mongoc_client_session_commit_transaction(intern->client_session, &reply, &error)) {
 		phongo_throw_exception_from_bson_error_t_and_reply(&error, &reply);
@@ -493,7 +493,7 @@ static PHP_METHOD(MongoDB_Driver_Session, abortTransaction)
 
 	SESSION_CHECK_LIVELINESS(intern, "abortTransaction")
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if (!mongoc_client_session_abort_transaction(intern->client_session, &error)) {
 		phongo_throw_exception_from_bson_error_t(&error);
@@ -505,7 +505,7 @@ static PHP_METHOD(MongoDB_Driver_Session, endSession)
 {
 	PHONGO_INTERN_FROM_THIS(session);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	mongoc_client_session_destroy(intern->client_session);
 	intern->client_session = NULL;
@@ -520,7 +520,7 @@ static PHP_METHOD(MongoDB_Driver_Session, isDirty)
 
 	SESSION_CHECK_LIVELINESS(intern, "isDirty")
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_BOOL(mongoc_client_session_get_dirty(intern->client_session));
 }
@@ -532,7 +532,7 @@ static PHP_METHOD(MongoDB_Driver_Session, isInTransaction)
 
 	SESSION_CHECK_LIVELINESS(intern, "isInTransaction")
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_BOOL(mongoc_client_session_in_transaction(intern->client_session));
 }

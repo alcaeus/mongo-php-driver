@@ -85,9 +85,9 @@ static PHP_METHOD(MongoDB_BSON_Decimal128, __construct)
 	char*  value;
 	size_t value_len;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_STRING(value, value_len)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_decimal128_init(intern, value);
 }
@@ -97,9 +97,9 @@ static PHP_METHOD(MongoDB_BSON_Decimal128, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(decimal128, return_value);
 	props = Z_ARRVAL_P(array);
@@ -112,7 +112,7 @@ static PHP_METHOD(MongoDB_BSON_Decimal128, __toString)
 	PHONGO_INTERN_FROM_THIS(decimal128);
 	char outbuf[BSON_DECIMAL128_STRING];
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	bson_decimal128_to_string(&intern->decimal, outbuf);
 
@@ -124,7 +124,7 @@ static PHP_METHOD(MongoDB_BSON_Decimal128, jsonSerialize)
 	PHONGO_INTERN_FROM_THIS(decimal128);
 	char outbuf[BSON_DECIMAL128_STRING] = "";
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 1);
 	bson_decimal128_to_string(&intern->decimal, outbuf);
@@ -133,7 +133,7 @@ static PHP_METHOD(MongoDB_BSON_Decimal128, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Decimal128, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_decimal128_get_properties_hash(Z_OBJ_P(getThis()), true));
 }
@@ -142,9 +142,9 @@ static PHP_METHOD(MongoDB_BSON_Decimal128, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_decimal128_init_from_hash(Z_DECIMAL128_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

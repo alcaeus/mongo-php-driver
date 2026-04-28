@@ -28,7 +28,7 @@ static PHP_METHOD(MongoDB_Driver_Exception_CommandException, getResultDocument)
 	zval* resultdocument;
 	zval  rv;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	resultdocument = zend_read_property(phongo_commandexception_ce, Z_OBJ_P(getThis()), ZEND_STRL("resultDocument"), 0, &rv);
 

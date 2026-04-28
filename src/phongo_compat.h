@@ -159,55 +159,6 @@
 #error Unsupported architecture (integers are neither 32-bit nor 64-bit)
 #endif /* SIZEOF_ZEND_LONG */
 
-/* Compatibility macros to override error handling logic */
-#define PHONGO_PARSE_PARAMETERS_START(min_num_args, max_num_args)               \
-	do {                                                                        \
-		zend_error_handling error_handling;                                     \
-		zend_replace_error_handling(                                            \
-			EH_THROW,                                                           \
-			phongo_exception_from_phongo_domain(PHONGO_ERROR_INVALID_ARGUMENT), \
-			&error_handling);                                                   \
-	ZEND_PARSE_PARAMETERS_START(min_num_args, max_num_args)
-
-#define PHONGO_PARSE_PARAMETERS_END()                 \
-	ZEND_PARSE_PARAMETERS_END_EX(                     \
-		zend_restore_error_handling(&error_handling); \
-		return);                                      \
-	zend_restore_error_handling(&error_handling);     \
-	}                                                 \
-	while (0)
-
-#ifndef ZEND_PARSE_PARAMETERS_NONE
-#define PHONGO_PARSE_PARAMETERS_NONE()                                          \
-	do {                                                                        \
-		zend_error_handling error_handling;                                     \
-		zend_replace_error_handling(                                            \
-			EH_THROW,                                                           \
-			phongo_exception_from_phongo_domain(PHONGO_ERROR_INVALID_ARGUMENT), \
-			&error_handling);                                                   \
-		if (zend_parse_parameters_none() == FAILURE) {                          \
-			zend_restore_error_handling(&error_handling);                       \
-			return;                                                             \
-		}                                                                       \
-		zend_restore_error_handling(&error_handling);                           \
-	} while (0)
-#else
-#define PHONGO_PARSE_PARAMETERS_NONE()                                          \
-	do {                                                                        \
-		zend_error_handling error_handling;                                     \
-		zend_replace_error_handling(                                            \
-			EH_THROW,                                                           \
-			phongo_exception_from_phongo_domain(PHONGO_ERROR_INVALID_ARGUMENT), \
-			&error_handling);                                                   \
-		if (UNEXPECTED(ZEND_NUM_ARGS() != 0)) {                                 \
-			zend_wrong_parameters_none_error();                                 \
-			zend_restore_error_handling(&error_handling);                       \
-			return;                                                             \
-		}                                                                       \
-		zend_restore_error_handling(&error_handling);                           \
-	} while (0)
-#endif
-
 zend_bool phongo_zend_hash_apply_protection_begin(HashTable* ht);
 zend_bool phongo_zend_hash_apply_protection_end(HashTable* ht);
 

@@ -111,9 +111,9 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, fromJSON)
 	bson_t*      bson;
 	bson_error_t error;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_STR(json)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	bson = bson_new_from_json((const uint8_t*) ZSTR_VAL(json), ZSTR_LEN(json), &error);
 	if (!bson) {
@@ -156,9 +156,9 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, fromPHP)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (!zend_array_is_list(Z_ARRVAL_P(data))) {
 		phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "Expected value to be a list, but given array is not");
@@ -211,9 +211,9 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, get)
 
 	zend_long index;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_LONG(index)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (!phongo_packedarray_get(intern, index, return_value, false)) {
 		// Exception already thrown
@@ -223,7 +223,7 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, get)
 
 static PHP_METHOD(MongoDB_BSON_PackedArray, getIterator)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_iterator_init(return_value, getThis());
 }
@@ -246,9 +246,9 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, has)
 
 	zend_long index;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_LONG(index)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	RETURN_BOOL(phongo_packedarray_has(intern, index));
 }
@@ -257,7 +257,7 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, toCanonicalExtendedJSON)
 {
 	PHONGO_INTERN_FROM_THIS(packedarray);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_packedarray_to_json(return_value, BSON_JSON_MODE_CANONICAL, intern->bson);
 }
@@ -266,7 +266,7 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, toRelaxedExtendedJSON)
 {
 	PHONGO_INTERN_FROM_THIS(packedarray);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_packedarray_to_json(return_value, BSON_JSON_MODE_RELAXED, intern->bson);
 }
@@ -278,10 +278,10 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, toPHP)
 	zval*             typemap = NULL;
 	phongo_bson_state state;
 
-	PHONGO_PARSE_PARAMETERS_START(0, 1)
+	ZEND_PARSE_PARAMETERS_START(0, 1)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY(typemap)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_BSON_INIT_STATE(state);
 
@@ -308,9 +308,9 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, offsetExists)
 	PHONGO_INTERN_FROM_THIS(packedarray);
 	zval* key;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ZVAL(key)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (Z_TYPE_P(key) != IS_LONG) {
 		RETURN_FALSE;
@@ -324,9 +324,9 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, offsetGet)
 	PHONGO_INTERN_FROM_THIS(packedarray);
 	zval* key;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ZVAL(key)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (Z_TYPE_P(key) != IS_LONG) {
 		phongo_throw_exception(PHONGO_ERROR_RUNTIME, "Could not find index of type \"%s\" in BSON array", zend_zval_type_name(key));
@@ -351,7 +351,7 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, __toString)
 {
 	PHONGO_INTERN_FROM_THIS(packedarray);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_STRINGL((const char*) bson_get_data(intern->bson), intern->bson->len);
 }
@@ -361,9 +361,9 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(packedarray, return_value);
 	props = Z_ARRVAL_P(array);
@@ -373,7 +373,7 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, __set_state)
 
 static PHP_METHOD(MongoDB_BSON_PackedArray, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_packedarray_get_properties_hash(Z_OBJ_P(getThis()), true, 1));
 }
@@ -382,9 +382,9 @@ static PHP_METHOD(MongoDB_BSON_PackedArray, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_packedarray_init_from_hash(Z_PACKEDARRAY_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

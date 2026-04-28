@@ -231,12 +231,12 @@ static PHP_METHOD(MongoDB_Driver_ReadPreference, __construct)
 
 	/* Separate the tagSets zval, since we may end up modifying it in
 	 * phongo_read_preference_prep_tagsets() below. */
-	PHONGO_PARSE_PARAMETERS_START(1, 3)
+	ZEND_PARSE_PARAMETERS_START(1, 3)
 	Z_PARAM_STR(mode)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_EX(tagSets, 1, 1)
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (zend_string_equals_literal_ci(mode, PHONGO_READ_PRIMARY)) {
 		intern->read_preference = mongoc_read_prefs_new(MONGOC_READ_PRIMARY);
@@ -341,9 +341,9 @@ static PHP_METHOD(MongoDB_Driver_ReadPreference, __set_state)
 	/* Separate the zval, since we may end up modifying the "tags" element in
 	 * phongo_read_preference_prep_tagsets(), which is called from
 	 * phongo_readpreference_init_from_hash. */
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY_EX(array, 0, 1)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(readpreference, return_value);
 	props = Z_ARRVAL_P(array);
@@ -358,7 +358,7 @@ static PHP_METHOD(MongoDB_Driver_ReadPreference, getHedge)
 
 	const bson_t* hedge;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	hedge = mongoc_read_prefs_get_hedge(intern->read_preference);
 
@@ -383,7 +383,7 @@ static PHP_METHOD(MongoDB_Driver_ReadPreference, getMaxStalenessSeconds)
 {
 	PHONGO_INTERN_FROM_THIS(readpreference);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_LONG(mongoc_read_prefs_get_max_staleness_seconds(intern->read_preference));
 }
@@ -393,7 +393,7 @@ static PHP_METHOD(MongoDB_Driver_ReadPreference, getModeString)
 {
 	PHONGO_INTERN_FROM_THIS(readpreference);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_STRING(phongo_readpreference_get_mode_string(intern->read_preference));
 }
@@ -405,7 +405,7 @@ static PHP_METHOD(MongoDB_Driver_ReadPreference, getTagSets)
 
 	const bson_t* tags;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	tags = mongoc_read_prefs_get_tags(intern->read_preference);
 
@@ -427,7 +427,7 @@ static PHP_METHOD(MongoDB_Driver_ReadPreference, getTagSets)
 
 static PHP_METHOD(MongoDB_Driver_ReadPreference, bsonSerialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 4);
 
@@ -457,9 +457,9 @@ static PHP_METHOD(MongoDB_Driver_ReadPreference, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_readpreference_init_from_hash(Z_READPREFERENCE_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

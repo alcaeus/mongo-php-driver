@@ -87,9 +87,9 @@ static PHP_METHOD(MongoDB_BSON_Document, fromBSON)
 	bson_reader_t* reader;
 	bool           eof = false;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_STR(bson_string)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	reader = bson_reader_new_from_data((const uint8_t*) ZSTR_VAL(bson_string), ZSTR_LEN(bson_string));
 	if (!(bson = bson_reader_read(reader, NULL))) {
@@ -123,9 +123,9 @@ static PHP_METHOD(MongoDB_BSON_Document, fromJSON)
 	bson_t*      bson;
 	bson_error_t error;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_STR(json)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	bson = bson_new_from_json((const uint8_t*) ZSTR_VAL(json), ZSTR_LEN(json), &error);
 	if (!bson) {
@@ -144,9 +144,9 @@ static PHP_METHOD(MongoDB_BSON_Document, fromPHP)
 	zval  zv;
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY_OR_OBJECT(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(document, &zv);
 	intern->bson = bson_new();
@@ -218,9 +218,9 @@ static PHP_METHOD(MongoDB_BSON_Document, get)
 	char*  key;
 	size_t key_len;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_STRING(key, key_len)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	// May throw, in which case we do nothing
 	phongo_document_get(intern, key, key_len, return_value, false);
@@ -228,7 +228,7 @@ static PHP_METHOD(MongoDB_BSON_Document, get)
 
 static PHP_METHOD(MongoDB_BSON_Document, getIterator)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_iterator_init(return_value, getThis());
 }
@@ -276,9 +276,9 @@ static PHP_METHOD(MongoDB_BSON_Document, has)
 	char*  key;
 	size_t key_len;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_STRING(key, key_len)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	RETURN_BOOL(phongo_document_has(intern, key, key_len));
 }
@@ -287,7 +287,7 @@ static PHP_METHOD(MongoDB_BSON_Document, toCanonicalExtendedJSON)
 {
 	PHONGO_INTERN_FROM_THIS(document);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_bson_to_json(return_value, intern->bson, PHONGO_JSON_MODE_CANONICAL);
 }
@@ -296,7 +296,7 @@ static PHP_METHOD(MongoDB_BSON_Document, toRelaxedExtendedJSON)
 {
 	PHONGO_INTERN_FROM_THIS(document);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_bson_to_json(return_value, intern->bson, PHONGO_JSON_MODE_RELAXED);
 }
@@ -308,10 +308,10 @@ static PHP_METHOD(MongoDB_BSON_Document, toPHP)
 	zval*             typemap = NULL;
 	phongo_bson_state state;
 
-	PHONGO_PARSE_PARAMETERS_START(0, 1)
+	ZEND_PARSE_PARAMETERS_START(0, 1)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY(typemap)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_BSON_INIT_STATE(state);
 
@@ -338,9 +338,9 @@ static PHP_METHOD(MongoDB_BSON_Document, offsetExists)
 
 	zval* offset;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ZVAL(offset)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	RETURN_BOOL(phongo_document_has_by_zval(intern, offset));
 }
@@ -351,9 +351,9 @@ static PHP_METHOD(MongoDB_BSON_Document, offsetGet)
 
 	zval* offset;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ZVAL(offset)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	// May throw, in which case we do nothing
 	phongo_document_get_by_zval(intern, offset, return_value, false);
@@ -373,7 +373,7 @@ static PHP_METHOD(MongoDB_BSON_Document, __toString)
 {
 	PHONGO_INTERN_FROM_THIS(document);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_STRINGL((const char*) bson_get_data(intern->bson), intern->bson->len);
 }
@@ -383,9 +383,9 @@ static PHP_METHOD(MongoDB_BSON_Document, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(document, return_value);
 	props = Z_ARRVAL_P(array);
@@ -395,7 +395,7 @@ static PHP_METHOD(MongoDB_BSON_Document, __set_state)
 
 static PHP_METHOD(MongoDB_BSON_Document, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_document_get_properties_hash(Z_OBJ_P(getThis()), true, 1));
 }
@@ -404,9 +404,9 @@ static PHP_METHOD(MongoDB_BSON_Document, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_document_init_from_hash(Z_DOCUMENT_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

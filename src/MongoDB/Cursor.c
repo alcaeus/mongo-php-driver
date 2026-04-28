@@ -65,9 +65,9 @@ static PHP_METHOD(MongoDB_Driver_Cursor, setTypeMap)
 
 	PHONGO_BSON_INIT_STATE(state);
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY_OR_NULL(typemap)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (!phongo_bson_typemap_to_state(typemap, &state.map)) {
 		return;
@@ -117,7 +117,7 @@ static int phongo_cursor_to_array_apply(zend_object_iterator* iter, void* puser)
 /* Returns an array of all result documents for this cursor */
 static PHP_METHOD(MongoDB_Driver_Cursor, toArray)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init(return_value);
 
@@ -132,7 +132,7 @@ static PHP_METHOD(MongoDB_Driver_Cursor, getId)
 {
 	PHONGO_INTERN_FROM_THIS(cursor);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_int64_new(return_value, mongoc_cursor_get_id(intern->cursor));
 }
@@ -142,7 +142,7 @@ static PHP_METHOD(MongoDB_Driver_Cursor, getServer)
 {
 	PHONGO_INTERN_FROM_THIS(cursor);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_server_init(return_value, &intern->manager, intern->server_id);
 }
@@ -152,7 +152,7 @@ static PHP_METHOD(MongoDB_Driver_Cursor, isDead)
 {
 	PHONGO_INTERN_FROM_THIS(cursor);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_BOOL(!mongoc_cursor_more(intern->cursor));
 }
@@ -163,7 +163,7 @@ static PHP_METHOD(MongoDB_Driver_Cursor, current)
 
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	data = &intern->visitor_data.zchild;
 
@@ -178,7 +178,7 @@ static PHP_METHOD(MongoDB_Driver_Cursor, key)
 {
 	PHONGO_INTERN_FROM_THIS(cursor);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if (Z_ISUNDEF(intern->visitor_data.zchild)) {
 		RETURN_NULL();
@@ -193,7 +193,7 @@ static PHP_METHOD(MongoDB_Driver_Cursor, next)
 
 	const bson_t* doc;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_cursor_free_current(intern);
 
@@ -230,7 +230,7 @@ static PHP_METHOD(MongoDB_Driver_Cursor, valid)
 {
 	PHONGO_INTERN_FROM_THIS(cursor);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_BOOL(!Z_ISUNDEF(intern->visitor_data.zchild));
 }
@@ -241,7 +241,7 @@ static PHP_METHOD(MongoDB_Driver_Cursor, rewind)
 
 	const bson_t* doc;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	/* If the cursor was never advanced (e.g. command cursor), do so now */
 	if (!intern->advanced) {

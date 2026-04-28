@@ -105,11 +105,11 @@ static PHP_METHOD(MongoDB_Driver_Command, __construct)
 	zval* document;
 	zval* options = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 2)
+	ZEND_PARSE_PARAMETERS_START(1, 2)
 	Z_PARAM_ARRAY_OR_OBJECT(document)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_command_init(intern, document, options);
 }

@@ -123,11 +123,11 @@ static PHP_METHOD(MongoDB_BSON_Javascript, __construct)
 	size_t code_len;
 	zval*  scope = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 2)
+	ZEND_PARSE_PARAMETERS_START(1, 2)
 	Z_PARAM_STRING(code, code_len)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_OBJECT_EX(scope, 1, 0)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_javascript_init(intern, code, code_len, scope);
 }
@@ -137,9 +137,9 @@ static PHP_METHOD(MongoDB_BSON_Javascript, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(javascript, return_value);
 	props = Z_ARRVAL_P(array);
@@ -152,7 +152,7 @@ static PHP_METHOD(MongoDB_BSON_Javascript, __toString)
 {
 	PHONGO_INTERN_FROM_THIS(javascript);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_STRINGL(intern->code, intern->code_len);
 }
@@ -161,7 +161,7 @@ static PHP_METHOD(MongoDB_BSON_Javascript, getCode)
 {
 	PHONGO_INTERN_FROM_THIS(javascript);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_STRINGL(intern->code, intern->code_len);
 }
@@ -170,7 +170,7 @@ static PHP_METHOD(MongoDB_BSON_Javascript, getScope)
 {
 	PHONGO_INTERN_FROM_THIS(javascript);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if (!intern->scope) {
 		RETURN_NULL();
@@ -196,7 +196,7 @@ static PHP_METHOD(MongoDB_BSON_Javascript, jsonSerialize)
 {
 	PHONGO_INTERN_FROM_THIS(javascript);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 2);
 	ADD_ASSOC_STRINGL(return_value, "$code", intern->code, intern->code_len);
@@ -216,7 +216,7 @@ static PHP_METHOD(MongoDB_BSON_Javascript, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Javascript, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_javascript_get_properties_hash(Z_OBJ_P(getThis()), true));
 }
@@ -225,9 +225,9 @@ static PHP_METHOD(MongoDB_BSON_Javascript, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_javascript_init_from_hash(Z_JAVASCRIPT_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

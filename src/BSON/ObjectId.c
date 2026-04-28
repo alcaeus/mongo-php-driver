@@ -107,10 +107,10 @@ static PHP_METHOD(MongoDB_BSON_ObjectId, __construct)
 	char*  id = NULL;
 	size_t id_len;
 
-	PHONGO_PARSE_PARAMETERS_START(0, 1)
+	ZEND_PARSE_PARAMETERS_START(0, 1)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_STRING_OR_NULL(id, id_len)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (id) {
 		phongo_objectid_init_from_hex_string(intern, id, id_len);
@@ -125,7 +125,7 @@ static PHP_METHOD(MongoDB_BSON_ObjectId, getTimestamp)
 
 	bson_oid_t tmp_oid;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	bson_oid_init_from_string(&tmp_oid, intern->oid);
 	RETVAL_LONG(bson_oid_get_time_t(&tmp_oid));
@@ -136,9 +136,9 @@ static PHP_METHOD(MongoDB_BSON_ObjectId, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(objectid, return_value);
 	props = Z_ARRVAL_P(array);
@@ -150,7 +150,7 @@ static PHP_METHOD(MongoDB_BSON_ObjectId, __toString)
 {
 	PHONGO_INTERN_FROM_THIS(objectid);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_STRINGL(intern->oid, PHONGO_OID_LEN);
 }
@@ -159,7 +159,7 @@ static PHP_METHOD(MongoDB_BSON_ObjectId, jsonSerialize)
 {
 	PHONGO_INTERN_FROM_THIS(objectid);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 1);
 	ADD_ASSOC_STRINGL(return_value, "$oid", intern->oid, PHONGO_OID_LEN);
@@ -167,7 +167,7 @@ static PHP_METHOD(MongoDB_BSON_ObjectId, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_ObjectId, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_objectid_get_properties_hash(Z_OBJ_P(getThis()), true));
 }
@@ -176,9 +176,9 @@ static PHP_METHOD(MongoDB_BSON_ObjectId, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_objectid_init_from_hash(Z_OBJECTID_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

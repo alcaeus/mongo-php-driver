@@ -81,7 +81,7 @@ static PHP_METHOD(MongoDB_BSON_Symbol, __toString)
 {
 	PHONGO_INTERN_FROM_THIS(symbol);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_STRINGL(intern->symbol, intern->symbol_len);
 }
@@ -91,9 +91,9 @@ static PHP_METHOD(MongoDB_BSON_Symbol, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(symbol, return_value);
 	props = Z_ARRVAL_P(array);
@@ -105,7 +105,7 @@ static PHP_METHOD(MongoDB_BSON_Symbol, jsonSerialize)
 {
 	PHONGO_INTERN_FROM_THIS(symbol);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 1);
 	ADD_ASSOC_STRINGL(return_value, "$symbol", intern->symbol, intern->symbol_len);
@@ -113,7 +113,7 @@ static PHP_METHOD(MongoDB_BSON_Symbol, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Symbol, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	ZVAL_ARR(return_value, phongo_symbol_get_properties_hash(Z_OBJ_P(getThis()), true));
 }
@@ -122,9 +122,9 @@ static PHP_METHOD(MongoDB_BSON_Symbol, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_symbol_init_from_hash(Z_SYMBOL_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

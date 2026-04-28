@@ -28,7 +28,7 @@ PHONGO_DISABLED_CONSTRUCTOR(MongoDB_BSON_Undefined)
 /* Return the empty string. */
 static PHP_METHOD(MongoDB_BSON_Undefined, __toString)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_STRINGL("", 0);
 }
@@ -37,16 +37,16 @@ static PHP_METHOD(MongoDB_BSON_Undefined, __set_state)
 {
 	zval* array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	object_init_ex(return_value, phongo_undefined_ce);
 }
 
 static PHP_METHOD(MongoDB_BSON_Undefined, jsonSerialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 1);
 	ADD_ASSOC_BOOL_EX(return_value, "$undefined", 1);
@@ -54,7 +54,7 @@ static PHP_METHOD(MongoDB_BSON_Undefined, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Undefined, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 0);
 }
@@ -63,9 +63,9 @@ static PHP_METHOD(MongoDB_BSON_Undefined, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 }
 
 /* MongoDB\BSON\Undefined object handlers */

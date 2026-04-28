@@ -113,11 +113,11 @@ static PHP_METHOD(MongoDB_BSON_Regex, __construct)
 	char*  flags     = NULL;
 	size_t flags_len = 0;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 2)
+	ZEND_PARSE_PARAMETERS_START(1, 2)
 	Z_PARAM_STRING(pattern, pattern_len)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_STRING(flags, flags_len)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_regex_init(intern, pattern, pattern_len, flags, flags_len);
 }
@@ -126,7 +126,7 @@ static PHP_METHOD(MongoDB_BSON_Regex, getPattern)
 {
 	PHONGO_INTERN_FROM_THIS(regex);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_STRINGL(intern->pattern, intern->pattern_len);
 }
@@ -135,7 +135,7 @@ static PHP_METHOD(MongoDB_BSON_Regex, getFlags)
 {
 	PHONGO_INTERN_FROM_THIS(regex);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_STRINGL(intern->flags, intern->flags_len);
 }
@@ -145,9 +145,9 @@ static PHP_METHOD(MongoDB_BSON_Regex, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(regex, return_value);
 	props = Z_ARRVAL_P(array);
@@ -163,7 +163,7 @@ static PHP_METHOD(MongoDB_BSON_Regex, __toString)
 	char* regex;
 	int   regex_len;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	regex_len = spprintf(&regex, 0, "/%s/%s", intern->pattern, intern->flags);
 	RETVAL_STRINGL(regex, regex_len);
@@ -174,7 +174,7 @@ static PHP_METHOD(MongoDB_BSON_Regex, jsonSerialize)
 {
 	PHONGO_INTERN_FROM_THIS(regex);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 2);
 	ADD_ASSOC_STRINGL(return_value, "$regex", intern->pattern, intern->pattern_len);
@@ -183,7 +183,7 @@ static PHP_METHOD(MongoDB_BSON_Regex, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Regex, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_regex_get_properties_hash(Z_OBJ_P(getThis()), true));
 }
@@ -192,9 +192,9 @@ static PHP_METHOD(MongoDB_BSON_Regex, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_regex_init_from_hash(Z_REGEX_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

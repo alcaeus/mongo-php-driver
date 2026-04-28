@@ -36,9 +36,9 @@ PHP_FUNCTION(MongoDB_Driver_Monitoring_addSubscriber)
 {
 	zval* subscriber;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_OBJECT_OF_CLASS(subscriber, phongo_subscriber_ce)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	// TODO: Consider throwing if subscriber is unsupported (see: PHPC-2289)
 
@@ -56,9 +56,9 @@ PHP_FUNCTION(MongoDB_Driver_Monitoring_removeSubscriber)
 {
 	zval* subscriber;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_OBJECT_OF_CLASS(subscriber, phongo_subscriber_ce)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (IS_APM_SUBSCRIBER(subscriber)) {
 		phongo_apm_remove_subscriber(MONGODB_G(subscribers), subscriber);
@@ -76,11 +76,11 @@ PHP_FUNCTION(MongoDB_Driver_Monitoring_mongoc_log)
 	char *    domain, *message;
 	size_t    domain_len, message_len;
 
-	PHONGO_PARSE_PARAMETERS_START(3, 3)
+	ZEND_PARSE_PARAMETERS_START(3, 3)
 	Z_PARAM_LONG(level)
 	Z_PARAM_STRING(domain, domain_len)
 	Z_PARAM_STRING(message, message_len)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (level < MONGOC_LOG_LEVEL_ERROR || level > MONGOC_LOG_LEVEL_TRACE) {
 		phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "Expected level to be >= %d and <= %d, %" PHONGO_LONG_FORMAT " given", MONGOC_LOG_LEVEL_ERROR, MONGOC_LOG_LEVEL_TRACE, level);

@@ -148,12 +148,12 @@ static PHP_METHOD(MongoDB_Driver_WriteConcern, __construct)
 	zval *    w, *journal = NULL;
 	zend_long wtimeout = 0;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 3)
+	ZEND_PARSE_PARAMETERS_START(1, 3)
 	Z_PARAM_ZVAL(w)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_LONG(wtimeout)
 	Z_PARAM_ZVAL(journal)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	intern->write_concern = mongoc_write_concern_new();
 
@@ -208,9 +208,9 @@ static PHP_METHOD(MongoDB_Driver_WriteConcern, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(writeconcern, return_value);
 	props = Z_ARRVAL_P(array);
@@ -225,7 +225,7 @@ static PHP_METHOD(MongoDB_Driver_WriteConcern, getW)
 
 	const char* wtag;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	wtag = mongoc_write_concern_get_wtag(intern->write_concern);
 
@@ -251,7 +251,7 @@ static PHP_METHOD(MongoDB_Driver_WriteConcern, getWtimeout)
 
 	int64_t wtimeout;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	wtimeout = mongoc_write_concern_get_wtimeout_int64(intern->write_concern);
 
@@ -269,7 +269,7 @@ static PHP_METHOD(MongoDB_Driver_WriteConcern, getJournal)
 {
 	PHONGO_INTERN_FROM_THIS(writeconcern);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if (mongoc_write_concern_journal_is_set(intern->write_concern)) {
 		RETURN_BOOL(mongoc_write_concern_get_journal(intern->write_concern));
@@ -284,7 +284,7 @@ static PHP_METHOD(MongoDB_Driver_WriteConcern, isDefault)
 {
 	PHONGO_INTERN_FROM_THIS(writeconcern);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_BOOL(mongoc_write_concern_is_default(intern->write_concern));
 }
@@ -297,7 +297,7 @@ static PHP_METHOD(MongoDB_Driver_WriteConcern, bsonSerialize)
 	int32_t     w;
 	int64_t     wtimeout;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	wtag     = mongoc_write_concern_get_wtag(intern->write_concern);
 	w        = mongoc_write_concern_get_w(intern->write_concern);
@@ -328,9 +328,9 @@ static PHP_METHOD(MongoDB_Driver_WriteConcern, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_writeconcern_init_from_hash(Z_WRITECONCERN_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

@@ -90,9 +90,9 @@ static PHP_METHOD(MongoDB_BSON_Int64, __construct)
 
 	zval* value;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ZVAL(value);
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (Z_TYPE_P(value) == IS_STRING) {
 		phongo_int64_init_from_string(intern, Z_STRVAL_P(value), Z_STRLEN_P(value));
@@ -108,7 +108,7 @@ static PHP_METHOD(MongoDB_BSON_Int64, __toString)
 {
 	PHONGO_INTERN_FROM_THIS(int64);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	ZVAL_INT64_STRING(return_value, intern->integer);
 }
@@ -118,9 +118,9 @@ static PHP_METHOD(MongoDB_BSON_Int64, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(int64, return_value);
 	props = Z_ARRVAL_P(array);
@@ -132,7 +132,7 @@ static PHP_METHOD(MongoDB_BSON_Int64, jsonSerialize)
 {
 	PHONGO_INTERN_FROM_THIS(int64);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 1);
 
@@ -141,7 +141,7 @@ static PHP_METHOD(MongoDB_BSON_Int64, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Int64, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_int64_get_properties_hash(Z_OBJ_P(getThis()), true));
 }
@@ -150,9 +150,9 @@ static PHP_METHOD(MongoDB_BSON_Int64, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_int64_init_from_hash(Z_INT64_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

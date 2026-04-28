@@ -58,9 +58,9 @@ static PHP_METHOD(MongoDB_Driver_Exception_RuntimeException, hasErrorLabel)
 	zval*  error_labels;
 	zval   rv;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_STRING(label, label_len)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	error_labels = zend_read_property(phongo_runtimeexception_ce, Z_OBJ_P(getThis()), ZEND_STRL("errorLabels"), 0, &rv);
 

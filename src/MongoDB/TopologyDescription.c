@@ -41,7 +41,7 @@ static PHP_METHOD(MongoDB_Driver_TopologyDescription, getServers)
 	mongoc_server_description_t** sds;
 	size_t                        i, n = 0;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	sds = mongoc_topology_description_get_servers(intern->topology_description, &n);
 
@@ -64,10 +64,10 @@ static PHP_METHOD(MongoDB_Driver_TopologyDescription, hasReadableServer)
 	const mongoc_read_prefs_t* read_preference   = NULL;
 	zval*                      z_read_preference = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(0, 1)
+	ZEND_PARSE_PARAMETERS_START(0, 1)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_OBJECT_OF_CLASS(z_read_preference, phongo_readpreference_ce)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (z_read_preference) {
 		read_preference = phongo_read_preference_from_zval(z_read_preference);
@@ -81,7 +81,7 @@ static PHP_METHOD(MongoDB_Driver_TopologyDescription, hasWritableServer)
 {
 	PHONGO_INTERN_FROM_THIS(topologydescription);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_BOOL(mongoc_topology_description_has_writable_server(intern->topology_description));
 }
@@ -91,7 +91,7 @@ static PHP_METHOD(MongoDB_Driver_TopologyDescription, getType)
 {
 	PHONGO_INTERN_FROM_THIS(topologydescription);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_STRING(mongoc_topology_description_type(intern->topology_description));
 }

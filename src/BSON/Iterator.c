@@ -175,7 +175,7 @@ static PHP_METHOD(MongoDB_BSON_Iterator, current)
 
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	data = phongo_iterator_get_current(intern);
 	if (!data) {
@@ -194,7 +194,7 @@ static PHP_METHOD(MongoDB_BSON_Iterator, key)
 {
 	PHONGO_INTERN_FROM_THIS(iterator);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if (!phongo_iterator_key(intern, return_value)) {
 		// Exception already thrown
@@ -206,7 +206,7 @@ static PHP_METHOD(MongoDB_BSON_Iterator, next)
 {
 	PHONGO_INTERN_FROM_THIS(iterator);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_iterator_next(intern);
 }
@@ -215,7 +215,7 @@ static PHP_METHOD(MongoDB_BSON_Iterator, valid)
 {
 	PHONGO_INTERN_FROM_THIS(iterator);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_BOOL(intern->valid);
 }
@@ -224,7 +224,7 @@ static PHP_METHOD(MongoDB_BSON_Iterator, rewind)
 {
 	PHONGO_INTERN_FROM_THIS(iterator);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_iterator_rewind(intern);
 }

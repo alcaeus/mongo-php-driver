@@ -89,9 +89,9 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, __construct)
 {
 	zval* options;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	/* An exception will be thrown on error. */
 	phongo_clientencryption_init(Z_CLIENTENCRYPTION_OBJ_P(getThis()), options, NULL);
@@ -109,10 +109,10 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, addKeyAltName)
 	bson_t       key_doc        = BSON_INITIALIZER;
 	bson_error_t error          = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(2, 2)
+	ZEND_PARSE_PARAMETERS_START(2, 2)
 	Z_PARAM_OBJECT_OF_CLASS(zkeyid, phongo_binary_ce)
 	Z_PARAM_STRING(keyaltname, keyaltname_len);
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_zval_to_bson_value(zkeyid, &keyid);
 
@@ -147,11 +147,11 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, createDataKey)
 	size_t kms_provider_len = 0;
 	zval*  options          = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 2)
+	ZEND_PARSE_PARAMETERS_START(1, 2)
 	Z_PARAM_STRING(kms_provider, kms_provider_len)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_clientencryption_create_datakey(intern, return_value, kms_provider, options);
 }
@@ -166,9 +166,9 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, deleteKey)
 	bson_t       reply  = BSON_INITIALIZER;
 	bson_error_t error  = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_OBJECT_OF_CLASS(zkeyid, phongo_binary_ce)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_zval_to_bson_value(zkeyid, &keyid);
 
@@ -206,11 +206,11 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, encrypt)
 	zval* value   = NULL;
 	zval* options = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 2)
+	ZEND_PARSE_PARAMETERS_START(1, 2)
 	Z_PARAM_ZVAL(value)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_clientencryption_encrypt(intern, value, return_value, options);
 }
@@ -223,11 +223,11 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, encryptExpression)
 	zval* expr    = NULL;
 	zval* options = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 2)
+	ZEND_PARSE_PARAMETERS_START(1, 2)
 	Z_PARAM_ZVAL(expr)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_clientencryption_encrypt_expression(intern, expr, return_value, options);
 }
@@ -239,9 +239,9 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, decrypt)
 
 	zval* ciphertext;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_OBJECT_OF_CLASS(ciphertext, phongo_binary_interface_ce)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_clientencryption_decrypt(intern, ciphertext, return_value);
 }
@@ -256,9 +256,9 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, getKey)
 	bson_t       key_doc = BSON_INITIALIZER;
 	bson_error_t error   = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_OBJECT_OF_CLASS(zkeyid, phongo_binary_ce)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_zval_to_bson_value(zkeyid, &keyid);
 
@@ -292,9 +292,9 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, getKeyByAltName)
 	bson_t       key_doc        = BSON_INITIALIZER;
 	bson_error_t error          = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_STRING(keyaltname, keyaltname_len);
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (!mongoc_client_encryption_get_key_by_alt_name(Z_CLIENTENCRYPTION_OBJ_P(getThis())->client_encryption, keyaltname, &key_doc, &error)) {
 		phongo_throw_exception_from_bson_error_t(&error);
@@ -317,7 +317,7 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, getKeys)
 	bson_error_t     error = { 0 };
 	zval             query = ZVAL_STATIC_INIT;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	/* mongoc_client_encryption_get_keys executes a query against its internal
 	 * key vault collection. The collection has a majority read concern, but the
@@ -357,10 +357,10 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, removeKeyAltName)
 	bson_t       key_doc        = BSON_INITIALIZER;
 	bson_error_t error          = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(2, 2)
+	ZEND_PARSE_PARAMETERS_START(2, 2)
 	Z_PARAM_OBJECT_OF_CLASS(zkeyid, phongo_binary_ce)
 	Z_PARAM_STRING(keyaltname, keyaltname_len);
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_zval_to_bson_value(zkeyid, &keyid);
 
@@ -402,11 +402,11 @@ static PHP_METHOD(MongoDB_Driver_ClientEncryption, rewrapManyDataKey)
 	mongoc_client_encryption_rewrap_many_datakey_result_t* result = NULL;
 	const bson_t*                                          bulk_write_result;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 2)
+	ZEND_PARSE_PARAMETERS_START(1, 2)
 	Z_PARAM_ARRAY_OR_OBJECT(zfilter)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_zval_to_bson(zfilter, PHONGO_BSON_NONE, &filter, NULL);
 

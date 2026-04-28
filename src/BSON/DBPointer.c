@@ -98,7 +98,7 @@ static PHP_METHOD(MongoDB_BSON_DBPointer, __toString)
 	char* retval;
 	int   retval_len;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	retval_len = spprintf(&retval, 0, "[%s/%s]", intern->ref, intern->id);
 	RETVAL_STRINGL(retval, retval_len);
@@ -110,9 +110,9 @@ static PHP_METHOD(MongoDB_BSON_DBPointer, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(dbpointer, return_value);
 	props = Z_ARRVAL_P(array);
@@ -127,7 +127,7 @@ static PHP_METHOD(MongoDB_BSON_DBPointer, jsonSerialize)
 	zval zdb_pointer;
 	zval zoid;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(&zdb_pointer, 2);
 	array_init_size(&zoid, 1);
@@ -141,7 +141,7 @@ static PHP_METHOD(MongoDB_BSON_DBPointer, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_DBPointer, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_dbpointer_get_properties_hash(Z_OBJ_P(getThis()), true));
 }
@@ -150,9 +150,9 @@ static PHP_METHOD(MongoDB_BSON_DBPointer, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_dbpointer_init_from_hash(Z_DBPOINTER_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

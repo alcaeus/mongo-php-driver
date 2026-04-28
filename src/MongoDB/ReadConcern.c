@@ -71,10 +71,10 @@ static PHP_METHOD(MongoDB_Driver_ReadConcern, __construct)
 	char*  level     = NULL;
 	size_t level_len = 0;
 
-	PHONGO_PARSE_PARAMETERS_START(0, 1)
+	ZEND_PARSE_PARAMETERS_START(0, 1)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_STRING_OR_NULL(level, level_len)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	intern->read_concern = mongoc_read_concern_new();
 
@@ -90,9 +90,9 @@ static PHP_METHOD(MongoDB_Driver_ReadConcern, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(readconcern, return_value);
 	props = Z_ARRVAL_P(array);
@@ -107,7 +107,7 @@ static PHP_METHOD(MongoDB_Driver_ReadConcern, getLevel)
 
 	const char* level;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	level = mongoc_read_concern_get_level(intern->read_concern);
 
@@ -124,14 +124,14 @@ static PHP_METHOD(MongoDB_Driver_ReadConcern, isDefault)
 {
 	PHONGO_INTERN_FROM_THIS(readconcern);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_BOOL(mongoc_read_concern_is_default(intern->read_concern));
 }
 
 static PHP_METHOD(MongoDB_Driver_ReadConcern, bsonSerialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 1);
 
@@ -158,9 +158,9 @@ static PHP_METHOD(MongoDB_Driver_ReadConcern, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_readconcern_init_from_hash(Z_READCONCERN_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

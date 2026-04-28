@@ -183,10 +183,10 @@ static PHP_METHOD(MongoDB_BSON_UTCDateTime, __construct)
 
 	zval* milliseconds = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(0, 1)
+	ZEND_PARSE_PARAMETERS_START(0, 1)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ZVAL_OR_NULL(milliseconds)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (milliseconds == NULL) {
 		phongo_utcdatetime_init_from_current_time(intern);
@@ -211,9 +211,9 @@ static PHP_METHOD(MongoDB_BSON_UTCDateTime, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(utcdatetime, return_value);
 	props = Z_ARRVAL_P(array);
@@ -226,7 +226,7 @@ static PHP_METHOD(MongoDB_BSON_UTCDateTime, __toString)
 {
 	PHONGO_INTERN_FROM_THIS(utcdatetime);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	ZVAL_INT64_STRING(return_value, intern->milliseconds);
 }
@@ -234,7 +234,7 @@ static PHP_METHOD(MongoDB_BSON_UTCDateTime, __toString)
 /* Returns a DateTime object representing this UTCDateTime */
 static PHP_METHOD(MongoDB_BSON_UTCDateTime, toDateTime)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_utcdatetime_to_php_date(return_value, getThis(), php_date_get_date_ce());
 }
@@ -242,7 +242,7 @@ static PHP_METHOD(MongoDB_BSON_UTCDateTime, toDateTime)
 /* Returns a DateTimeImmutable object representing this UTCDateTime */
 static PHP_METHOD(MongoDB_BSON_UTCDateTime, toDateTimeImmutable)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_utcdatetime_to_php_date(return_value, getThis(), php_date_get_immutable_ce());
 }
@@ -251,7 +251,7 @@ static PHP_METHOD(MongoDB_BSON_UTCDateTime, jsonSerialize)
 {
 	PHONGO_INTERN_FROM_THIS(utcdatetime);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 1);
 
@@ -266,7 +266,7 @@ static PHP_METHOD(MongoDB_BSON_UTCDateTime, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_UTCDateTime, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_utcdatetime_get_properties_hash(Z_OBJ_P(getThis()), true));
 }
@@ -275,9 +275,9 @@ static PHP_METHOD(MongoDB_BSON_UTCDateTime, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_utcdatetime_init_from_hash(Z_UTCDATETIME_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

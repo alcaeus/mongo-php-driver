@@ -35,7 +35,7 @@ static PHP_METHOD(MongoDB_Driver_Monitoring_TopologyChangedEvent, getNewDescript
 {
 	PHONGO_INTERN_FROM_THIS(topologychangedevent);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_topologydescription_init(return_value, intern->new_topology_description);
 }
@@ -45,7 +45,7 @@ static PHP_METHOD(MongoDB_Driver_Monitoring_TopologyChangedEvent, getPreviousDes
 {
 	PHONGO_INTERN_FROM_THIS(topologychangedevent);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_topologydescription_init(return_value, intern->old_topology_description);
 }
@@ -55,7 +55,7 @@ static PHP_METHOD(MongoDB_Driver_Monitoring_TopologyChangedEvent, getTopologyId)
 {
 	PHONGO_INTERN_FROM_THIS(topologychangedevent);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_objectid_new(return_value, &intern->topology_id);
 }

@@ -46,7 +46,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommandResult, getInsertedCount)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwritecommandresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_BULKWRITECOMMANDRESULT_CHECK_ACKNOWLEDGED("getInsertedCount");
 
@@ -58,7 +58,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommandResult, getMatchedCount)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwritecommandresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_BULKWRITECOMMANDRESULT_CHECK_ACKNOWLEDGED("getMatchedCount");
 
@@ -70,7 +70,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommandResult, getModifiedCount)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwritecommandresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_BULKWRITECOMMANDRESULT_CHECK_ACKNOWLEDGED("getModifiedCount");
 
@@ -82,7 +82,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommandResult, getDeletedCount)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwritecommandresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_BULKWRITECOMMANDRESULT_CHECK_ACKNOWLEDGED("getDeletedCount");
 
@@ -94,7 +94,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommandResult, getUpsertedCount)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwritecommandresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_BULKWRITECOMMANDRESULT_CHECK_ACKNOWLEDGED("getUpsertedCount");
 
@@ -105,7 +105,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommandResult, getInsertResults)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwritecommandresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_BULKWRITECOMMANDRESULT_CHECK_ACKNOWLEDGED("getInsertResults");
 
@@ -118,7 +118,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommandResult, getUpdateResults)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwritecommandresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_BULKWRITECOMMANDRESULT_CHECK_ACKNOWLEDGED("getUpdateResults");
 
@@ -131,7 +131,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommandResult, getDeleteResults)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwritecommandresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_BULKWRITECOMMANDRESULT_CHECK_ACKNOWLEDGED("getDeleteResults");
 
@@ -146,7 +146,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommandResult, isAcknowledged)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwritecommandresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_BOOL(intern->is_acknowledged);
 }

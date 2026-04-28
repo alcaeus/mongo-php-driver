@@ -45,12 +45,12 @@ static PHP_METHOD(MongoDB_Driver_Server, executeCommand)
 	zval*  command;
 	zval*  options = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(2, 3)
+	ZEND_PARSE_PARAMETERS_START(2, 3)
 	Z_PARAM_STRING(db, db_len)
 	Z_PARAM_OBJECT_OF_CLASS(command, phongo_command_ce)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ZVAL_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	/* If the Server was created in a different process, reset the client so
 	 * that cursors created by this process can be differentiated and its
@@ -70,12 +70,12 @@ static PHP_METHOD(MongoDB_Driver_Server, executeReadCommand)
 	zval*  command;
 	zval*  options = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(2, 3)
+	ZEND_PARSE_PARAMETERS_START(2, 3)
 	Z_PARAM_STRING(db, db_len)
 	Z_PARAM_OBJECT_OF_CLASS(command, phongo_command_ce)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	/* If the Server was created in a different process, reset the client so
 	 * that cursors created by this process can be differentiated and its
@@ -95,12 +95,12 @@ static PHP_METHOD(MongoDB_Driver_Server, executeWriteCommand)
 	zval*  command;
 	zval*  options = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(2, 3)
+	ZEND_PARSE_PARAMETERS_START(2, 3)
 	Z_PARAM_STRING(db, db_len)
 	Z_PARAM_OBJECT_OF_CLASS(command, phongo_command_ce)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	/* If the Server was created in a different process, reset the client so
 	 * that cursors created by this process can be differentiated. and its
@@ -120,12 +120,12 @@ static PHP_METHOD(MongoDB_Driver_Server, executeReadWriteCommand)
 	zval*  command;
 	zval*  options = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(2, 3)
+	ZEND_PARSE_PARAMETERS_START(2, 3)
 	Z_PARAM_STRING(db, db_len)
 	Z_PARAM_OBJECT_OF_CLASS(command, phongo_command_ce)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	/* If the Server was created in a different process, reset the client so
 	 * that cursors created by this process can be differentiated and its
@@ -145,12 +145,12 @@ static PHP_METHOD(MongoDB_Driver_Server, executeQuery)
 	zval*  query;
 	zval*  options = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(2, 3)
+	ZEND_PARSE_PARAMETERS_START(2, 3)
 	Z_PARAM_STRING(namespace, namespace_len)
 	Z_PARAM_OBJECT_OF_CLASS(query, phongo_query_ce)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ZVAL_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	/* If the Server was created in a different process, reset the client so
 	 * that cursors created by this process can be differentiated and its
@@ -172,12 +172,12 @@ static PHP_METHOD(MongoDB_Driver_Server, executeBulkWrite)
 	phongo_bulkwrite_t* bulk;
 	zval*               options = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(2, 3)
+	ZEND_PARSE_PARAMETERS_START(2, 3)
 	Z_PARAM_STRING(namespace, namespace_len)
 	Z_PARAM_OBJECT_OF_CLASS(zbulk, phongo_bulkwrite_ce)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ZVAL_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	bulk = Z_BULKWRITE_OBJ_P(zbulk);
 
@@ -197,11 +197,11 @@ static PHP_METHOD(MongoDB_Driver_Server, executeBulkWriteCommand)
 	phongo_bulkwritecommand_t* bwc;
 	zval*                      zoptions = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 2)
+	ZEND_PARSE_PARAMETERS_START(1, 2)
 	Z_PARAM_OBJECT_OF_CLASS(zbwc, phongo_bulkwritecommand_ce)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ZVAL_OR_NULL(zoptions)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	bwc = Z_BULKWRITECOMMAND_OBJ_P(zbwc);
 
@@ -219,7 +219,7 @@ static PHP_METHOD(MongoDB_Driver_Server, getHost)
 
 	mongoc_server_description_t* sd;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if ((sd = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id))) {
 		RETVAL_STRING(mongoc_server_description_host(sd)->host);
@@ -237,7 +237,7 @@ static PHP_METHOD(MongoDB_Driver_Server, getTags)
 
 	mongoc_server_description_t* sd;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if ((sd = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id))) {
 		const bson_t* hello_response = mongoc_server_description_hello_response(sd);
@@ -283,7 +283,7 @@ static PHP_METHOD(MongoDB_Driver_Server, getInfo)
 	const bson_t*                hello_response;
 	phongo_bson_state            state;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	client = Z_MANAGER_OBJ_P(&intern->manager)->client;
 
@@ -334,7 +334,7 @@ static PHP_METHOD(MongoDB_Driver_Server, getLatency)
 
 	mongoc_server_description_t* sd;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if (!(sd = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id))) {
 		phongo_throw_exception(PHONGO_ERROR_RUNTIME, "Failed to get server description");
@@ -358,7 +358,7 @@ static PHP_METHOD(MongoDB_Driver_Server, getPort)
 
 	mongoc_server_description_t* sd;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if ((sd = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id))) {
 		RETVAL_LONG(mongoc_server_description_host(sd)->port);
@@ -376,7 +376,7 @@ static PHP_METHOD(MongoDB_Driver_Server, getServerDescription)
 
 	mongoc_server_description_t* server_description;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	server_description = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id);
 
@@ -391,7 +391,7 @@ static PHP_METHOD(MongoDB_Driver_Server, getType)
 
 	mongoc_server_description_t* sd;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if ((sd = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id))) {
 		RETVAL_LONG(phongo_server_description_type(sd));
@@ -409,7 +409,7 @@ static PHP_METHOD(MongoDB_Driver_Server, isPrimary)
 
 	mongoc_server_description_t* sd;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if ((sd = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id))) {
 		RETVAL_BOOL(!strcmp(mongoc_server_description_type(sd), phongo_server_description_type_map[PHONGO_SERVER_RS_PRIMARY].name));
@@ -427,7 +427,7 @@ static PHP_METHOD(MongoDB_Driver_Server, isSecondary)
 
 	mongoc_server_description_t* sd;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if ((sd = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id))) {
 		RETVAL_BOOL(!strcmp(mongoc_server_description_type(sd), phongo_server_description_type_map[PHONGO_SERVER_RS_SECONDARY].name));
@@ -445,7 +445,7 @@ static PHP_METHOD(MongoDB_Driver_Server, isArbiter)
 
 	mongoc_server_description_t* sd;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if ((sd = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id))) {
 		RETVAL_BOOL(!strcmp(mongoc_server_description_type(sd), phongo_server_description_type_map[PHONGO_SERVER_RS_ARBITER].name));
@@ -463,7 +463,7 @@ static PHP_METHOD(MongoDB_Driver_Server, isHidden)
 
 	mongoc_server_description_t* sd;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if ((sd = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id))) {
 		bson_iter_t iter;
@@ -483,7 +483,7 @@ static PHP_METHOD(MongoDB_Driver_Server, isPassive)
 
 	mongoc_server_description_t* sd;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	if ((sd = mongoc_client_get_server_description(Z_MANAGER_OBJ_P(&intern->manager)->client, intern->server_id))) {
 		bson_iter_t iter;

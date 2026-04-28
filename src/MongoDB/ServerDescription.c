@@ -54,7 +54,7 @@ static PHP_METHOD(MongoDB_Driver_ServerDescription, getHelloResponse)
 	const bson_t*     helloResponse;
 	phongo_bson_state state;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	/* Note: the hello response will be empty for load balancers since they are
 	 * not monitored. Unlike Server::getInfo(), we do not attempt to fetch the
@@ -79,7 +79,7 @@ static PHP_METHOD(MongoDB_Driver_ServerDescription, getHost)
 {
 	PHONGO_INTERN_FROM_THIS(serverdescription);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_STRING(mongoc_server_description_host(intern->server_description)->host);
 }
@@ -91,7 +91,7 @@ static PHP_METHOD(MongoDB_Driver_ServerDescription, getLastUpdateTime)
 
 	int64_t last_update_time;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	last_update_time = mongoc_server_description_last_update_time(intern->server_description);
 
@@ -109,7 +109,7 @@ static PHP_METHOD(MongoDB_Driver_ServerDescription, getPort)
 {
 	PHONGO_INTERN_FROM_THIS(serverdescription);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_LONG(mongoc_server_description_host(intern->server_description)->port);
 }
@@ -119,7 +119,7 @@ static PHP_METHOD(MongoDB_Driver_ServerDescription, getRoundTripTime)
 {
 	PHONGO_INTERN_FROM_THIS(serverdescription);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	/* TODO: Use MONGOC_RTT_UNSET once it is added to libmongoc's public API (CDRIVER-4176) */
 	if (mongoc_server_description_round_trip_time(intern->server_description) == -1) {
@@ -134,7 +134,7 @@ static PHP_METHOD(MongoDB_Driver_ServerDescription, getType)
 {
 	PHONGO_INTERN_FROM_THIS(serverdescription);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_STRING(mongoc_server_description_type(intern->server_description));
 }

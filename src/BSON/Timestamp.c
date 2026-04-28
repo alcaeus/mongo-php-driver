@@ -125,10 +125,10 @@ static PHP_METHOD(MongoDB_BSON_Timestamp, __construct)
 
 	zval *increment = NULL, *timestamp = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(2, 2)
+	ZEND_PARSE_PARAMETERS_START(2, 2)
 	Z_PARAM_ZVAL(increment)
 	Z_PARAM_ZVAL(timestamp)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (Z_TYPE_P(increment) == IS_LONG && Z_TYPE_P(timestamp) == IS_LONG) {
 		phongo_timestamp_init(intern, Z_LVAL_P(increment), Z_LVAL_P(timestamp));
@@ -160,7 +160,7 @@ static PHP_METHOD(MongoDB_BSON_Timestamp, getIncrement)
 {
 	PHONGO_INTERN_FROM_THIS(timestamp);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_LONG(intern->increment);
 }
@@ -169,7 +169,7 @@ static PHP_METHOD(MongoDB_BSON_Timestamp, getTimestamp)
 {
 	PHONGO_INTERN_FROM_THIS(timestamp);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_LONG(intern->timestamp);
 }
@@ -179,9 +179,9 @@ static PHP_METHOD(MongoDB_BSON_Timestamp, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(timestamp, return_value);
 	props = Z_ARRVAL_P(array);
@@ -197,7 +197,7 @@ static PHP_METHOD(MongoDB_BSON_Timestamp, __toString)
 	char* retval;
 	int   retval_len;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	retval_len = spprintf(&retval, 0, "[%" PRIu32 ":%" PRIu32 "]", intern->increment, intern->timestamp);
 	RETVAL_STRINGL(retval, retval_len);
@@ -208,7 +208,7 @@ static PHP_METHOD(MongoDB_BSON_Timestamp, jsonSerialize)
 {
 	PHONGO_INTERN_FROM_THIS(timestamp);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 1);
 
@@ -224,7 +224,7 @@ static PHP_METHOD(MongoDB_BSON_Timestamp, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_Timestamp, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_timestamp_get_properties_hash(Z_OBJ_P(getThis()), true));
 }
@@ -233,9 +233,9 @@ static PHP_METHOD(MongoDB_BSON_Timestamp, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_timestamp_init_from_hash(Z_TIMESTAMP_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

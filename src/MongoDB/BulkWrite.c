@@ -320,10 +320,10 @@ static PHP_METHOD(MongoDB_Driver_BulkWrite, __construct)
 	zval*     options = NULL;
 	zend_bool ordered = 1;
 
-	PHONGO_PARSE_PARAMETERS_START(0, 1)
+	ZEND_PARSE_PARAMETERS_START(0, 1)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(options)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (options && php_array_existsc(options, "ordered")) {
 		ordered = php_array_fetchc_bool(options, "ordered");
@@ -385,9 +385,9 @@ static PHP_METHOD(MongoDB_Driver_BulkWrite, insert)
 	bson_t*      bson_out = NULL;
 	bson_error_t error    = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY_OR_OBJECT(zdocument)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_zval_to_bson(zdocument, (PHONGO_BSON_ADD_ID | PHONGO_BSON_RETURN_ID), &bdocument, &bson_out);
 
@@ -424,12 +424,12 @@ static PHP_METHOD(MongoDB_Driver_BulkWrite, update)
 	bson_t       bquery = BSON_INITIALIZER, bupdate = BSON_INITIALIZER, boptions = BSON_INITIALIZER;
 	bson_error_t error = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(2, 3)
+	ZEND_PARSE_PARAMETERS_START(2, 3)
 	Z_PARAM_ARRAY_OR_OBJECT(zquery)
 	Z_PARAM_ARRAY_OR_OBJECT(zupdate)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(zoptions)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_zval_to_bson(zquery, PHONGO_BSON_NONE, &bquery, NULL);
 
@@ -489,11 +489,11 @@ static PHP_METHOD(MongoDB_Driver_BulkWrite, delete)
 	bson_t       bquery = BSON_INITIALIZER, boptions = BSON_INITIALIZER;
 	bson_error_t error = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(1, 2)
+	ZEND_PARSE_PARAMETERS_START(1, 2)
 	Z_PARAM_ARRAY_OR_OBJECT(zquery)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(zoptions)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_zval_to_bson(zquery, PHONGO_BSON_NONE, &bquery, NULL);
 
@@ -529,7 +529,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWrite, count)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwrite);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_LONG(intern->num_ops);
 }

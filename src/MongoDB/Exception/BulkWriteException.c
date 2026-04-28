@@ -28,7 +28,7 @@ static PHP_METHOD(MongoDB_Driver_Exception_BulkWriteException, getWriteResult)
 	zval* writeresult;
 	zval  rv;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	writeresult = zend_read_property(phongo_bulkwriteexception_ce, Z_OBJ_P(getThis()), ZEND_STRL("writeResult"), 0, &rv);
 

@@ -121,10 +121,10 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommand, __construct)
 
 	zval* zoptions = NULL;
 
-	PHONGO_PARSE_PARAMETERS_START(0, 1)
+	ZEND_PARSE_PARAMETERS_START(0, 1)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(zoptions)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	intern->bw      = mongoc_bulkwrite_new();
 	intern->bypass  = PHONGO_BULKWRITECOMMAND_BYPASS_UNSET;
@@ -182,7 +182,7 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommand, count)
 {
 	PHONGO_INTERN_FROM_THIS(bulkwritecommand);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_LONG(intern->num_ops);
 }
@@ -259,12 +259,12 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommand, deleteMany)
 	mongoc_bulkwrite_deletemanyopts_t* opts     = NULL;
 	bson_error_t                       error    = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(2, 3)
+	ZEND_PARSE_PARAMETERS_START(2, 3)
 	Z_PARAM_STRING(ns, ns_len)
 	Z_PARAM_ARRAY_OR_OBJECT(zfilter)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(zoptions)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (strlen(ns) != ns_len) {
 		phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "Namespace string should not contain null bytes");
@@ -329,12 +329,12 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommand, deleteOne)
 	mongoc_bulkwrite_deleteoneopts_t* opts     = NULL;
 	bson_error_t                      error    = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(2, 3)
+	ZEND_PARSE_PARAMETERS_START(2, 3)
 	Z_PARAM_STRING(ns, ns_len)
 	Z_PARAM_ARRAY_OR_OBJECT(zfilter)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(zoptions)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (strlen(ns) != ns_len) {
 		phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "Namespace string should not contain null bytes");
@@ -398,10 +398,10 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommand, insertOne)
 	bson_t*      bson_out  = NULL;
 	bson_error_t error     = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(2, 2)
+	ZEND_PARSE_PARAMETERS_START(2, 2)
 	Z_PARAM_STRING(ns, ns_len)
 	Z_PARAM_ARRAY_OR_OBJECT(zdocument)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (strlen(ns) != ns_len) {
 		phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "Namespace string should not contain null bytes");
@@ -447,13 +447,13 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommand, replaceOne)
 	mongoc_bulkwrite_replaceoneopts_t* opts         = NULL;
 	bson_error_t                       error        = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(3, 4)
+	ZEND_PARSE_PARAMETERS_START(3, 4)
 	Z_PARAM_STRING(ns, ns_len)
 	Z_PARAM_ARRAY_OR_OBJECT(zfilter)
 	Z_PARAM_ARRAY_OR_OBJECT(zreplacement)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(zoptions)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (strlen(ns) != ns_len) {
 		phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "Namespace string should not contain null bytes");
@@ -543,13 +543,13 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommand, updateMany)
 	mongoc_bulkwrite_updatemanyopts_t* opts     = NULL;
 	bson_error_t                       error    = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(3, 4)
+	ZEND_PARSE_PARAMETERS_START(3, 4)
 	Z_PARAM_STRING(ns, ns_len)
 	Z_PARAM_ARRAY_OR_OBJECT(zfilter)
 	Z_PARAM_ARRAY_OR_OBJECT(zupdate)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(zoptions)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (strlen(ns) != ns_len) {
 		phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "Namespace string should not contain null bytes");
@@ -640,13 +640,13 @@ static PHP_METHOD(MongoDB_Driver_BulkWriteCommand, updateOne)
 	mongoc_bulkwrite_updateoneopts_t* opts     = NULL;
 	bson_error_t                      error    = { 0 };
 
-	PHONGO_PARSE_PARAMETERS_START(3, 4)
+	ZEND_PARSE_PARAMETERS_START(3, 4)
 	Z_PARAM_STRING(ns, ns_len)
 	Z_PARAM_ARRAY_OR_OBJECT(zfilter)
 	Z_PARAM_ARRAY_OR_OBJECT(zupdate)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_ARRAY_OR_NULL(zoptions)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (strlen(ns) != ns_len) {
 		phongo_throw_exception(PHONGO_ERROR_INVALID_ARGUMENT, "Namespace string should not contain null bytes");

@@ -36,7 +36,7 @@ static PHP_METHOD(MongoDB_Driver_Monitoring_ServerChangedEvent, getHost)
 {
 	PHONGO_INTERN_FROM_THIS(serverchangedevent);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_STRING(intern->host.host);
 }
@@ -46,7 +46,7 @@ static PHP_METHOD(MongoDB_Driver_Monitoring_ServerChangedEvent, getPort)
 {
 	PHONGO_INTERN_FROM_THIS(serverchangedevent);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETVAL_LONG(intern->host.port);
 }
@@ -56,7 +56,7 @@ static PHP_METHOD(MongoDB_Driver_Monitoring_ServerChangedEvent, getNewDescriptio
 {
 	PHONGO_INTERN_FROM_THIS(serverchangedevent);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_serverdescription_init(return_value, intern->new_server_description);
 }
@@ -66,7 +66,7 @@ static PHP_METHOD(MongoDB_Driver_Monitoring_ServerChangedEvent, getPreviousDescr
 {
 	PHONGO_INTERN_FROM_THIS(serverchangedevent);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_serverdescription_init(return_value, intern->old_server_description);
 }
@@ -76,7 +76,7 @@ static PHP_METHOD(MongoDB_Driver_Monitoring_ServerChangedEvent, getTopologyId)
 {
 	PHONGO_INTERN_FROM_THIS(serverchangedevent);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_objectid_new(return_value, &intern->topology_id);
 }

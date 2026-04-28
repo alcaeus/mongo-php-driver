@@ -30,7 +30,7 @@ zend_class_entry* phongo_bulkwritecommandexception_ce;
 /* Returns the error reply document (if any) from the failed bulk write */
 static PHP_METHOD(MongoDB_Driver_Exception_BulkWriteCommandException, getErrorReply)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	zval  rv;
 	zval* result = zend_read_property(phongo_bulkwritecommandexception_ce, Z_OBJ_P(getThis()), ZEND_STRL("errorReply"), 0, &rv);
@@ -41,7 +41,7 @@ static PHP_METHOD(MongoDB_Driver_Exception_BulkWriteCommandException, getErrorRe
 /* Returns the partial BulkWriteCommandResult (if any) from the failed bulk write. */
 static PHP_METHOD(MongoDB_Driver_Exception_BulkWriteCommandException, getPartialResult)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	zval  rv;
 	zval* result = zend_read_property(phongo_bulkwritecommandexception_ce, Z_OBJ_P(getThis()), ZEND_STRL("partialResult"), 0, &rv);
@@ -52,7 +52,7 @@ static PHP_METHOD(MongoDB_Driver_Exception_BulkWriteCommandException, getPartial
 /* Returns a map of write errors from the failed bulk write. */
 static PHP_METHOD(MongoDB_Driver_Exception_BulkWriteCommandException, getWriteErrors)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	zval  rv;
 	zval* result = zend_read_property(phongo_bulkwritecommandexception_ce, Z_OBJ_P(getThis()), ZEND_STRL("writeErrors"), 0, &rv);
@@ -63,7 +63,7 @@ static PHP_METHOD(MongoDB_Driver_Exception_BulkWriteCommandException, getWriteEr
 /* Returns a list of write concern errors from the failed bulk write. */
 static PHP_METHOD(MongoDB_Driver_Exception_BulkWriteCommandException, getWriteConcernErrors)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	zval  rv;
 	zval* result = zend_read_property(phongo_bulkwritecommandexception_ce, Z_OBJ_P(getThis()), ZEND_STRL("writeConcernErrors"), 0, &rv);

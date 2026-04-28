@@ -101,12 +101,12 @@ static PHP_METHOD(MongoDB_Driver_ServerApi, __construct)
 	zend_bool    deprecation_errors      = 0;
 	zend_bool    deprecation_errors_null = 1;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 3)
+	ZEND_PARSE_PARAMETERS_START(1, 3)
 	Z_PARAM_STR(version)
 	Z_PARAM_OPTIONAL
 	Z_PARAM_BOOL_EX(strict, strict_null, 1, 0)
 	Z_PARAM_BOOL_EX(deprecation_errors, deprecation_errors_null, 1, 0)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	// Will throw on failure
 	phongo_serverapi_create_libmongoc_object(
@@ -123,9 +123,9 @@ static PHP_METHOD(MongoDB_Driver_ServerApi, __set_state)
 	HashTable* props;
 	zval*      array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	PHONGO_INTERN_INIT_EX(serverapi, return_value);
 	props = Z_ARRVAL_P(array);
@@ -173,7 +173,7 @@ static HashTable* phongo_serverapi_get_properties_hash(zend_object* object, bool
 
 static PHP_METHOD(MongoDB_Driver_ServerApi, bsonSerialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	ZVAL_ARR(return_value, phongo_serverapi_get_properties_hash(Z_OBJ_P(getThis()), true, false));
 	convert_to_object(return_value);
@@ -181,7 +181,7 @@ static PHP_METHOD(MongoDB_Driver_ServerApi, bsonSerialize)
 
 static PHP_METHOD(MongoDB_Driver_ServerApi, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_ARR(phongo_serverapi_get_properties_hash(Z_OBJ_P(getThis()), true, true));
 }
@@ -190,9 +190,9 @@ static PHP_METHOD(MongoDB_Driver_ServerApi, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	phongo_serverapi_init_from_hash(Z_SERVERAPI_OBJ_P(getThis()), Z_ARRVAL_P(data));
 }

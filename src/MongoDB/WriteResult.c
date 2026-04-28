@@ -199,7 +199,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, getInsertedCount)
 
 	bson_iter_t iter;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_WRITERESULT_CHECK_ACKNOWLEDGED("getInsertedCount");
 
@@ -213,7 +213,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, getMatchedCount)
 
 	bson_iter_t iter;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_WRITERESULT_CHECK_ACKNOWLEDGED("getMatchedCount");
 
@@ -227,7 +227,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, getModifiedCount)
 
 	bson_iter_t iter;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_WRITERESULT_CHECK_ACKNOWLEDGED("getModifiedCount");
 
@@ -241,7 +241,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, getDeletedCount)
 
 	bson_iter_t iter;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_WRITERESULT_CHECK_ACKNOWLEDGED("getDeletedCount");
 
@@ -255,7 +255,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, getUpsertedCount)
 
 	bson_iter_t iter;
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_WRITERESULT_CHECK_ACKNOWLEDGED("getUpsertedCount");
 
@@ -267,7 +267,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, getServer)
 {
 	PHONGO_INTERN_FROM_THIS(writeresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_server_init(return_value, &intern->manager, intern->server_id);
 }
@@ -277,7 +277,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, getUpsertedIds)
 {
 	PHONGO_INTERN_FROM_THIS(writeresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	PHONGO_WRITERESULT_CHECK_ACKNOWLEDGED("getUpsertedIds");
 
@@ -289,7 +289,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, getWriteConcernError)
 {
 	PHONGO_INTERN_FROM_THIS(writeresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_writeresult_get_writeconcernerror(intern, return_value);
 }
@@ -299,7 +299,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, getWriteErrors)
 {
 	PHONGO_INTERN_FROM_THIS(writeresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_writeresult_get_writeerrors(intern, return_value);
 }
@@ -308,7 +308,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, getErrorReplies)
 {
 	PHONGO_INTERN_FROM_THIS(writeresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	phongo_writeresult_get_error_replies(intern, return_value);
 }
@@ -319,7 +319,7 @@ static PHP_METHOD(MongoDB_Driver_WriteResult, isAcknowledged)
 {
 	PHONGO_INTERN_FROM_THIS(writeresult);
 
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_BOOL(mongoc_write_concern_is_acknowledged(intern->write_concern));
 }

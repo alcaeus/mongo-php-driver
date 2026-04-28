@@ -27,16 +27,16 @@ static PHP_METHOD(MongoDB_BSON_MinKey, __set_state)
 {
 	zval* array;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(array)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 
 	object_init_ex(return_value, phongo_minkey_ce);
 }
 
 static PHP_METHOD(MongoDB_BSON_MinKey, jsonSerialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 1);
 	ADD_ASSOC_LONG_EX(return_value, "$minKey", 1);
@@ -44,7 +44,7 @@ static PHP_METHOD(MongoDB_BSON_MinKey, jsonSerialize)
 
 static PHP_METHOD(MongoDB_BSON_MinKey, __serialize)
 {
-	PHONGO_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init_size(return_value, 0);
 }
@@ -53,9 +53,9 @@ static PHP_METHOD(MongoDB_BSON_MinKey, __unserialize)
 {
 	zval* data;
 
-	PHONGO_PARSE_PARAMETERS_START(1, 1)
+	ZEND_PARSE_PARAMETERS_START(1, 1)
 	Z_PARAM_ARRAY(data)
-	PHONGO_PARSE_PARAMETERS_END();
+	ZEND_PARSE_PARAMETERS_END();
 }
 
 /* MongoDB\BSON\MinKey object handlers */
